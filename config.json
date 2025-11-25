@@ -1,0 +1,24 @@
+{
+  "llm": {
+    "endpoint": "http://localhost:11434/v1/chat/completions",
+    "model": "llama3.1:8b",
+    "api_key": "",
+    "temperature": 0.7,
+    "max_tokens": 8000,
+    "timeout": 300000
+  },
+  "mcp": {
+    "server_path": "./mcp-server/server.py",
+    "enabled": true
+  },
+  "git": {
+    "enabled": true,
+    "auto_push": false,
+    "remote": "origin",
+    "branch": "main"
+  },
+  "processing": {
+    "auto_start_on_file_change": true,
+    "delete_old_documentation": false
+  }
+}
