@@ -34,11 +34,11 @@ class ConfigProcessor:
             with open(config_path, 'r') as f:
                 self.config = json.load(f)
         except FileNotFoundError:
-            print(f"❌ Error: config.json not found at {config_path}")
+            print(f" Error: config.json not found at {config_path}")
             print("   Make sure config.json exists in the project root")
             sys.exit(1)
         except json.JSONDecodeError as e:
-            print(f"❌ Error: Invalid JSON in config.json: {e}")
+            print(f" Error: Invalid JSON in config.json: {e}")
             sys.exit(1)
 
         # Ensure output directory exists
@@ -47,31 +47,31 @@ class ConfigProcessor:
     def process(self) -> Path:
         """Process the configuration file and generate documentation."""
         try:
-            print("📖 Reading configuration file...")
+            print(" Reading configuration file...")
             config_content = self._read_config_file()
 
-            print("🔍 Extracting IOS version...")
+            print(" Extracting IOS version...")
             ios_version = self._extract_ios_version(config_content)
             print(f"   Detected IOS version: {ios_version or 'Unknown'}")
 
-            print("📋 Loading prompt template...")
+            print(" Loading prompt template...")
             prompt = self._build_prompt(config_content, ios_version)
 
-            print("🤖 Sending to LLM for analysis...")
+            print(" Sending to LLM for analysis...")
             documentation = self._call_llm(prompt)
 
-            print("💾 Saving documentation...")
+            print(" Saving documentation...")
             output_path = self._save_documentation(documentation)
 
             if self.config.get("git", {}).get("enabled", True):
-                print("📦 Committing to Git...")
+                print(" Committing to Git...")
                 self._commit_to_git(output_path)
 
-            print(f"✅ Documentation generated: {output_path}")
+            print(f" Documentation generated: {output_path}")
             return output_path
 
         except Exception as e:
-            print(f"❌ Processing failed: {str(e)}")
+            print(f" Processing failed: {str(e)}")
             raise
 
     def _read_config_file(self) -> str:
@@ -107,7 +107,7 @@ class ConfigProcessor:
             with open(template_path, 'r', encoding='utf-8') as f:
                 template = f.read()
         except FileNotFoundError:
-            print("⚠️  Prompt template not found, using default")
+            print("  Prompt template not found, using default")
             template = self._get_default_template()
 
         # Replace placeholders
@@ -170,11 +170,29 @@ Evaluate against Cisco best practices and provide recommendations.
     def _call_llm(self, prompt: str) -> str:
         """Call the LLM API."""
         llm_config = self.config["llm"]
+        endpoint = llm_config["endpoint"]
 
         try:
-            response = requests.post(
-                llm_config["endpoint"],
-                json={
+            # Detect if using Ollama native API or OpenAI-compatible API
+            if "/api/generate" in endpoint or "/api/chat" in endpoint:
+                # Ollama native API format
+                system_prompt = ("You are an expert Cisco network engineer. Analyze the configuration "
+                               "and create comprehensive documentation in Markdown format.")
+
+                full_prompt = f"{system_prompt}\n\n{prompt}"
+
+                request_data = {
+                    "model": llm_config["model"],
+                    "prompt": full_prompt,
+                    "stream": False,
+                    "options": {
+                        "temperature": llm_config.get("temperature", 0.7),
+                        "num_predict": llm_config.get("max_tokens", 8000)
+                    }
+                }
+            else:
+                # OpenAI-compatible API format
+                request_data = {
                     "model": llm_config["model"],
                     "messages": [
                         {
@@ -190,7 +208,11 @@ Evaluate against Cisco best practices and provide recommendations.
                     ],
                     "temperature": llm_config.get("temperature", 0.7),
                     "max_tokens": llm_config.get("max_tokens", 8000)
-                },
+                }
+
+            response = requests.post(
+                endpoint,
+                json=request_data,
                 headers={
                     "Content-Type": "application/json",
                     **({"Authorization": f"Bearer {llm_config['api_key']}"} if llm_config.get("api_key") else {})
@@ -202,17 +224,24 @@ Evaluate against Cisco best practices and provide recommendations.
             data = response.json()
 
             # Extract content based on response format
+            # Ollama native /api/generate format
+            if "response" in data:
+                content = data["response"]
             # OpenAI-compatible format
-            if "choices" in data and len(data["choices"]) > 0:
-                return data["choices"][0]["message"]["content"]
-            # Ollama format
+            elif "choices" in data and len(data["choices"]) > 0:
+                content = data["choices"][0]["message"]["content"]
+            # Ollama /api/chat format
             elif "message" in data and "content" in data["message"]:
-                return data["message"]["content"]
-            # Generic fallback
-            elif "response" in data:
-                return data["response"]
+                content = data["message"]["content"]
             else:
                 raise ValueError("Unexpected LLM response format")
+
+            # Debug: Show response length
+            print(f"   LLM response length: {len(content)} characters")
+            if len(content) == 0:
+                print("   WARNING: LLM returned empty response!")
+
+            return content
 
         except requests.exceptions.RequestException as e:
             if hasattr(e, 'response') and e.response is not None:
@@ -278,7 +307,7 @@ Auto-generated by Cisco Config Documentation System"""
 
             # Commit
             repo.index.commit(commit_message)
-            print(f"   ✅ Committed: {relative_path}")
+            print(f"    Committed: {relative_path}")
 
             # Push if configured
             if git_config.get("auto_push") and git_config.get("remote"):
@@ -287,25 +316,25 @@ Auto-generated by Cisco Config Documentation System"""
                     branch = git_config.get("branch", "main")
                     print(f"   Pushing to {git_config['remote']}/{branch}...")
                     remote.push(branch)
-                    print("   ✅ Pushed to remote")
+                    print("    Pushed to remote")
                 except Exception as e:
-                    print(f"   ⚠️  Push failed: {str(e)}")
+                    print(f"     Push failed: {str(e)}")
 
         except Exception as e:
-            print(f"   ⚠️  Git commit failed: {str(e)}")
+            print(f"     Git commit failed: {str(e)}")
             # Don't fail the entire process if git fails
 
 
 def main():
     """Main entry point."""
     if len(sys.argv) < 2:
-        print("❌ Usage: python processor.py <config-file-path>")
+        print(" Usage: python processor.py <config-file-path>")
         sys.exit(1)
 
     config_file_path = Path(sys.argv[1])
 
     if not config_file_path.exists():
-        print(f"❌ Error: Configuration file not found: {config_file_path}")
+        print(f" Error: Configuration file not found: {config_file_path}")
         sys.exit(1)
 
     processor = ConfigProcessor(config_file_path)

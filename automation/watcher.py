@@ -38,7 +38,7 @@ class ConfigFileHandler(FileSystemEventHandler):
             last_time = self.cooldown.get(event.src_path, 0)
 
             if current_time - last_time > 2:  # 2 second cooldown
-                print(f"\n📝 File changed: {Path(event.src_path).name}")
+                print(f"\n File changed: {Path(event.src_path).name}")
                 self._process_file(event.src_path)
                 self.cooldown[event.src_path] = current_time
 
@@ -48,11 +48,11 @@ class ConfigFileHandler(FileSystemEventHandler):
 
         # Prevent duplicate processing
         if file_path in self.processing_lock:
-            print(f"⏭️  Skipping {file_path.name} (already processing)")
+            print(f"  Skipping {file_path.name} (already processing)")
             return
 
         self.processing_lock.add(file_path)
-        print(f"⚙️  Processing: {file_path.name}")
+        print(f"  Processing: {file_path.name}")
         print(f"   Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
 
         try:
@@ -64,14 +64,14 @@ class ConfigFileHandler(FileSystemEventHandler):
             )
 
             if result.returncode == 0:
-                print(f"✅ Completed: {file_path.name}")
+                print(f" Completed: {file_path.name}")
             else:
-                print(f"❌ Failed: {file_path.name} (exit code: {result.returncode})")
+                print(f" Failed: {file_path.name} (exit code: {result.returncode})")
                 if result.stderr:
                     print(f"   Error: {result.stderr}")
 
         except Exception as e:
-            print(f"❌ Error processing {file_path.name}: {str(e)}")
+            print(f" Error processing {file_path.name}: {str(e)}")
 
         finally:
             self.processing_lock.discard(file_path)
@@ -100,17 +100,17 @@ def main():
 
     # Start observer
     observer.start()
-    print("\n✅ Watcher ready and monitoring for changes")
+    print("\n Watcher ready and monitoring for changes")
     print("   Press Ctrl+C to stop\n")
 
     try:
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("\n\n🛑 Shutting down watcher...")
+        print("\n\n Shutting down watcher...")
         observer.stop()
         observer.join()
-        print("✅ Watcher stopped")
+        print(" Watcher stopped")
 
 
 if __name__ == "__main__":

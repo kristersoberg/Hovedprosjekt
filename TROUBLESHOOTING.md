@@ -1,45 +1,105 @@
 # Troubleshooting Guide
 
-Common issues and their solutions for the Cisco Configuration Documentation System.
+Common issues and their solutions for the Cisco Configuration Documentation System (Python version).
 
 ## Installation Issues
 
-### ❌ "npm: command not found"
+### ❌ "Python not found" or "python: command not found"
 
-**Problem**: Node.js is not installed or not in PATH.
+**Problem**: Python is not installed or not in PATH.
 
 **Solution**:
-1. Download and install Node.js from https://nodejs.org/ (version 18 or higher)
-2. Restart your terminal
-3. Verify: `node --version`
+1. Download and install Python from https://python.org/ (version 3.8 or higher)
+2. During installation, check "Add Python to PATH"
+3. Restart your terminal
+4. Verify: `python --version` or `python3 --version`
 
 ---
 
-### ❌ "npm install fails with permission errors"
+### ❌ "pip: command not found"
 
-**Problem**: Permission denied during npm install.
+**Problem**: pip is not installed or not in PATH.
+
+**Solution**:
+```bash
+# Reinstall pip
+python -m ensurepip --upgrade
+
+# Or use python3
+python3 -m ensurepip --upgrade
+
+# Verify
+pip --version
+```
+
+---
+
+### ❌ "pip install fails with permission errors"
+
+**Problem**: Permission denied during pip install.
 
 **Solution (Linux/Mac)**:
 ```bash
-# Don't use sudo! Instead, fix npm permissions:
-mkdir ~/.npm-global
-npm config set prefix '~/.npm-global'
-echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.profile
-source ~/.profile
+# Option 1: Use virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 
-# Then retry:
-npm install
+# Option 2: Install with --user flag
+pip install --user -r requirements.txt
 ```
 
 **Solution (Windows)**:
 - Run terminal as Administrator, or
-- Install in a user directory (not Program Files)
+- Use virtual environment (recommended):
+  ```cmd
+  python -m venv venv
+  venv\Scripts\activate
+  pip install -r requirements.txt
+  ```
+
+---
+
+### ❌ "ModuleNotFoundError: No module named 'xyz'"
+
+**Problem**: Required Python package not installed.
+
+**Solution**:
+```bash
+# Install all dependencies
+pip install -r requirements.txt
+
+# Or install specific package
+pip install <package-name>
+
+# Check installed packages
+pip list
+```
+
+---
+
+### ❌ "ImportError: cannot import name 'xyz'"
+
+**Problem**: Package version incompatibility or missing dependencies.
+
+**Solution**:
+```bash
+# Upgrade pip
+python -m pip install --upgrade pip
+
+# Reinstall all dependencies
+pip uninstall -r requirements.txt -y
+pip install -r requirements.txt
+
+# Clear pip cache
+pip cache purge
+```
 
 ---
 
 ## LLM Connection Issues
 
-### ❌ "LLM API request failed: ECONNREFUSED"
+### ❌ "LLM API request failed" or Connection refused
 
 **Problem**: Cannot connect to the LLM server.
 
@@ -58,6 +118,9 @@ ollama serve
 
 # Verify it's running
 ollama list
+
+# Test connection
+curl http://localhost:11434/api/version
 ```
 
 **For LM Studio**:
@@ -97,13 +160,12 @@ curl -X POST http://localhost:11434/v1/chat/completions \
 ```
 
 **Solution**:
-Modify `automation/processor.js` around line 150 to match your LLM's response format:
+Modify `automation/processor.py` around line 120-140 to match your LLM's response format:
 
-```javascript
-// Add your format here
-if (response.data.your_llm_format) {
-  content = response.data.your_llm_format.text;
-}
+```python
+# Add your format here
+if "your_llm_format" in data:
+    content = data["your_llm_format"]["text"]
 ```
 
 ---
@@ -141,7 +203,7 @@ ollama pull llama3.1:8b
    ```json
    {
      "llm": {
-       "timeout": 600000  // 10 minutes
+       "timeout": 600000  // 10 minutes (in milliseconds)
      }
    }
    ```
@@ -175,22 +237,22 @@ ollama pull llama3.1:8b
 **Diagnosis**:
 1. Is the watcher running?
    ```bash
-   cd automation
-   npm start
+   python automation/watcher.py
    # You should see: "✅ Watcher ready and monitoring for changes"
    ```
 
 2. Are files in the correct location?
    ```bash
    # Files should be in:
-   G:\Fagskolen Hovedfagsprosjekt Lokal\configs\*.txt
+   # <project-root>/configs/*.txt
+   ls configs/
    ```
 
 **Solutions**:
-- Ensure watcher is running (`cd automation && npm start`)
+- Ensure watcher is running: `python automation/watcher.py`
 - Verify file extension is `.txt` (not `.TXT` or `.config`)
 - Check file permissions (must be readable)
-- Try restarting the watcher
+- Try restarting the watcher (Ctrl+C, then restart)
 
 ---
 
@@ -201,15 +263,26 @@ ollama pull llama3.1:8b
 **Cause**: File is being modified multiple times (e.g., by auto-save).
 
 **Solution**:
-The watcher has debouncing built-in. If this still happens:
+The watcher has cooldown built-in (2 seconds). If this still happens:
 1. Copy files instead of editing them in place
-2. Increase debounce time in `automation/watcher.js`:
-   ```javascript
-   awaitWriteFinish: {
-     stabilityThreshold: 5000,  // 5 seconds instead of 2
-     pollInterval: 100
-   }
+2. Increase cooldown time in `automation/watcher.py`:
+   ```python
+   if current_time - last_time > 5:  # 5 seconds instead of 2
    ```
+
+---
+
+### ❌ "watchdog module not found"
+
+**Problem**: The watchdog package is not installed.
+
+**Solution**:
+```bash
+pip install watchdog
+
+# Or install all dependencies
+pip install -r requirements.txt
+```
 
 ---
 
@@ -234,7 +307,7 @@ The watcher has debouncing built-in. If this still happens:
    # Backup your config
    cp config.json config.json.backup
 
-   # Copy from template (create one if needed)
+   # Recreate from template (see config.json in docs)
    ```
 
 ---
@@ -255,18 +328,17 @@ or
 Cisco IOS Software, Version 15.2(4)E7
 ```
 
-If it's in a different format, modify `automation/processor.js`:
-```javascript
-extractIOSVersion(configContent) {
-  const patterns = [
-    /Cisco IOS Software.*Version ([0-9.()A-Z]+)/i,
-    /IOS.*Version ([0-9.]+)/i,
-    /version ([0-9.]+)/i,
-    // Add your pattern here:
-    /your-custom-pattern/i
-  ];
-  // ...
-}
+If it's in a different format, modify `automation/processor.py`:
+```python
+def _extract_ios_version(self, config_content: str) -> Optional[str]:
+    patterns = [
+        r'Cisco IOS Software.*Version ([0-9.()A-Z]+)',
+        r'IOS.*Version ([0-9.]+)',
+        r'^version ([0-9.]+)',
+        # Add your pattern here:
+        r'your-custom-pattern',
+    ]
+    # ...
 ```
 
 ---
@@ -308,6 +380,26 @@ extractIOSVersion(configContent) {
 5. **Enable MCP** (if your LLM supports it):
    - Configure MCP in your LLM
    - Ensure `mcp.enabled: true` in `config.json`
+
+---
+
+### ❌ "UnicodeDecodeError"
+
+**Problem**: Cannot read configuration file due to encoding issues.
+
+**Solution**:
+The processor tries both UTF-8 and Latin-1 encoding. If still failing:
+```python
+# Modify automation/processor.py
+def _read_config_file(self) -> str:
+    try:
+        with open(self.config_file_path, 'r', encoding='utf-8') as f:
+            return f.read()
+    except UnicodeDecodeError:
+        # Try your specific encoding
+        with open(self.config_file_path, 'r', encoding='cp1252') as f:
+            return f.read()
+```
 
 ---
 
@@ -381,6 +473,20 @@ git log
 
 ---
 
+### ❌ "GitPython module not found"
+
+**Problem**: GitPython package not installed.
+
+**Solution**:
+```bash
+pip install GitPython
+
+# Or install all dependencies
+pip install -r requirements.txt
+```
+
+---
+
 ## MCP Server Issues
 
 ### ❌ "MCP server not responding"
@@ -390,8 +496,7 @@ git log
 **Diagnosis**:
 ```bash
 # Test MCP server manually
-cd mcp-server
-node server.js
+python mcp_server/server.py
 # Server should start without errors
 ```
 
@@ -399,13 +504,15 @@ node server.js
 
 1. **Install dependencies**:
    ```bash
-   cd mcp-server
-   npm install
+   pip install mcp
+
+   # Or all dependencies
+   pip install -r requirements.txt
    ```
 
-2. **Check Node version**:
+2. **Check Python version**:
    ```bash
-   node --version  # Should be 18+
+   python --version  # Should be 3.8+
    ```
 
 3. **Verify MCP configuration** in your LLM's settings
@@ -515,8 +622,7 @@ Or extend the MCP server to fetch from Cisco.com (advanced).
 **Diagnosis**:
 Check the processor logs for errors:
 ```bash
-cd automation
-node processor.js ../configs/test.txt
+python automation/processor.py configs/test.txt
 # Read the error messages
 ```
 
@@ -551,6 +657,38 @@ Check your LLM's maximum context window:
 
 ---
 
+## Python Version Issues
+
+### ❌ "SyntaxError: invalid syntax"
+
+**Problem**: Python version too old.
+
+**Solution**:
+```bash
+# Check version
+python --version
+
+# Must be 3.8 or higher
+# Upgrade Python or use python3 command
+python3 automation/watcher.py
+```
+
+---
+
+### ❌ "asyncio errors" or "async/await issues"
+
+**Problem**: Python version doesn't support async features.
+
+**Solution**:
+```bash
+# Upgrade to Python 3.8+
+# Or use python3 explicitly
+python3 --version
+python3 automation/watcher.py
+```
+
+---
+
 ## Windows-Specific Issues
 
 ### ❌ "Path errors on Windows"
@@ -559,8 +697,8 @@ Check your LLM's maximum context window:
 
 **Solution**:
 Always use quotes:
-```bash
-node processor.js "C:\Program Files\configs\test.txt"
+```cmd
+python automation\processor.py "C:\Program Files\configs\test.txt"
 ```
 
 Or avoid spaces in paths entirely.
@@ -574,7 +712,22 @@ Or avoid spaces in paths entirely.
 **Solutions**:
 1. Run terminal as Administrator
 2. Install project in user directory (not C:\Program Files)
-3. Check antivirus isn't blocking
+3. Check antivirus isn't blocking Python
+
+---
+
+### ❌ "Scripts not executable on Windows"
+
+**Problem**: Cannot run `.py` files directly.
+
+**Solution**:
+```cmd
+# Use python explicitly
+python automation\watcher.py
+
+# Or associate .py files with Python
+# Right-click .py file → Open with → Python
+```
 
 ---
 
@@ -587,11 +740,82 @@ Or avoid spaces in paths entirely.
 **Solution**:
 ```bash
 # Make scripts executable
-chmod +x setup.js
-chmod +x mcp-server/server.js
+chmod +x automation/watcher.py
+chmod +x automation/processor.py
+chmod +x mcp_server/server.py
 
 # Fix file permissions
 chmod -R u+rw configs/ output/
+```
+
+---
+
+### ❌ "python: command not found" (but python3 works)
+
+**Problem**: Python is installed as `python3` not `python`.
+
+**Solution**:
+```bash
+# Use python3 explicitly
+python3 automation/watcher.py
+
+# Or create alias
+echo "alias python=python3" >> ~/.bashrc
+source ~/.bashrc
+```
+
+---
+
+## Virtual Environment Issues
+
+### ❌ "Cannot activate virtual environment"
+
+**Problem**: Virtual environment activation fails.
+
+**Solution (Linux/Mac)**:
+```bash
+# Create venv
+python -m venv venv
+
+# Activate
+source venv/bin/activate
+
+# If permission denied
+chmod +x venv/bin/activate
+```
+
+**Solution (Windows)**:
+```cmd
+# Create venv
+python -m venv venv
+
+# Activate
+venv\Scripts\activate
+
+# If execution policy error
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+---
+
+### ❌ "Packages installed but still not found"
+
+**Problem**: Installed packages in venv but Python can't find them.
+
+**Solution**:
+```bash
+# Make sure venv is activated
+# You should see (venv) in prompt
+
+# Verify pip is from venv
+which pip  # Linux/Mac
+where pip  # Windows
+
+# Should point to venv/bin/pip or venv\Scripts\pip
+
+# If not, deactivate and reactivate
+deactivate
+source venv/bin/activate  # or venv\Scripts\activate
 ```
 
 ---
@@ -613,44 +837,39 @@ If you're still stuck:
 
 ```bash
 # System info
-node --version
-npm --version
+python --version
+pip --version
 git --version
 
 # Check LLM
 curl http://localhost:11434/api/version  # Ollama
 
 # Test processor
-cd automation
-node processor.js ../configs/SAMPLE-SWITCH.txt
+python automation/processor.py configs/SAMPLE-SWITCH.txt
 
 # Test MCP server
-cd mcp-server
-node server.js
+python mcp_server/server.py
 
 # Check Git
 git status
 git log --oneline -5
 
 # List installed packages
-cd automation && npm list
-cd mcp-server && npm list
+pip list
+pip show requests watchdog GitPython mcp
 ```
 
 ### Enable Debug Logging
 
 Modify scripts to add verbose logging:
 
-**In processor.js**:
-```javascript
-const DEBUG = true;
+**In processor.py**:
+```python
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
-function debugLog(...args) {
-  if (DEBUG) console.log('[DEBUG]', ...args);
-}
-
-// Use throughout code
-debugLog('Config content:', configContent.substring(0, 100));
+# Or add print statements
+print(f"Debug: Config content length: {len(config_content)}")
 ```
 
 ---
@@ -660,11 +879,13 @@ debugLog('Config content:', configContent.substring(0, 100));
 1. **Config file format**: Must be plain text `.txt` file
 2. **LLM must be running**: Start before running watcher
 3. **JSON syntax**: config.json must be valid JSON (no trailing commas!)
-4. **Node version**: Must be 18+ (check with `node --version`)
+4. **Python version**: Must be 3.8+ (check with `python --version`)
 5. **Case sensitivity**: Linux/Mac care about file name case
 6. **Network ports**: Default ports must be available (11434, 1234, etc.)
 7. **Firewalls**: May block localhost connections
 8. **Working directory**: Run commands from correct directory
+9. **Virtual environment**: Activate before running if using venv
+10. **File encoding**: Config files should be UTF-8
 
 ---
 
@@ -674,3 +895,6 @@ debugLog('Config content:', configContent.substring(0, 100));
 2. Review [ARCHITECTURE.md](ARCHITECTURE.md) to understand the system
 3. Check your `config.json` matches the format in [README.md](README.md)
 4. Test with the provided `configs/SAMPLE-SWITCH.txt` first
+5. Use a virtual environment to isolate dependencies
+6. Check Python version: `python --version` (must be 3.8+)
+7. Verify all packages installed: `pip list`
