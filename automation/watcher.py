@@ -27,7 +27,7 @@ class ConfigFileHandler(FileSystemEventHandler):
     def on_created(self, event):
         """Handle file creation."""
         if not event.is_directory and event.src_path.endswith('.txt'):
-            print(f"\n📄 New file detected: {Path(event.src_path).name}")
+            print(f"\n New file detected: {Path(event.src_path).name}")
             self._process_file(event.src_path)
 
     def on_modified(self, event):
@@ -65,6 +65,7 @@ class ConfigFileHandler(FileSystemEventHandler):
 
             if result.returncode == 0:
                 print(f" Completed: {file_path.name}")
+                print(f" Completed at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             else:
                 print(f" Failed: {file_path.name} (exit code: {result.returncode})")
                 if result.stderr:
@@ -89,8 +90,8 @@ def main():
     # Ensure configs directory exists
     configs_dir.mkdir(exist_ok=True)
 
-    print("🔍 Starting Cisco Config Watcher...")
-    print(f"📁 Monitoring directory: {configs_dir}")
+    print(" Starting Cisco Config Watcher...")
+    print(f" Monitoring directory: {configs_dir}")
     print("───────────────────────────────────────")
 
     # Create event handler and observer

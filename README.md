@@ -86,7 +86,7 @@ Create or edit your MCP configuration file (location varies by LLM):
   "mcpServers": {
     "cisco-docs": {
       "command": "node",
-      "args": ["G:\\Fagskolen Hovedfagsprosjekt Lokal\\mcp-server\\server.js"],
+      "args": ["G:\\Fagskolen Hovedfagsprosjekt Lokal\\mcp-server\\server.py"],
       "env": {}
     }
   }

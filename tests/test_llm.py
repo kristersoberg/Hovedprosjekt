@@ -2,9 +2,9 @@ import requests
 import json
 
 response = requests.post(
-    "http://localhost:11434/v1/chat/completions",
+    "http://192.168.56.1:1234/v1/chat/completions",
     json={
-        "model": "llama3.1:8b",
+        "model": "meta-llama-3.1-8b-instruct",
         "messages": [{"role": "user", "content": "Say hello in one sentence"}]
     }
 )

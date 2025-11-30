@@ -1,0 +1,170 @@
+enable
+configure terminal
+hostname sentral-router-01
+no ip domain-lookup
+banner login ^CUnauthorized access prohibited.^C
+
+!— AAA & SSH —
+aaa new-model
+tacacs-server host 10.91.0.10 key KompleksNoekkel
+aaa authentication login default group tacacs+ local
+aaa authentication login console local
+aaa authorization exec default group tacacs+ local
+aaa accounting exec default start-stop group tacacs+
+
+! Emergency local user
+username emergency-admin privilege 15 secret 33MErgENCYpwd2005!%=3
+! Enable password
+enable secret 3NA8le$cret!=3
+
+ip domain-name krister.local
+crypto key generate rsa general-keys modulus 2048
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+
+line vty 0 4
+ login authentication default
+ transport input ssh
+ access-class MGMT-MGMT in
+
+line con 0
+ login authentication console
+ exec-timeout 10 0
+ logging synchronous
+
+!— Management ACL on this router
+ip access-list standard MGMT-MGMT
+ permit 10.90.0.0 0.0.0.255
+ permit 10.91.0.0 0.0.0.255
+ deny   any
+
+!— Logging & Time —
+logging buffered 4096 
+logging host 10.91.0.10
+service timestamps log datetime msec 
+service timestamps debug datetime msec 
+ntp authentication-key 15 md5 KomplekstPassord
+ntp trusted-key 15
+ntp authenticate
+ntp server 10.91.0.123 key 15
+
+!— ACLs for Segmentation —
+ip access-list extended USERS_TO_SERV21
+  permit udp any any eq bootps
+  permit udp any any eq bootpc
+  permit ip 192.168.11.0 0.0.0.255 host 192.168.21.211
+  permit ip 192.168.11.0 0.0.0.255 host 192.168.21.212
+  permit udp 192.168.11.0 0.0.0.255 host 10.91.0.123 eq 53
+  permit tcp 192.168.11.0 0.0.0.255 host 10.91.0.123 eq 53
+  deny   ip any any
+
+ip access-list extended USERS_TO_SERV22
+  permit udp any any eq bootps
+  permit udp any any eq bootpc
+  permit ip 192.168.12.0 0.0.0.255 host 192.168.22.221
+  permit ip 192.168.12.0 0.0.0.255 host 192.168.22.222
+  permit udp 192.168.12.0 0.0.0.255 host 10.91.0.123 eq 53
+  permit tcp 192.168.12.0 0.0.0.255 host 10.91.0.123 eq 53
+  deny   ip any any
+
+ip access-list extended MGMT-RIGHT
+ permit ip 10.91.0.0 0.0.0.255 192.168.11.0 0.0.0.255
+ permit ip 10.91.0.0 0.0.0.255 192.168.12.0 0.0.0.255
+ permit ip 10.91.0.0 0.0.0.255 192.168.21.0 0.0.0.255
+ permit ip 10.91.0.0 0.0.0.255 192.168.22.0 0.0.0.255
+ permit ip 10.91.0.0 0.0.0.255 10.91.0.0 0.0.0.255
+ permit ip 10.91.0.0 0.0.0.255 10.90.0.0 0.0.0.255
+ permit udp 10.91.0.0 0.0.0.255 host 10.91.0.123 eq 53
+ permit tcp 10.91.0.0 0.0.0.255 host 10.91.0.123 eq 53
+ deny   ip any any
+
+ip access-list extended MGMT-LEFT
+ permit ip 10.90.0.0 0.0.0.255 192.168.11.0 0.0.0.255
+ permit ip 10.90.0.0 0.0.0.255 192.168.12.0 0.0.0.255
+ permit ip 10.90.0.0 0.0.0.255 192.168.21.0 0.0.0.255
+ permit ip 10.90.0.0 0.0.0.255 192.168.22.0 0.0.0.255
+ permit ip 10.90.0.0 0.0.0.255 10.91.0.0 0.0.0.255
+ permit ip 10.90.0.0 0.0.0.255 10.90.0.0 0.0.0.255
+ permit udp 10.90.0.0 0.0.0.255 host 10.91.0.123 eq 53
+ permit tcp 10.90.0.0 0.0.0.255 host 10.91.0.123 eq 53
+ deny   ip any any
+
+!— Sub-interfaces to LEFT side —
+interface GigabitEthernet0/1
+ description dis-venstre-sw01 GIG0/2
+ no ip address
+ no shutdown
+!
+interface GigabitEthernet0/1.11
+ description Usergroup 1-1
+ encapsulation dot1Q 11
+ ip address 192.168.11.254 255.255.255.0
+ ip access-group USERS_TO_SERV21 in
+ ip proxy-arp
+ no shutdown
+!
+interface GigabitEthernet0/1.12
+description Usergroup 1-2
+ encapsulation dot1Q 12
+ ip address 192.168.12.254 255.255.255.0
+ ip access-group USERS_TO_SERV22 in
+ ip proxy-arp
+ no shutdown
+!
+!- Management LEFT SIDE
+interface GigabitEthernet0/1.90
+ encapsulation dot1Q 90
+ description Management LEFT SIDE
+ ip address 10.90.0.254 255.255.255.0
+ ip access-group MGMT-LEFT in
+ ip proxy-arp
+ no shutdown
+
+!— Sub-interfaces to RIGHT side —
+interface GigabitEthernet0/2
+ description dis-hoyre-sw01 GIG0/2
+ no ip address
+ no shutdown
+!
+interface GigabitEthernet0/2.21
+ description Usergroup 2-1
+ encapsulation dot1Q 21
+ ip address 192.168.21.254 255.255.255.0
+ ip proxy-arp
+ no shutdown
+!
+interface GigabitEthernet0/2.22
+ description Usergroup 2-2
+ encapsulation dot1Q 22
+ ip address 192.168.22.254 255.255.255.0
+ ip proxy-arp
+ no shutdown
+!
+!- Management RIGHT SIDE
+ interface GigabitEthernet0/2.91
+ encapsulation dot1Q 91
+ description Management RIGHT-SIDE
+ ip address 10.91.0.254 255.255.255.0
+ ip access-group MGMT-RIGHT in
+ ip proxy-arp
+ no shutdown
+
+!— DHCP Pools & Reservations —
+ip dhcp excluded-address 192.168.11.1 192.168.11.149
+ip dhcp excluded-address 192.168.11.151 192.168.11.254
+ip dhcp excluded-address 192.168.12.1 192.168.12.149
+ip dhcp excluded-address 192.168.12.151 192.168.12.254
+
+ip dhcp pool VLAN11-Pool
+ network 192.168.11.0 255.255.255.0
+ default-router 192.168.11.254
+ dns-server 10.91.0.123
+
+ip dhcp pool VLAN12-Pool
+ network 192.168.12.0 255.255.255.0
+ default-router 192.168.12.254
+ dns-server 10.91.0.123
+
+end
+write memory

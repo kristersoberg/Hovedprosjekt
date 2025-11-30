@@ -1,0 +1,114 @@
+enable
+configure terminal
+hostname dis-venstre-sw01
+no ip domain-lookup
+no ip routing
+banner login ^CUnauthorized access prohibited.^C
+
+! AAA with conditional fallback
+aaa new-model
+tacacs-server host 10.91.0.10 key KompleksNoekkel
+aaa authentication login default group tacacs+ local
+aaa authentication login console local
+aaa authorization exec default group tacacs+ local
+aaa accounting exec default start-stop group tacacs+
+
+! Emergency local user
+username emergency-admin privilege 15 secret 33MErgENCYpwd2005!%=2
+! Enable password
+enable secret 3NA8le$cret!=2
+
+ip domain-name krister.local
+crypto key generate rsa general-keys modulus 2048
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+
+line vty 0 4
+ login authentication default
+ transport input ssh
+ access-class MGMT-MGMT in
+
+line con 0
+ login authentication console
+ exec-timeout 10 0
+ logging synchronous
+
+!— Management ACL on this switch —
+ip access-list standard MGMT-MGMT
+ permit 10.90.0.0 0.0.0.255
+ permit 10.91.0.0 0.0.0.255
+ deny   any
+
+!— DHCP Snooping & DAI for client VLANs —
+ip dhcp snooping vlan 11,12
+ip dhcp snooping
+ip dhcp snooping verify mac-address
+no ip dhcp snooping information option
+ip arp inspection vlan 11,12
+
+!— Global L2 Hardening —
+no cdp run
+no lldp run
+
+!— Logging & Time —
+logging buffered 4096 
+logging host 10.91.0.10
+service timestamps log datetime msec 
+service timestamps debug datetime msec 
+ntp authentication-key 15 md5 KomplekstPassord
+ntp trusted-key 15
+ntp authenticate
+ntp server 10.91.0.123 key 15
+
+!— VLAN Database —
+vlan 11 
+name Usergroup1-1
+vlan 12 
+name Usergroup1-2
+vlan 90
+name Admin-Mgmt-LEFT
+vlan 666
+name native-trunk
+
+!— Management SVI —
+interface Vlan90
+ no shutdown
+ description Management SVI
+ ip address 10.90.0.12 255.255.255.0
+ ip access-group MGMT-MGMT in
+ no shutdown
+
+ip default-gateway 10.90.0.254
+spanning-tree vlan 11,12,90 priority 4096
+spanning-tree vlan 11,12,90 root primary
+
+interface GigabitEthernet0/1
+ no shutdown
+ description aksess-sw01 gig0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport nonegotiate
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 11,12,90
+ ip dhcp snooping limit rate 15
+ ip arp inspection trust
+ spanning-tree guard root
+
+interface GigabitEthernet0/2
+ no shutdown
+ description sentral-router-01 gig0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport nonegotiate
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 11,12,90
+ ip dhcp snooping trust
+ ip arp inspection trust
+
+!— Unused Ports —
+interface range FastEthernet0/1-24
+ shutdown
+
+end
+write memory

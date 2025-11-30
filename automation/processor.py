@@ -10,10 +10,13 @@ import sys
 import json
 import re
 import requests
+import asyncio
 from pathlib import Path
 from datetime import datetime
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 from git import Repo, InvalidGitRepositoryError
+
+from mcp_client import CiscoMCPClient
 
 
 class ConfigProcessor:
@@ -44,6 +47,9 @@ class ConfigProcessor:
         # Ensure output directory exists
         self.output_dir.mkdir(exist_ok=True)
 
+        # MCP server path
+        self.mcp_server_path = self.project_root / self.config.get("mcp", {}).get("server_path", "mcp_server/server.py")
+
     def process(self) -> Path:
         """Process the configuration file and generate documentation."""
         try:
@@ -56,6 +62,11 @@ class ConfigProcessor:
 
             print(" Loading prompt template...")
             prompt = self._build_prompt(config_content, ios_version)
+
+            # Enrich prompt with MCP documentation if enabled
+            if self.config.get("mcp", {}).get("enabled", True):
+                print(" Enriching with Cisco documentation from MCP server...")
+                prompt = asyncio.run(self._enrich_prompt_with_mcp(config_content, ios_version, prompt))
 
             print(" Sending to LLM for analysis...")
             documentation = self._call_llm(prompt)
@@ -167,6 +178,168 @@ Evaluate against Cisco best practices and provide recommendations.
 *Documentation generated automatically on {{TIMESTAMP}}*
 """
 
+    def _extract_commands_from_config(self, config_content: str) -> List[str]:
+        """
+        Extract unique Cisco commands from configuration.
+
+        Returns list of command keywords found in the config.
+        """
+        # Common Cisco commands to look for
+        common_commands = [
+            'interface', 'vlan', 'ip address', 'switchport', 'spanning-tree',
+            'router', 'access-list', 'line', 'enable secret', 'hostname',
+            'trunk', 'channel-group', 'vtp', 'port-channel'
+        ]
+
+        found_commands = set()
+        config_lower = config_content.lower()
+
+        for cmd in common_commands:
+            if cmd in config_lower:
+                found_commands.add(cmd)
+
+        return list(found_commands)
+
+    def _extract_features_from_config(self, config_content: str) -> List[str]:
+        """
+        Extract Cisco features being used in the configuration.
+
+        Returns list of features found.
+        """
+        features = []
+        config_lower = config_content.lower()
+
+        # Check for various features
+        if 'vlan' in config_lower:
+            features.append('VLAN')
+        if 'spanning-tree' in config_lower:
+            features.append('STP')
+        if 'router ospf' in config_lower:
+            features.append('OSPF')
+        if 'router eigrp' in config_lower:
+            features.append('EIGRP')
+        if 'vtp' in config_lower:
+            features.append('VTP')
+        if 'channel-group' in config_lower or 'port-channel' in config_lower:
+            features.append('EtherChannel')
+
+        return features
+
+    async def _enrich_prompt_with_mcp(self, config_content: str, ios_version: Optional[str], prompt: str) -> str:
+        """
+        Enrich the prompt with relevant Cisco documentation from MCP server.
+
+        Args:
+            config_content: The configuration file content
+            ios_version: Detected IOS version
+            prompt: Original prompt
+
+        Returns:
+            Enriched prompt with documentation context
+        """
+        try:
+            # Extract commands and features from config
+            commands = self._extract_commands_from_config(config_content)
+            features = self._extract_features_from_config(config_content)
+
+            print(f"   Found {len(commands)} commands and {len(features)} features")
+
+            # Get MCP configuration limits
+            mcp_config = self.config.get("mcp", {})
+            max_commands = mcp_config.get("max_commands", 3)
+            max_features = mcp_config.get("max_features", 2)
+
+            # Connect to MCP server and fetch documentation
+            client = CiscoMCPClient(self.mcp_server_path)
+
+            documentation_context = []
+
+            async with client.connect():
+                print("   Connected to MCP server")
+
+                # Fetch command documentation (limit based on config)
+                important_commands = commands[:max_commands]
+                for cmd in important_commands:
+                    print(f"   Fetching docs for command: {cmd}")
+                    result = await client.search_command(cmd, ios_version)
+                    if result["success"]:
+                        # Trim the documentation to keep only essential info
+                        doc_data = result['data']
+                        # Limit each doc to ~500 characters
+                        if len(doc_data) > 500:
+                            doc_data = doc_data[:500] + "..."
+                        documentation_context.append(f"### Command: {cmd}\n{doc_data}\n")
+
+                # Fetch feature documentation (limit based on config)
+                important_features = features[:max_features]
+                for feature in important_features:
+                    print(f"   Fetching docs for feature: {feature}")
+                    result = await client.get_feature_docs(feature, ios_version)
+                    if result["success"]:
+                        # Trim feature docs too
+                        doc_data = result['data']
+                        if len(doc_data) > 800:
+                            doc_data = doc_data[:800] + "..."
+                        documentation_context.append(f"### Feature: {feature}\n{doc_data}\n")
+
+            # Build enriched prompt
+            if documentation_context:
+                docs_section = "\n\n".join(documentation_context)
+
+                # Create enriched prompt
+                enriched_prompt = f"""{prompt}
+
+## CISCO DOCUMENTATION REFERENCE
+
+The following Cisco IOS documentation has been retrieved to help you understand the commands and features in this configuration:
+
+{docs_section}
+
+Use this documentation to provide accurate explanations and best practices in your analysis.
+"""
+
+                # Check if enriched prompt is too large (rough estimate)
+                # Ollama models typically handle 4k-128k tokens depending on model
+                # 1 token ≈ 4 characters, so we'll limit to ~100k characters for safety
+                max_prompt_size = mcp_config.get("max_prompt_size", 100000)  # About 25k tokens, safe for most 8B models
+
+                if len(enriched_prompt) > max_prompt_size:
+                    print(f"   Warning: Enriched prompt too large ({len(enriched_prompt)} chars)")
+                    print(f"   Reducing documentation to prevent GPU memory issues...")
+
+                    # Use only the first 2-3 most important docs
+                    reduced_docs = documentation_context[:min(3, len(documentation_context))]
+                    docs_section = "\n\n".join(reduced_docs)
+
+                    enriched_prompt = f"""{prompt}
+
+## CISCO DOCUMENTATION REFERENCE (Summary)
+
+Key Cisco documentation for this configuration:
+
+{docs_section}
+
+Use this documentation to provide accurate explanations.
+"""
+                    print(f"   Reduced to {len(reduced_docs)} documentation sections")
+
+                    # If still too large, fall back to original prompt
+                    if len(enriched_prompt) > max_prompt_size:
+                        print(f"   Still too large, using original prompt without MCP docs")
+                        return prompt
+
+                print(f"   Added {len(documentation_context)} documentation sections to prompt")
+                print(f"   Total prompt size: {len(enriched_prompt)} characters")
+                return enriched_prompt
+            else:
+                print("   No documentation retrieved, using original prompt")
+                return prompt
+
+        except Exception as e:
+            print(f"   Warning: Failed to enrich with MCP docs: {str(e)}")
+            print("   Continuing with original prompt...")
+            return prompt
+
     def _call_llm(self, prompt: str) -> str:
         """Call the LLM API."""
         llm_config = self.config["llm"]
@@ -190,6 +363,14 @@ Evaluate against Cisco best practices and provide recommendations.
                         "num_predict": llm_config.get("max_tokens", 8000)
                     }
                 }
+
+                # Debug output
+                print(f"   Sending request to Ollama:")
+                print(f"   - Endpoint: {endpoint}")
+                print(f"   - Model: {llm_config['model']}")
+                print(f"   - Prompt size: {len(full_prompt)} characters")
+                print(f"   - Max tokens to generate: {llm_config.get('max_tokens', 8000)}")
+
             else:
                 # OpenAI-compatible API format
                 request_data = {
