@@ -3,363 +3,165 @@
 ## Overview
 - **Hostname**: aksess-sw01
 - **IOS Version**: Unknown
-- **Configuration Purpose**: This switch is likely a network access layer device, providing connectivity to various departments and users within the organization.
+- **Configuration Purpose**: This is a management switch, likely configured for administrative purposes with access control and security features enabled.
 - **Last Modified**: Not specified in the configuration file.
 - **Domain Name**: krister.local
 
 ## Device Information
-- **Model**: Not specified in the configuration file. To determine this information, you would need to refer to the actual switch model or consult with the manufacturer/distributor.
-- **System Image**: The boot image is not explicitly mentioned in the provided configuration, but it can be found by running the `show version` command on the device.
-- **Serial Number**: Not specified in the configuration file. To determine this information, you would need to refer to the actual switch or consult with the manufacturer/distributor.
-- **Hardware Details**: The hardware details are not explicitly mentioned in the provided configuration.
+- **Model**: Not specified in the configuration file.
+- **System Image**: Unknown due to lack of information about the IOS version.
+- **Serial Number**: Not available.
+- **Hardware Details**: The switch has GigabitEthernet0/1 and FastEthernet0/1-3 interfaces.
 
 ## Management & Access
 
 ### Management Interfaces
-The management interface is configured as follows:
-
-*   The management VLAN and IP addressing: `Vlan90` is used for the management SVI, which has an IP address of `10.90.0.11/24`.
-*   Default gateway configuration: The default gateway is set to `10.90.0.254`.
-*   Management protocols enabled: SSH version 2 and HTTPS are likely enabled due to the presence of the `ip ssh` commands.
-
-```markdown
-### Management VLAN and IP Addressing
-
-| VLAN ID | Name       | Purpose            |
-|---------|------------|--------------------|
-| 90      | Admin-Mgmt-LEFT | Management SVI     |
-
-### Default Gateway Configuration
-
-*   Default gateway: `10.90.0.254`
-
-### Management Protocols Enabled
-
-*   SSH version 2: Enabled
-*   HTTPS: Likely enabled (not explicitly configured)
-```
+Document all management-related interface configurations:
+- **Management VLAN and IP addressing**:
+  - Vlan90 is the management VLAN, configured with IP address 10.90.0.11.
+  - Default gateway is set to 10.90.0.254.
+- **Default gateway configuration**: The default gateway for the switch is 10.90.0.254.
+- **Management protocols enabled**:
+  - SSH version 2 is enabled with a timeout of 60 seconds and authentication retries limited to 3.
 
 ### Access Control & Security
-
-#### Console Access
-
-The console access is configured with:
-
-*   Authentication method: Local authentication
-*   Authentication timeout: 10 minutes (configurable)
-
-```markdown
-### Console Access Configuration
-
-*   Authentication method: local
-*   Authentication timeout: 10 minutes
-```
-
-#### VTY Access
-
-VTY access is configured as follows:
-
-*   Line configuration: `line vty 0 4`
-*   Authentication method: Default group (`tacacs+`), with local authentication fallback.
-*   Access class restrictions: The `access-class MGMT-MGMT in` command restricts SSH access to the management network.
-
-```markdown
-### VTY Access Configuration
-
-*   Line configuration: `line vty 0 4`
-*   Authentication method: Default group (`tacacs+`) with local fallback
-*   Access class restrictions: `access-class MGMT-MGMT in`
-```
-
-#### Enable Password
-
-The enable password is configured as follows:
-
-*   Enable secret: `3NA8le$cret!=1` (encrypted)
-
-```markdown
-### Enable Password Configuration
-
-*   Enable secret: `3NA8le$cret!=1`
-```
-
-#### AAA Configuration
-
-AAA configuration includes:
-
-*   TACACS+ server: `tacacs-server host 10.91.0.10 key KompleksNoekkel`
-*   Authentication methods for login and exec services
-*   Accounting method for exec services
-
-```markdown
-### AAA Configuration
-
-*   TACACS+ server: `tacacs-server host 10.91.0.10 key KompleksNoekkel`
-*   Authentication methods:
-    *   Login authentication: Default group (`tacacs+`) with local fallback
-    *   Exec authentication: Default group (`tacacs+`) with local fallback
-*   Accounting method: Default group (`tacacs+`)
-```
-
-#### Login Banners
-
-A login banner is configured to display the following message:
-
-`^CUnauthorized access prohibited.^C`
-
-```markdown
-### Login Banner Configuration
-
-*   Login banner: `^CUnauthorized access prohibited.^C`
-```
+- **Console Access**:
+  - Console line is configured with login authentication set to console and an exec-timeout of 10 minutes.
+- **VTY Access**:
+  - Line configuration for VTY access is set with login authentication default and transport input SSH enabled.
+  - Access-class MGMT-MGMT is applied in for inbound traffic.
+- **Enable Password**: The enable secret password is set to 3NA8le$cret!=1, which is encrypted.
+- **AAA Configuration**:
+  - AAA is enabled using the new-model command.
+  - TACACS+ server is configured with IP address 10.91.0.10 and a key of KompleksNoekkel.
+  - Local authentication is also configured for console access.
+  - Authentication, authorization, and accounting are all set to use TACACS+ as the primary source.
+- **Login Banners**: A login banner is configured with the message "Unauthorized access prohibited."
 
 ### Management Access Lists
-
-The management ACL (`MGMT-MGMT`) restricts SSH access from any source IP address.
-
-```markdown
-### Management ACL Configuration
-
-| Seq # | Action    | Protocol  | Source          | Destination              |
-|-------|-----------|-----------|-----------------|----------------------------|
-| 1     | permit    | icmp      | 10.90.0.0/24    | 10.90.0.0/24             |
-| 2     | permit    | tcp       | 10.91.0.0/24    | 10.91.0.0/24             |
-
-*   SSH access restricted from any source IP address
-```
+- **MGMT-MGMT**:
+  - This standard ACL permits IP addresses from networks 10.90.0.0/24 and 10.91.0.0/24, and denies all other traffic.
 
 ## VLANs
 
 ### VLAN Database
-
-The following table lists the configured VLANs:
-
-| VLAN ID | Name                  | Purpose                               |
-|---------|------------------------|---------------------------------------|
-| 11      | Usergroup1-1           | User group 1 (VLAN 11)                |
-| 12      | Usergroup1-2           | User group 2 (VLAN 12)                |
-| 90      | Admin-Mgmt-LEFT        | Management VLAN                      |
-| 666     | native-trunk           | Native trunk VLAN                     |
-
-```markdown
-### VLAN Database
-
-| VLAN ID | Name                  | Purpose                               |
-|---------|------------------------|---------------------------------------|
-| 11      | Usergroup1-1           | User group 1 (VLAN 11)                |
-| 12      | Usergroup1-2           | User group 2 (VLAN 12)                |
-| 90      | Admin-Mgmt-LEFT        | Management VLAN                      |
-| 666     | native-trunk           | Native trunk VLAN                     |
-
-```
+| VLAN ID | Name | Purpose/Description |
+|---------|------|---------------------|
+| 11      | Usergroup1-1        | Access VLAN for users in group 1 |
+| 12      | Usergroup1-2        | Access VLAN for users in group 2 |
+| 90      | Admin-Mgmt-LEFT     | Management VLAN              |
+| 666     | native-trunk        | Native VLAN for trunk ports   |
 
 ### VLAN Interfaces (SVIs)
-
-The following table lists the VLAN interface configurations:
-
-| VLAN ID | Interface  | IP Address    | Description       |
-|---------|------------|----------------|--------------------|
-| 90      | Vlan90     | 10.90.0.11/24  | Management SVI     |
-
-```markdown
-### VLAN Interfaces
-
-| VLAN ID | Interface  | IP Address    | Description       |
-|---------|------------|----------------|--------------------|
-| 90      | Vlan90     | 10.90.0.11/24  | Management SVI     |
-
-```
+#### Vlan90 Interface
+- **IP Address**: 10.90.0.11/24
+- **Description**: Management SVI
+- **DHCP Helper**: None configured.
+- **HSRP/VRRP**: Not configured.
 
 ## Physical Interfaces
 
 ### Interface Summary
-
-The following table lists the physical interfaces and their configurations:
-
-| Interface | Description    | Mode   | VLAN/Trunk | Speed/Duplex | Status   |
-|-----------|----------------|--------|------------|--------------|----------|
-| Gig 0/1   | dis-venstre-sw01| Trunk  | Dot1q      | Auto         | Up       |
-| Fast 0/1  | PC4-Access port| Access | None       | Auto         | Up       |
-| Fast 0/2  | PC5-Access port| Access | None       | Auto         | Up       |
-| Fast 0/3  | Management-PC| Access| None        | Auto          | Up       |
-
-```markdown
-### Interface Summary
-
-| Interface | Description    | Mode   | VLAN/Trunk | Speed/Duplex | Status   |
-|-----------|----------------|--------|------------|--------------|----------|
-| Gig 0/1   | dis-venstre-sw01| Trunk  | Dot1q      | Auto         | Up       |
-| Fast 0/1  | PC4-Access port| Access | None       | Auto         | Up       |
-| Fast 0/2  | PC5-Access port| Access | None       | Auto         | Up       |
-| Fast 0/3  | Management-PC| Access| None        | Auto          | Up       |
-
-```
+| Interface | Description | Mode | VLAN/Trunk | Speed/Duplex | Status | Special Features |
+|-----------|-------------|------|------------|--------------|--------|------------------|
+| GigabitEthernet0/1  | dis-venstre-sw01 gig0/1 | Trunk   | 11,12,90    | Full-duplex | Up      | CDP and LLDP disabled, Port security enabled |
+| FastEthernet0/1     | PC4-Access port      | Access | 11          | Auto        | Up      | Port security enabled, Spanning Tree enabled |
+| FastEthernet0/2     | PC5-Access port      | Access | 12          | Auto        | Up      | Port security enabled, Spanning Tree enabled |
+| FastEthernet0/3     | Management-PC Access port | Access | 90          | Auto        | Up      | Port security enabled, Spanning Tree enabled |
 
 ### Detailed Interface Configurations
 
 #### GigabitEthernet0/1
+- **Description**: dis-venstre-sw01 gig0/1
+- **Mode**: Trunk
+- **Configuration Details**:
+  - switchport trunk encapsulation dot1q is set.
+  - switchport mode trunk is enabled.
+  - Switchport nonegotiate is enabled, which means the interface will not engage in DTP (Dynamic Trunking Protocol) negotiation with its peer.
+  - switchport trunk native vlan 666 is configured to set the native VLAN for this trunk port to VLAN 666.
+  - switchport trunk allowed vlan 11,12,90 is configured to allow traffic from these three VLANs on this trunk interface.
+  - ip dhcp snooping trust and ip arp inspection trust are enabled.
 
-*   Description: dis-venstre-sw01 gig0/1
-*   Mode: Trunk
-*   Configuration Details:
-    *   `switchport trunk encapsulation dot1q`
-    *   `switchport mode trunk`
-    *   `switchport nonegotiate`
-    *   `switchport trunk native vlan 666`
-    *   `switchport trunk allowed vlan 11,12,90`
+#### FastEthernet0/1
+- **Description**: PC4-Access port
+- **Mode**: Access
+- **Configuration Details**:
+  - switchport access vlan 11 is configured to assign the interface to VLAN 11 for user group 1.
+  - Port security is enabled with maximum number of MAC addresses set to 1 and violation action restricted.
+  - Aging time for MAC address entries is set to 3 minutes.
 
-```markdown
-### Detailed Interface Configurations: GigabitEthernet0/1
+#### FastEthernet0/2
+- **Description**: PC5-Access port
+- **Mode**: Access
+- **Configuration Details**:
+  - switchport access vlan 12 is configured to assign the interface to VLAN 12 for user group 2.
+  - Port security is enabled with maximum number of MAC addresses set to 1 and violation action restricted.
+  - Aging time for MAC address entries is set to 3 minutes.
 
-*   Description: dis-venstre-sw01 gig0/1
-*   Mode: Trunk
-*   Configuration Details:
-    *   switchport trunk encapsulation dot1q
-    *   switchport mode trunk
-    *   switchport nonegotiate
-    *   switchport trunk native vlan 666
-    *   switchport trunk allowed vlan 11,12,90
+#### FastEthernet0/3
+- **Description**: Management-PC Access port
+- **Mode**: Access
+- **Configuration Details**:
+  - switchport access vlan 90 is configured to assign the interface to VLAN 90 for management.
+  - Port security is enabled with maximum number of MAC addresses set to 1 and violation action restricted.
+  - Spanning Tree is enabled.
 
-```
+### Unused Interfaces
+There are two unused interfaces: FastEthernet0/4-24 and GigabitEthernet0/2. They are both in a shutdown state, which means they can be used for future expansion or modifications.
 
 ## Port-Channel / EtherChannel
 
-No port-channel configurations are present in the provided configuration.
+There is no port-channel configuration on the switch.
 
 ## Routing Configuration
 
 ### Routing Protocol
+No routing protocol is configured.
 
-No routing protocols are configured in the provided configuration.
+### Static Routes
+There are no static routes configured.
+
+### Default Route
+The default route is set to 10.90.0.254, which is likely a gateway of last resort.
+
+### Inter-VLAN Routing
+Inter-vlan routing is not enabled on this switch because the VLANs are not associated with any router interface.
 
 ## Spanning Tree Protocol
 
 ### STP Configuration
+- **Mode**: PVST+
+- **Root Bridge**: This switch is configured as a root bridge for all VLANs.
+- **Priority**: The priority of the root bridge is 61440, which is set for VLANs 11, 12, and 90.
 
-The following table lists the spanning tree protocol settings:
+### STP Features
+- **PortFast**: Portfast is enabled on interfaces FastEthernet0/1, FastEthernet0/2, and FastEthernet0/3.
+- **BPDU Guard**: Bpdu guard is not configured on any interface.
+- **Root Guard**: Root guard is not configured on any interface.
+- **Loop Guard**: Loop guard is not configured on any interface.
+- **UDLD**: UDLD is not enabled.
 
-| Mode  | VLANs            |
-|-------|------------------|
-| PVST+ | 11,12,90        |
+## High Availability & Redundancy
 
-```markdown
-### Spanning Tree Protocol Settings
+### FHRP Configuration (HSRP/VRRP/GLBP)
+No HSRP or VRRP configuration is present in the provided switch configuration.
 
-| Mode  | VLANs            |
-|-------|------------------|
-| PVST+ | 11,12,90        |
-
-```
+### Stack Configuration
+The switch is not part of a stack because there is no information about other switches being connected to it.
 
 ## Quality of Service (QoS)
 
-No QoS configurations are present in the provided configuration.
+There are no QoS configurations on this switch.
 
 ## Security Features
 
 ### Port Security
+Port security is enabled with maximum number of MAC addresses set to 1 and violation action restricted on interfaces FastEthernet0/1, FastEthernet0/2, and FastEthernet0/3.
 
-The following table lists the port security settings:
+### DHCP Security
+- **DHCP Snooping**: DHCP snooping is enabled with the trusted interface GigabitEthernet0/1.
+- **DHCP Snooping Database**: The configuration for the DHCP snooping database is not provided in the given output.
 
-| Interface | Maximum MAC addresses | Violation action |
-|-----------|----------------------|------------------|
-| Fast 0/1  | 1                    | Restrict        |
-| Fast 0/2  | 1                    | Restrict        |
-| Fast 0/3  | 1                    | Restrict        |
+## Storm Control
 
-```markdown
-### Port Security Settings
-
-| Interface | Maximum MAC addresses | Violation action |
-|-----------|----------------------|------------------|
-| Fast 0/1  | 1                    | Restrict        |
-| Fast 0/2  | 1                    | Restrict        |
-| Fast 0/3  | 1                    | Restrict        |
-
-```
-
-## Network Services
-
-### DHCP Server/Relay
-
-No DHCP server or relay configurations are present in the provided configuration.
-
-## NTP (Network Time Protocol)
-
-The following table lists the NTP settings:
-
-| Server       | Key          |
-|--------------|--------------|
-| 10.91.0.123  | 15           |
-
-```markdown
-### NTP Settings
-
-| Server       | Key          |
-|--------------|--------------|
-| 10.91.0.123  | 15           |
-
-```
-
-## Syslog
-
-The following table lists the syslog settings:
-
-| Level    | Host(s)     |
-|----------|-------------|
-| Info     | 10.91.0.10  |
-
-```markdown
-### Syslog Settings
-
-| Level    | Host(s)     |
-|----------|-------------|
-| Info     | 10.91.0.10  |
-
-```
-
-## Best Practices Analysis
-
-The analysis of the configuration against Cisco best practices is as follows:
-
-### ✅ Good Practices Identified
-
-*   The enable secret password is encrypted.
-*   TACACS+ server authentication is configured for login and exec services.
-*   Port security is enabled on access ports to prevent MAC address spoofing.
-
-### ⚠️ Potential Issues or Concerns
-
-*   No routing protocols are configured, which may cause issues with inter-VLAN routing or network connectivity.
-*   No QoS configurations are present in the provided configuration, which may lead to poor network performance.
-*   The span-tree configuration is set for PVST+, but there are no VLAN IDs specified for this protocol.
-
-### 💡 Recommendations for Improvement
-
-1.  Configure a routing protocol (such as OSPF or EIGRP) for inter-VLAN routing and network connectivity.
-2.  Implement QoS configurations to ensure proper traffic prioritization and shaping.
-3.  Review the span-tree configuration to ensure it is properly set up for the specific VLANs in use.
-
-## Configuration Summary
-
-The following table provides a high-level summary of the switch configuration:
-
-| Category     | Description                                         |
-|--------------|------------------------------------------------------|
-| Total VLANs   | 4 (11, 12, 90, 666)                                |
-| Total Configured Interfaces  | 10 (Gig 0/1, Fast 0/1-3, Vlan90)                 |
-| Routing       | Disabled (no routing protocols configured)        |
-| Spanning Tree | PVST+ (configured for VLANs 11,12,90)            |
-| Key Features Enabled:      | Port security on access ports, TACACS+ authentication for login and exec services
-| Security Posture:   | Good practice of encrypting the enable secret password and enabling port security
-| Overall Assessment: The configuration is mostly complete but lacks routing protocols, QoS configurations, and proper span-tree settings
-
-## Appendix
-
-### Uncommon or Complex Configurations
-
-No uncommon or complex configurations are present in the provided configuration.
-
-### Configuration Snippets
-
-No additional configuration snippets are necessary for this analysis.
+Storm control is configured on interfaces FastEthernet0/1, FastEthernet0/2, and FastEthernet0/3 to prevent broadcast storms.
