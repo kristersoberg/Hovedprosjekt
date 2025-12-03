@@ -1,0 +1,139 @@
+{
+  "interface": {
+    "description": "Configures an interface and enters interface configuration mode",
+    "syntax": "interface <type> <number>",
+    "examples": [
+      "interface GigabitEthernet0/1",
+      "interface Vlan10"
+    ],
+    "parameters": {
+      "type": "Interface type (e.g., GigabitEthernet, FastEthernet, Vlan, Loopback)",
+      "number": "Interface number or ID"
+    }
+  },
+  "ip address": {
+    "description": "Sets a primary or secondary IP address for an interface",
+    "syntax": "ip address <ip-address> <subnet-mask> [secondary]",
+    "examples": [
+      "ip address 192.168.1.1 255.255.255.0"
+    ],
+    "parameters": {
+      "ip-address": "IP address in dotted decimal notation",
+      "subnet-mask": "Network mask in dotted decimal notation",
+      "secondary": "Optional keyword to specify a secondary address"
+    }
+  },
+  "switchport": {
+    "description": "Sets interface as a Layer 2 switched interface",
+    "syntax": "switchport mode <mode>",
+    "modes": [
+      "access",
+      "trunk",
+      "dynamic auto",
+      "dynamic desirable"
+    ],
+    "examples": [
+      "switchport mode access",
+      "switchport mode trunk"
+    ]
+  },
+  "vlan": {
+    "description": "Configures a VLAN and enters VLAN configuration mode",
+    "syntax": "vlan <vlan-id>",
+    "examples": [
+      "vlan 10",
+      "vlan 100"
+    ],
+    "parameters": {
+      "vlan-id": "VLAN number (1-4094)"
+    }
+  },
+  "spanning-tree": {
+    "description": "Configures Spanning Tree Protocol",
+    "syntax": "spanning-tree <options>",
+    "examples": [
+      "spanning-tree mode rapid-pvst",
+      "spanning-tree portfast"
+    ],
+    "modes": [
+      "pvst",
+      "rapid-pvst",
+      "mst"
+    ]
+  },
+  "router": {
+    "description": "Enables a routing process and enters router configuration mode",
+    "syntax": "router <protocol> [autonomous-system]",
+    "examples": [
+      "router ospf 1",
+      "router eigrp 100",
+      "router bgp 65000"
+    ],
+    "protocols": [
+      "ospf",
+      "eigrp",
+      "bgp",
+      "rip"
+    ]
+  },
+  "access-list": {
+    "description": "Configures a standard or extended access list",
+    "syntax": "access-list <number> <permit|deny> <source> [wildcard]",
+    "examples": [
+      "access-list 10 permit 192.168.1.0 0.0.0.255"
+    ],
+    "ranges": {
+      "standard": "1-99, 1300-1999",
+      "extended": "100-199, 2000-2699"
+    }
+  },
+  "line": {
+    "description": "Configures a line and enters line configuration mode",
+    "syntax": "line <type> <number>",
+    "examples": [
+      "line vty 0 4",
+      "line console 0"
+    ],
+    "types": [
+      "console",
+      "vty",
+      "aux"
+    ]
+  },
+  "enable secret": {
+    "description": "Sets the encrypted privileged EXEC mode password",
+    "syntax": "enable secret <password>",
+    "examples": [
+      "enable secret MySecurePassword123"
+    ]
+  },
+  "hostname": {
+    "description": "Sets the system hostname",
+    "syntax": "hostname <name>",
+    "examples": [
+      "hostname CORE-SWITCH-01"
+    ]
+  },
+  "trunk": {
+    "description": "Configures trunk-specific parameters",
+    "commands": {
+      "switchport trunk allowed vlan": "Specifies VLANs allowed on trunk",
+      "switchport trunk native vlan": "Sets native VLAN for 802.1Q trunk",
+      "switchport trunk encapsulation": "Sets trunk encapsulation (dot1q or isl)"
+    }
+  },
+  "channel-group": {
+    "description": "Assigns interface to an EtherChannel group",
+    "syntax": "channel-group <number> mode <mode>",
+    "modes": [
+      "on",
+      "active",
+      "passive",
+      "auto",
+      "desirable"
+    ],
+    "examples": [
+      "channel-group 1 mode active"
+    ]
+  }
+}
