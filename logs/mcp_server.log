@@ -1,0 +1,532 @@
+2025-12-03 20:50:00,914 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-12-03 20:50:00,914 - cisco-docs-mcp - INFO - Starting Cisco Documentation MCP Server v2 (Verbose Edition)
+2025-12-03 20:50:00,914 - cisco-docs-mcp - INFO - Debug mode: ENABLED
+2025-12-03 20:50:00,914 - cisco-docs-mcp - INFO - Logging to file: C:\Git-lokalt\Hovedprosjekt\logs\mcp_server.log
+2025-12-03 20:50:00,914 - cisco-docs-mcp - INFO - Set MCP_DEBUG=true environment variable for debug logging
+2025-12-03 20:50:00,914 - cisco-docs-mcp - INFO - ------------------------------------------------------------
+2025-12-03 20:50:00,914 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:50:00,930 - cisco-docs-mcp - INFO - Initializing Cisco Documentation MCP Server v2
+2025-12-03 20:50:00,930 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:50:00,930 - mcp.server.lowlevel.server - DEBUG - Initializing server 'cisco-docs-server'
+2025-12-03 20:50:00,930 - cisco-docs-mcp - INFO - Server name: cisco-docs-server
+2025-12-03 20:50:00,930 - cisco-docs-mcp - INFO - Cache directory: C:\Git-lokalt\Hovedprosjekt\docs_cache
+2025-12-03 20:50:00,930 - cisco-docs-mcp - INFO - Basic commands file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 20:50:00,930 - cisco-docs-mcp - DEBUG - Cache directory already exists
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - Scheduling basic documentation initialization...
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - Setting up request handlers...
+2025-12-03 20:50:00,931 - cisco-docs-mcp - DEBUG - Registering list_tools handler...
+2025-12-03 20:50:00,931 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-12-03 20:50:00,931 - cisco-docs-mcp - DEBUG - Registering call_tool handler...
+2025-12-03 20:50:00,931 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - Registered 2 handlers: list_tools, call_tool
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - Server initialization complete
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - Starting MCP server with stdio transport...
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - Server is now ready to accept connections
+2025-12-03 20:50:00,931 - cisco-docs-mcp - INFO - Waiting for client to connect...
+2025-12-03 20:50:00,939 - cisco-docs-mcp - INFO - Client connected! Server is now active
+2025-12-03 20:50:00,939 - cisco-docs-mcp - INFO - Checking for basic commands documentation...
+2025-12-03 20:50:00,939 - cisco-docs-mcp - INFO - Basic commands file exists, loading...
+2025-12-03 20:50:00,939 - cisco-docs-mcp - INFO - Loaded 12 commands from cache
+2025-12-03 20:50:00,939 - cisco-docs-mcp - DEBUG - Available commands: interface, ip address, switchport, vlan, spanning-tree, router, access-list, line, enable secret, hostname, trunk, channel-group
+2025-12-03 20:50:00,953 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-12-03 20:50:00,954 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002C214A66ED0>
+2025-12-03 20:50:00,954 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 20:50:00,954 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 20:50:00,954 - mcp.server.lowlevel.server - DEBUG - Tool cache miss for search_command, refreshing cache
+2025-12-03 20:50:00,954 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-03 20:50:00,954 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-03 20:50:00,956 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 20:50:00,956 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "enable secret"
+}
+2025-12-03 20:50:00,956 - cisco-docs-mcp - INFO - Searching for command: 'enable secret'
+2025-12-03 20:50:00,956 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 20:50:00,956 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'enable secret'
+2025-12-03 20:50:00,956 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 20:50:00,956 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:50:00,958 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002C214BEBB60>
+2025-12-03 20:50:00,958 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-12-03 20:50:00,958 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-12-03 20:50:00,958 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-03 20:50:00,958 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-03 20:50:00,958 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:50:00,967 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002C214D898E0>
+2025-12-03 20:50:00,967 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 20:50:00,968 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 20:50:00,968 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 20:50:00,968 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "hostname"
+}
+2025-12-03 20:50:00,970 - cisco-docs-mcp - INFO - Searching for command: 'hostname'
+2025-12-03 20:50:00,970 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 20:50:00,970 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'hostname'
+2025-12-03 20:50:00,970 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 20:50:00,970 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:50:00,972 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002C214CDEB70>
+2025-12-03 20:50:00,972 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 20:50:00,972 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 20:50:00,974 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2025-12-03 20:50:00,974 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "VLAN"
+}
+2025-12-03 20:50:00,974 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'VLAN'
+2025-12-03 20:50:00,974 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2025-12-03 20:50:00,974 - cisco-docs-mcp - INFO - Found feature documentation: 'VLAN'
+2025-12-03 20:50:00,974 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
+2025-12-03 20:50:00,974 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:50:00,974 - cisco-docs-mcp - INFO - Server shutting down...
+2025-12-03 20:54:12,894 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Starting Cisco Documentation MCP Server v2 (Verbose Edition)
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Debug mode: ENABLED
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Logging to file: C:\Git-lokalt\Hovedprosjekt\logs\mcp_server.log
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Set MCP_DEBUG=true environment variable for debug logging
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - ------------------------------------------------------------
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Initializing Cisco Documentation MCP Server v2
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:54:12,894 - mcp.server.lowlevel.server - DEBUG - Initializing server 'cisco-docs-server'
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Server name: cisco-docs-server
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Cache directory: C:\Git-lokalt\Hovedprosjekt\docs_cache
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Basic commands file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 20:54:12,894 - cisco-docs-mcp - DEBUG - Cache directory already exists
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Scheduling basic documentation initialization...
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Setting up request handlers...
+2025-12-03 20:54:12,894 - cisco-docs-mcp - DEBUG - Registering list_tools handler...
+2025-12-03 20:54:12,894 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-12-03 20:54:12,894 - cisco-docs-mcp - DEBUG - Registering call_tool handler...
+2025-12-03 20:54:12,894 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Registered 2 handlers: list_tools, call_tool
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Server initialization complete
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Starting MCP server with stdio transport...
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Server is now ready to accept connections
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Waiting for client to connect...
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Client connected! Server is now active
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Checking for basic commands documentation...
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Basic commands file exists, loading...
+2025-12-03 20:54:12,894 - cisco-docs-mcp - INFO - Loaded 12 commands from cache
+2025-12-03 20:54:12,894 - cisco-docs-mcp - DEBUG - Available commands: interface, ip address, switchport, vlan, spanning-tree, router, access-list, line, enable secret, hostname, trunk, channel-group
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001B7C8F8C980>
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Tool cache miss for search_command, refreshing cache
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 20:54:12,910 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "line"
+}
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Searching for command: 'line'
+2025-12-03 20:54:12,910 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'line'
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001B7C8E9B830>
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001B7C9039760>
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 20:54:12,910 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "interface"
+}
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Searching for command: 'interface'
+2025-12-03 20:54:12,910 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'interface'
+2025-12-03 20:54:12,910 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 20:54:12,910 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:54:12,926 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000001B7C8F8C980>
+2025-12-03 20:54:12,926 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 20:54:12,926 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 20:54:12,926 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2025-12-03 20:54:12,926 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "VLAN"
+}
+2025-12-03 20:54:12,926 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'VLAN'
+2025-12-03 20:54:12,926 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2025-12-03 20:54:12,926 - cisco-docs-mcp - INFO - Found feature documentation: 'VLAN'
+2025-12-03 20:54:12,926 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
+2025-12-03 20:54:12,926 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 20:54:12,926 - cisco-docs-mcp - INFO - Server shutting down...
+2025-12-03 21:07:57,903 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Starting Cisco Documentation MCP Server v2 (Verbose Edition)
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Debug mode: ENABLED
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Logging to file: C:\Git-lokalt\Hovedprosjekt\logs\mcp_server.log
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Set MCP_DEBUG=true environment variable for debug logging
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - ------------------------------------------------------------
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Initializing Cisco Documentation MCP Server v2
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 21:07:57,907 - mcp.server.lowlevel.server - DEBUG - Initializing server 'cisco-docs-server'
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Server name: cisco-docs-server
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Cache directory: C:\Git-lokalt\Hovedprosjekt\docs_cache
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Basic commands file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,907 - cisco-docs-mcp - DEBUG - Cache directory already exists
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Scheduling basic documentation initialization...
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Setting up request handlers...
+2025-12-03 21:07:57,907 - cisco-docs-mcp - DEBUG - Registering list_tools handler...
+2025-12-03 21:07:57,907 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-12-03 21:07:57,907 - cisco-docs-mcp - DEBUG - Registering call_tool handler...
+2025-12-03 21:07:57,907 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Registered 2 handlers: list_tools, call_tool
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Server initialization complete
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Starting MCP server with stdio transport...
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - ============================================================
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Server is now ready to accept connections
+2025-12-03 21:07:57,907 - cisco-docs-mcp - INFO - Waiting for client to connect...
+2025-12-03 21:07:57,918 - cisco-docs-mcp - INFO - Client connected! Server is now active
+2025-12-03 21:07:57,918 - cisco-docs-mcp - INFO - Checking for basic commands documentation...
+2025-12-03 21:07:57,918 - cisco-docs-mcp - INFO - Basic commands file exists, loading...
+2025-12-03 21:07:57,918 - cisco-docs-mcp - INFO - Loaded 12 commands from cache
+2025-12-03 21:07:57,918 - cisco-docs-mcp - DEBUG - Available commands: interface, ip address, switchport, vlan, spanning-tree, router, access-list, line, enable secret, hostname, trunk, channel-group
+2025-12-03 21:07:57,918 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-12-03 21:07:57,918 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A97CFB0>
+2025-12-03 21:07:57,918 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,918 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,918 - mcp.server.lowlevel.server - DEBUG - Tool cache miss for search_command, refreshing cache
+2025-12-03 21:07:57,918 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-03 21:07:57,918 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-03 21:07:57,934 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,934 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "ip address"
+}
+2025-12-03 21:07:57,934 - cisco-docs-mcp - INFO - Searching for command: 'ip address'
+2025-12-03 21:07:57,934 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,934 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'ip address'
+2025-12-03 21:07:57,934 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 21:07:57,934 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,934 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3AA69B50>
+2025-12-03 21:07:57,934 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-12-03 21:07:57,934 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-12-03 21:07:57,934 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-03 21:07:57,934 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-03 21:07:57,934 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,934 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A6B3020>
+2025-12-03 21:07:57,946 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,946 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,946 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,946 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "hostname"
+}
+2025-12-03 21:07:57,946 - cisco-docs-mcp - INFO - Searching for command: 'hostname'
+2025-12-03 21:07:57,946 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,950 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'hostname'
+2025-12-03 21:07:57,950 - cisco-docs-mcp - INFO - Tool search_command completed in 0.004s
+2025-12-03 21:07:57,950 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,952 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A9B8B00>
+2025-12-03 21:07:57,952 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,952 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,952 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,952 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "enable secret"
+}
+2025-12-03 21:07:57,957 - cisco-docs-mcp - INFO - Searching for command: 'enable secret'
+2025-12-03 21:07:57,957 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,957 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'enable secret'
+2025-12-03 21:07:57,957 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 21:07:57,957 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,957 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3AABA480>
+2025-12-03 21:07:57,957 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,957 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,963 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,963 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "vlan"
+}
+2025-12-03 21:07:57,965 - cisco-docs-mcp - INFO - Searching for command: 'vlan'
+2025-12-03 21:07:57,965 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,965 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'vlan'
+2025-12-03 21:07:57,965 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 21:07:57,967 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,970 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A9B9D00>
+2025-12-03 21:07:57,970 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,970 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,970 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,970 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "spanning-tree"
+}
+2025-12-03 21:07:57,970 - cisco-docs-mcp - INFO - Searching for command: 'spanning-tree'
+2025-12-03 21:07:57,970 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,970 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'spanning-tree'
+2025-12-03 21:07:57,970 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 21:07:57,970 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,970 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A93B620>
+2025-12-03 21:07:57,970 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,970 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,979 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,981 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "line"
+}
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Searching for command: 'line'
+2025-12-03 21:07:57,981 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'line'
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A70BC50>
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,981 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "trunk"
+}
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Searching for command: 'trunk'
+2025-12-03 21:07:57,981 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'trunk'
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3AB87C80>
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,981 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,981 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "switchport"
+}
+2025-12-03 21:07:57,981 - cisco-docs-mcp - INFO - Searching for command: 'switchport'
+2025-12-03 21:07:57,981 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'switchport'
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Tool search_command completed in 0.016s
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A95A3F0>
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,997 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "interface"
+}
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Searching for command: 'interface'
+2025-12-03 21:07:57,997 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'interface'
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3AA69B50>
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:57,997 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-03 21:07:57,997 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "access-list"
+}
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Searching for command: 'access-list'
+2025-12-03 21:07:57,997 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-03 21:07:57,997 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'access-list'
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Tool search_command completed in 0.016s
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A97ED80>
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2025-12-03 21:07:58,013 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "VLAN"
+}
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'VLAN'
+2025-12-03 21:07:58,013 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Found feature documentation: 'VLAN'
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x0000027D3A97CFB0>
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2025-12-03 21:07:58,013 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "STP"
+}
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'STP'
+2025-12-03 21:07:58,013 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Found feature documentation: 'STP'
+2025-12-03 21:07:58,013 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
+2025-12-03 21:07:58,013 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-03 21:07:58,031 - cisco-docs-mcp - INFO - Server shutting down...
+2025-12-04 09:57:27,270 - asyncio - DEBUG - Using proactor: IocpProactor
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - Starting Cisco Documentation MCP Server v2 (Verbose Edition)
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - Debug mode: ENABLED
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - Logging to file: C:\Git-lokalt\Hovedprosjekt\logs\mcp_server.log
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - Set MCP_DEBUG=true environment variable for debug logging
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - ------------------------------------------------------------
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - ============================================================
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - Initializing Cisco Documentation MCP Server v2
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - ============================================================
+2025-12-04 09:57:27,270 - mcp.server.lowlevel.server - DEBUG - Initializing server 'cisco-docs-server'
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - Server name: cisco-docs-server
+2025-12-04 09:57:27,270 - cisco-docs-mcp - INFO - Cache directory: C:\Git-lokalt\Hovedprosjekt\docs_cache
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Basic commands file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,276 - cisco-docs-mcp - DEBUG - Cache directory already exists
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Scheduling basic documentation initialization...
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Setting up request handlers...
+2025-12-04 09:57:27,276 - cisco-docs-mcp - DEBUG - Registering list_tools handler...
+2025-12-04 09:57:27,276 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2025-12-04 09:57:27,276 - cisco-docs-mcp - DEBUG - Registering call_tool handler...
+2025-12-04 09:57:27,276 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Registered 2 handlers: list_tools, call_tool
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Server initialization complete
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - ============================================================
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Starting MCP server with stdio transport...
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - ============================================================
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Server is now ready to accept connections
+2025-12-04 09:57:27,276 - cisco-docs-mcp - INFO - Waiting for client to connect...
+2025-12-04 09:57:27,281 - cisco-docs-mcp - INFO - Client connected! Server is now active
+2025-12-04 09:57:27,281 - cisco-docs-mcp - INFO - Checking for basic commands documentation...
+2025-12-04 09:57:27,281 - cisco-docs-mcp - INFO - Basic commands file exists, loading...
+2025-12-04 09:57:27,311 - cisco-docs-mcp - INFO - Loaded 12 commands from cache
+2025-12-04 09:57:27,311 - cisco-docs-mcp - DEBUG - Available commands: interface, ip address, switchport, vlan, spanning-tree, router, access-list, line, enable secret, hostname, trunk, channel-group
+2025-12-04 09:57:27,332 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2025-12-04 09:57:27,333 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C624BC0>
+2025-12-04 09:57:27,334 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,334 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,334 - mcp.server.lowlevel.server - DEBUG - Tool cache miss for search_command, refreshing cache
+2025-12-04 09:57:27,334 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-04 09:57:27,334 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-04 09:57:27,337 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,337 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "ip address"
+}
+2025-12-04 09:57:27,337 - cisco-docs-mcp - INFO - Searching for command: 'ip address'
+2025-12-04 09:57:27,337 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,338 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'ip address'
+2025-12-04 09:57:27,339 - cisco-docs-mcp - INFO - Tool search_command completed in 0.001s
+2025-12-04 09:57:27,339 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,342 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C4CB290>
+2025-12-04 09:57:27,342 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-12-04 09:57:27,342 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2025-12-04 09:57:27,343 - cisco-docs-mcp - INFO - Received list_tools request
+2025-12-04 09:57:27,343 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2025-12-04 09:57:27,343 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,345 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C4CAFC0>
+2025-12-04 09:57:27,346 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,346 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,347 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "access-list"
+}
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Searching for command: 'access-list'
+2025-12-04 09:57:27,347 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'access-list'
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C5F8BC0>
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,347 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "spanning-tree"
+}
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Searching for command: 'spanning-tree'
+2025-12-04 09:57:27,347 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'spanning-tree'
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C5484A0>
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,347 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,347 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,347 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "trunk"
+}
+2025-12-04 09:57:27,358 - cisco-docs-mcp - INFO - Searching for command: 'trunk'
+2025-12-04 09:57:27,358 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,358 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'trunk'
+2025-12-04 09:57:27,358 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,358 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,358 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C4CAFC0>
+2025-12-04 09:57:27,358 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,358 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,363 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "interface"
+}
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Searching for command: 'interface'
+2025-12-04 09:57:27,363 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'interface'
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C6496A0>
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,363 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "line"
+}
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Searching for command: 'line'
+2025-12-04 09:57:27,363 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'line'
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C509100>
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,363 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "switchport"
+}
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Searching for command: 'switchport'
+2025-12-04 09:57:27,363 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'switchport'
+2025-12-04 09:57:27,363 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,363 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C5484A0>
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,379 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "hostname"
+}
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Searching for command: 'hostname'
+2025-12-04 09:57:27,379 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'hostname'
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C46AE10>
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,379 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "vlan"
+}
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Searching for command: 'vlan'
+2025-12-04 09:57:27,379 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'vlan'
+2025-12-04 09:57:27,379 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,379 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C4E9730>
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Received call_tool request: search_command
+2025-12-04 09:57:27,395 - cisco-docs-mcp - DEBUG - Arguments: {
+  "command": "enable secret"
+}
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Searching for command: 'enable secret'
+2025-12-04 09:57:27,395 - cisco-docs-mcp - DEBUG - Reading from cache file: C:\Git-lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Successfully found documentation for command: 'enable secret'
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Tool search_command completed in 0.000s
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C5F8BC0>
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2025-12-04 09:57:27,395 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "VLAN"
+}
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'VLAN'
+2025-12-04 09:57:27,395 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Found feature documentation: 'VLAN'
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x000002568C624BC0>
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2025-12-04 09:57:27,395 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "STP"
+}
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'STP'
+2025-12-04 09:57:27,395 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Found feature documentation: 'STP'
+2025-12-04 09:57:27,395 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
+2025-12-04 09:57:27,395 - mcp.server.lowlevel.server - DEBUG - Response sent
+2025-12-04 09:57:27,413 - cisco-docs-mcp - INFO - Server shutting down...

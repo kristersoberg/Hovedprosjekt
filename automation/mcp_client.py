@@ -20,14 +20,16 @@ from mcp.client.stdio import stdio_client
 class CiscoMCPClient:
     """Client for interacting with the Cisco Documentation MCP Server."""
 
-    def __init__(self, server_path: Path):
+    def __init__(self, server_path: Path, debug: bool = False):
         """
         Initialize the MCP client.
 
         Args:
             server_path: Path to the MCP server script (server.py)
+            debug: Enable debug logging on the MCP server
         """
         self.server_path = Path(server_path)
+        self.debug = debug
         self.session: Optional[ClientSession] = None
         self._read_stream = None
         self._write_stream = None
@@ -35,10 +37,22 @@ class CiscoMCPClient:
     @asynccontextmanager
     async def connect(self):
         """Connect to the MCP server."""
+        import os
+
+        # Build environment variables for the server
+        # Always copy environment, then add MCP_DEBUG if needed
+        env = os.environ.copy()
+        if self.debug:
+            env["MCP_DEBUG"] = "true"
+            # Optional: Set log file path for server output
+            log_dir = Path(__file__).parent.parent / "logs"
+            log_dir.mkdir(exist_ok=True)
+            env["MCP_LOG_FILE"] = str(log_dir / "mcp_server.log")
+
         server_params = StdioServerParameters(
             command=sys.executable,  # Use the current Python interpreter
             args=[str(self.server_path)],
-            env=None
+            env=env
         )
 
         async with stdio_client(server_params) as (read_stream, write_stream):

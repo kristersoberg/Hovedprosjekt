@@ -248,9 +248,10 @@ Evaluate against Cisco best practices and provide recommendations.
             mcp_config = self.config.get("mcp", {})
             max_commands = mcp_config.get("max_commands", 3)
             max_features = mcp_config.get("max_features", 2)
+            debug_mode = mcp_config.get("debug", False)
 
             # Connect to MCP server and fetch documentation
-            client = CiscoMCPClient(self.mcp_server_path)
+            client = CiscoMCPClient(self.mcp_server_path, debug=debug_mode)
 
             documentation_context = []
 

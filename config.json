@@ -1,6 +1,6 @@
 {
   "llm": {
-    "endpoint": "http://192.168.56.1:1234/v1/chat/completions",
+    "endpoint": "http://192.168.1.211:1234/v1/chat/completions",
     "model": "meta-llama-3.1-8b-instruct",
     "api_key": "",
     "temperature": 0.7,
@@ -8,11 +8,12 @@
     "timeout": 300000
   },
   "mcp": {
-    "server_path": "./mcp_server/server.py",
+    "server_path": "./mcp_server/server-v2.py",
     "enabled": true,
+    "debug": true,
     "max_prompt_size": 50000,
-    "max_commands": 2,
-    "max_features": 1
+    "max_commands": 15,
+    "max_features": 10
   },
   "git": {
     "enabled": true,

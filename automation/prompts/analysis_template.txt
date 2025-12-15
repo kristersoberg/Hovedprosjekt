@@ -254,17 +254,17 @@ If configured:
 
 Evaluate the configuration against Cisco best practices and provide feedback:
 
-### ✅ Good Practices Identified
+### Good Practices Identified
 - [List configurations that follow best practices]
 - [Explain why they are good]
 
-### ⚠️ Potential Issues or Concerns
+### Potential Issues or Concerns
 - [Identify any security concerns]
 - [Point out potential misconfigurations]
 - [Note any deprecated features]
 - [Highlight missing security features]
 
-### 💡 Recommendations for Improvement
+### Recommendations for Improvement
 1. [Specific recommendation with explanation]
 2. [Another recommendation]
 3. [etc.]

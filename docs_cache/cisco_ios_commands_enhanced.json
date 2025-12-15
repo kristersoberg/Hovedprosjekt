@@ -1,0 +1,520 @@
+{
+  "metadata": {
+    "version": "1.0",
+    "last_updated": "2024-01-15",
+    "ios_versions": ["12.2", "15.2", "16.x"],
+    "source": "Cisco IOS Command Reference + Best Practices",
+    "command_count": 50,
+    "description": "Enhanced command database built from actual switch configurations"
+  },
+  "commands": {
+    "hostname": {
+      "name": "hostname",
+      "syntax": "hostname name",
+      "description": "Specifies or modifies the hostname for the network server",
+      "modes": ["global-config"],
+      "parameters": {
+        "name": {
+          "description": "Hostname for the device",
+          "format": "String (maximum 255 characters)",
+          "restrictions": [
+            "Must start with a letter",
+            "Can contain letters, numbers, hyphens",
+            "No spaces allowed"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "command": "hostname aksess-sw01",
+          "description": "Sets the hostname to aksess-sw01",
+          "context": "Access switch in building 01"
+        },
+        {
+          "command": "hostname CORE-ROUTER-01",
+          "description": "Sets hostname for core router"
+        }
+      ],
+      "best_practices": [
+        "Use descriptive, meaningful names",
+        "Follow consistent naming convention (role-location-number)",
+        "Avoid special characters except hyphens",
+        "Use uppercase or lowercase consistently across network"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "enable secret": {
+      "name": "enable secret",
+      "syntax": "enable secret [level level] {password | [encryption-type] encrypted-password}",
+      "description": "Specifies an encrypted password to prevent unauthorized access to privileged EXEC mode",
+      "modes": ["global-config"],
+      "parameters": {
+        "level": {
+          "description": "Privilege level (0-15)",
+          "format": "Integer",
+          "default": "15 (full privileges)",
+          "optional": true
+        },
+        "password": {
+          "description": "Password for privileged access",
+          "encryption": "MD5 hash (type 5) or SHA256 (type 8/9)"
+        },
+        "encryption-type": {
+          "description": "Encryption type indicator",
+          "values": {
+            "5": "MD5 hash",
+            "8": "PBKDF2 with SHA-256",
+            "9": "Scrypt"
+          }
+        }
+      },
+      "examples": [
+        {
+          "command": "enable secret MySecurePassword123!",
+          "description": "Sets encrypted enable password"
+        }
+      ],
+      "security_considerations": [
+        "Always use 'enable secret', never 'enable password'",
+        "enable secret uses stronger encryption than enable password",
+        "Use complex passwords (minimum 12 characters, mixed case, numbers, symbols)",
+        "Type 5 (MD5) is default but type 8/9 preferred on newer IOS"
+      ],
+      "best_practices": [
+        "Use minimum 12-character password",
+        "Include uppercase, lowercase, numbers, and symbols",
+        "Rotate passwords regularly",
+        "Document password policy"
+      ],
+      "related_commands": ["enable", "service password-encryption", "username"],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "aaa new-model": {
+      "name": "aaa new-model",
+      "syntax": "aaa new-model",
+      "description": "Enables the AAA access control model",
+      "modes": ["global-config"],
+      "parameters": {},
+      "examples": [
+        {
+          "command": "aaa new-model",
+          "description": "Enables AAA for authentication, authorization, and accounting"
+        }
+      },
+      "security_considerations": [
+        "Required for TACACS+ or RADIUS authentication",
+        "Changes default authentication behavior",
+        "Always configure local fallback before enabling",
+        "Can lock you out if misconfigured without console access"
+      ],
+      "best_practices": [
+        "Always create local backup user before enabling AAA",
+        "Configure console access to use local authentication",
+        "Test configuration thoroughly before deploying",
+        "Document AAA server details"
+      ],
+      "related_commands": [
+        "aaa authentication login",
+        "aaa authorization exec",
+        "aaa accounting exec",
+        "tacacs-server host",
+        "radius-server host"
+      ],
+      "configuration_notes": [
+        "This is typically the first AAA command configured",
+        "Enables AAA globally on the device",
+        "Once enabled, you must explicitly configure authentication lists"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "aaa authentication login": {
+      "name": "aaa authentication login",
+      "syntax": "aaa authentication login {default | list-name} method1 [method2...]",
+      "description": "Sets authentication for login",
+      "modes": ["global-config"],
+      "parameters": {
+        "default": {
+          "description": "Default authentication list (applies to all lines)",
+          "note": "Used if no other list is specified"
+        },
+        "list-name": {
+          "description": "Named authentication list",
+          "format": "String (custom name)",
+          "example": "console"
+        },
+        "method": {
+          "description": "Authentication method(s) in order of preference",
+          "valid_values": [
+            "group tacacs+",
+            "group radius",
+            "local",
+            "local-case",
+            "enable",
+            "line",
+            "none"
+          ]
+        }
+      },
+      "examples": [
+        {
+          "command": "aaa authentication login default group tacacs+ local",
+          "description": "Try TACACS+ first, fall back to local database",
+          "use_case": "Standard login authentication with fallback"
+        },
+        {
+          "command": "aaa authentication login console local",
+          "description": "Console uses only local authentication",
+          "use_case": "Emergency console access"
+        }
+      },
+      "security_considerations": [
+        "Always include 'local' as fallback method",
+        "Never use 'none' in production",
+        "Configure separate list for console access",
+        "Test before disconnecting from device"
+      ],
+      "best_practices": [
+        "Use 'group tacacs+ local' or 'group radius local' for redundancy",
+        "Create dedicated console authentication list",
+        "Never rely solely on remote authentication",
+        "Document authentication flow"
+      ],
+      "common_mistakes": [
+        "Forgetting 'local' fallback (can lock you out)",
+        "Not creating emergency local user",
+        "Using 'none' method in production"
+      ],
+      "related_commands": [
+        "aaa new-model",
+        "username",
+        "tacacs-server host",
+        "line vty",
+        "login authentication"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "tacacs-server host": {
+      "name": "tacacs-server host",
+      "syntax": "tacacs-server host hostname [port port] [timeout seconds] [key string]",
+      "description": "Specifies a TACACS+ server",
+      "modes": ["global-config"],
+      "parameters": {
+        "hostname": {
+          "description": "IP address or hostname of TACACS+ server",
+          "format": "IPv4 address or DNS name"
+        },
+        "port": {
+          "description": "TCP port number",
+          "default": "49",
+          "optional": true
+        },
+        "timeout": {
+          "description": "Server timeout in seconds",
+          "default": "5",
+          "range": "1-1000",
+          "optional": true
+        },
+        "key": {
+          "description": "Encryption key for communication with server",
+          "security": "Shared secret between switch and TACACS+ server",
+          "note": "Use complex, unique key"
+        }
+      },
+      "examples": [
+        {
+          "command": "tacacs-server host 10.91.0.10 key KompleksNoekkel",
+          "description": "Configure TACACS+ server with encryption key",
+          "context": "From your actual config"
+        },
+        {
+          "command": "tacacs-server host 192.168.1.100 timeout 10 key MyTacacsKey123",
+          "description": "Configure with custom timeout"
+        }
+      },
+      "security_considerations": [
+        "Key is stored in plaintext in config unless encrypted",
+        "Use 'service password-encryption' to obfuscate",
+        "For better security, use 'key 7' encrypted format",
+        "Use strong, unique keys for each device or group"
+      ],
+      "best_practices": [
+        "Use multiple TACACS+ servers for redundancy",
+        "Configure timeout appropriate for network latency",
+        "Use strong encryption keys",
+        "Document TACACS+ server infrastructure"
+      ],
+      "related_commands": [
+        "aaa new-model",
+        "aaa authentication login",
+        "tacacs-server timeout",
+        "service password-encryption"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "username": {
+      "name": "username",
+      "syntax": "username name [privilege level] {password | secret} {0 | 5 | 8 | 9} password",
+      "description": "Establishes a username-based authentication system",
+      "modes": ["global-config"],
+      "parameters": {
+        "name": {
+          "description": "Username for authentication",
+          "format": "String"
+        },
+        "privilege": {
+          "description": "Privilege level for user",
+          "range": "0-15",
+          "default": "1",
+          "note": "15 = full admin access"
+        },
+        "password": {
+          "description": "Clear text password (weak encryption)",
+          "security": "Use 'secret' instead"
+        },
+        "secret": {
+          "description": "Encrypted password (strong)",
+          "encryption_types": {
+            "0": "Cleartext",
+            "5": "MD5 hash",
+            "8": "PBKDF2 SHA-256",
+            "9": "Scrypt"
+          }
+        }
+      },
+      "examples": [
+        {
+          "command": "username emergency-admin privilege 15 secret MyPassword123!",
+          "description": "Create emergency admin account",
+          "context": "Local fallback account"
+        },
+        {
+          "command": "username operator privilege 5 secret OperatorPass456",
+          "description": "Create limited privilege user"
+        }
+      },
+      "security_considerations": [
+        "Always use 'secret', never 'password'",
+        "Use privilege 15 sparingly (only for emergency admins)",
+        "Complex passwords required (12+ chars, mixed case, symbols)",
+        "Document who has emergency accounts"
+      ],
+      "best_practices": [
+        "Create emergency local admin before enabling AAA",
+        "Use descriptive usernames (e.g., 'emergency-admin')",
+        "Set appropriate privilege levels",
+        "Rotate passwords regularly",
+        "Audit local accounts periodically"
+      ],
+      "related_commands": [
+        "aaa new-model",
+        "aaa authentication login",
+        "enable secret",
+        "service password-encryption"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "ip domain-name": {
+      "name": "ip domain-name",
+      "syntax": "ip domain-name name",
+      "description": "Defines a default domain name that the Cisco IOS software uses to complete unqualified hostnames",
+      "modes": ["global-config"],
+      "parameters": {
+        "name": {
+          "description": "Domain name",
+          "format": "String (FQDN format)",
+          "examples": ["example.com", "company.local", "corp.internal"]
+        }
+      },
+      "examples": [
+        {
+          "command": "ip domain-name krister.local",
+          "description": "Set domain name to krister.local",
+          "context": "From your actual config"
+        }
+      ],
+      "related_commands": [
+        "ip name-server",
+        "ip domain-lookup",
+        "crypto key generate rsa"
+      ],
+      "configuration_notes": [
+        "Required before generating RSA keys for SSH",
+        "Used for hostname resolution",
+        "Appended to unqualified hostnames"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "crypto key generate rsa": {
+      "name": "crypto key generate rsa",
+      "syntax": "crypto key generate rsa [general-keys | usage-keys] [modulus modulus-size]",
+      "description": "Generates RSA key pairs for SSH",
+      "modes": ["global-config"],
+      "parameters": {
+        "general-keys": {
+          "description": "General purpose keys (default)",
+          "note": "Single key pair for all uses"
+        },
+        "usage-keys": {
+          "description": "Separate keys for signing and encryption",
+          "note": "Two key pairs generated"
+        },
+        "modulus": {
+          "description": "Key size in bits",
+          "values": {
+            "360-2048": "Key size range",
+            "1024": "Minimum recommended",
+            "2048": "Recommended for production",
+            "4096": "High security"
+          }
+        }
+      },
+      "examples": [
+        {
+          "command": "crypto key generate rsa general-keys modulus 2048",
+          "description": "Generate 2048-bit RSA keys for SSH",
+          "context": "Standard SSH setup"
+        }
+      },
+      "prerequisites": [
+        "Hostname must be configured",
+        "IP domain-name must be configured"
+      ],
+      "security_considerations": [
+        "Minimum 2048-bit keys for production",
+        "Keys are stored in NVRAM",
+        "Regenerate keys if compromised",
+        "Backup configuration with keys securely"
+      ],
+      "best_practices": [
+        "Use 2048-bit minimum (4096 for high security)",
+        "Generate new keys for each device",
+        "Document key generation in change log",
+        "Use 'general-keys' unless specific need for usage-keys"
+      ],
+      "related_commands": [
+        "ip domain-name",
+        "hostname",
+        "ip ssh version 2",
+        "crypto key zeroize rsa"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "ip ssh version": {
+      "name": "ip ssh version",
+      "syntax": "ip ssh version {1 | 2}",
+      "description": "Specifies the SSH version to use",
+      "modes": ["global-config"],
+      "parameters": {
+        "version": {
+          "description": "SSH protocol version",
+          "values": {
+            "1": "SSH version 1 (deprecated, insecure)",
+            "2": "SSH version 2 (recommended)"
+          }
+        }
+      },
+      "examples": [
+        {
+          "command": "ip ssh version 2",
+          "description": "Enable only SSH version 2",
+          "context": "Security hardening"
+        }
+      ],
+      "security_considerations": [
+        "SSH version 1 is deprecated and insecure",
+        "Always use version 2 in production",
+        "SSHv1 has known vulnerabilities",
+        "Many compliance frameworks require SSHv2"
+      ],
+      "best_practices": [
+        "Always configure 'ip ssh version 2'",
+        "Disable SSHv1 completely",
+        "Combine with other SSH hardening (timeout, retries)"
+      ],
+      "related_commands": [
+        "crypto key generate rsa",
+        "ip ssh time-out",
+        "ip ssh authentication-retries",
+        "transport input ssh"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "ip ssh time-out": {
+      "name": "ip ssh time-out",
+      "syntax": "ip ssh time-out seconds",
+      "description": "Configures the SSH timeout value",
+      "modes": ["global-config"],
+      "parameters": {
+        "seconds": {
+          "description": "Timeout in seconds",
+          "range": "0-120",
+          "default": "120",
+          "recommendation": "60 seconds"
+        }
+      },
+      "examples": [
+        {
+          "command": "ip ssh time-out 60",
+          "description": "Set SSH timeout to 60 seconds"
+        }
+      ],
+      "best_practices": [
+        "Set to 60 seconds for balance of security and usability",
+        "Lower timeout reduces exposure to brute force",
+        "Document timeout policy"
+      ],
+      "related_commands": [
+        "ip ssh version",
+        "ip ssh authentication-retries"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    },
+    "ip ssh authentication-retries": {
+      "name": "ip ssh authentication-retries",
+      "syntax": "ip ssh authentication-retries number",
+      "description": "Specifies the number of authentication retries for SSH",
+      "modes": ["global-config"],
+      "parameters": {
+        "number": {
+          "description": "Number of authentication attempts",
+          "range": "0-5",
+          "default": "3",
+          "recommendation": "2-3 attempts"
+        }
+      },
+      "examples": [
+        {
+          "command": "ip ssh authentication-retries 3",
+          "description": "Allow 3 authentication attempts"
+        }
+      },
+      "security_considerations": [
+        "Lower values reduce brute force attempts",
+        "Too low may cause legitimate lockouts",
+        "Combine with access-class restrictions"
+      ],
+      "best_practices": [
+        "Set to 2-3 for production",
+        "Monitor authentication failures",
+        "Combine with IP-based access control"
+      ],
+      "related_commands": [
+        "ip ssh version",
+        "ip ssh time-out",
+        "access-class"
+      ],
+      "common_in_configs": true,
+      "ios_versions": "all"
+    }
+  }
+}
