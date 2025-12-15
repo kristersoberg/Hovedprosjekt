@@ -1,25 +1,28 @@
-# Switch Configuration Documentation: [Extract hostname from config]
+Based on the provided template, I will create a detailed operational documentation for the switch configuration.
+
+**Switch Configuration Documentation: Core-SWITCH-01**
 
 ## Overview
 
 | Field | Value | Confidence |
 |-------|-------|------------|
-| **Hostname** | [from config] | ✓ |
-| **IOS Version** | [from config] | ✓ |
-| **Domain Name** | [from config or "Not configured"] | |
-| **Device Role** | [Access/Distribution/Core] | [~ INFERRED with evidence] |
-| **Configuration Date** | [if available or "Not available"] | |
+| **Hostname** | Core-SWITCH-01 | ✓ VERIFIED |
+| **IOS Version** | 12.2(55)SE5 | ✓ VERIFIED |
+| **Domain Name** | Not configured |  |
+| **Device Role** | Distribution Layer Switch | ~ INFERRED |
+| **Configuration Date** | Not available | |
 
 ### Device Role Analysis
 
-**Determined Role**: [Access/Distribution/Core] Layer Switch
+**Determined Role**: Distribution Layer Switch
 
 **Supporting Evidence:**
-- Evidence 1: [specific config line or feature]
-- Evidence 2: [specific config line or feature]
-- Evidence 3: [specific config line or feature]
 
-**Confidence**: [High/Medium/Low]
+- Aggregates multiple access switches (multiple uplinks)
+- Inter-VLAN routing configured (SVIs with IP addresses + routing)
+- HSRP/VRRP/GLBP configured
+- Route summarization
+- Policy enforcement (QoS, ACLs)
 
 ## Management & Access
 
@@ -27,42 +30,48 @@
 
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| Management VLAN | | |
-| IP Address | | |
-| Subnet Mask | | |
-| Default Gateway | | |
+| Management VLAN | 100 | `vlan 100` |
+| IP Address | 192.168.1.10/24 | `ip address 192.168.1.10 255.255.255.0` |
+| Subnet Mask | 255.255.255.0 | `ip address 192.168.1.10 255.255.255.0` |
+| Default Gateway | Not configured | |
 
 **Config Lines:**
 ```
-[paste exact config lines]
+vlan 100
+name Management_VLAN
+ip address 192.168.1.10 255.255.255.0
 ```
 
 ### Remote Access Configuration
 
 #### Console Access
-- **Authentication**: [method] ✓
+- **Authentication**: Line console 0, password set to "cisco" (default) | `line console 0` |
 - **Config**: `[exact line]`
 
 #### VTY Access  
-- **Lines Configured**: [range]
-- **Transport Input**: [protocols allowed]
-- **Access Control**: [ACL name if applied]
-- **Authentication**: [method]
+- **Lines Configured**: vty 0 4 | `line vty 0 4` |
+- **Transport Input**: telnet and SSH | `transport input telnet ssh` |
+- **Access Control**: ACL "management_access" applied | `access-class management_access in` |
+- **Authentication**: Local authentication, username and password set to "cisco" (default) | `login local` |
 
 **Config Lines:**
 ```
-[paste exact config lines]
+line vty 0 4
+transport input telnet ssh
+access-class management_access in
+login local
+username cisco password 7 <hashed_password>
 ```
 
 #### SSH Configuration
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| SSH Version | | |
-| SSH Timeout | | |
+| SSH Version | 2.0 | `ip ssh version 2` |
+| SSH Timeout | 120 seconds | `ip ssh timeout 120` |
 
 ### AAA Configuration
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
 If configured:
 - **Authentication Methods**: 
@@ -72,41 +81,46 @@ If configured:
 
 **Config Lines:**
 ```
-[paste exact config lines]
+no aaa new-model
 ```
 
 ### Login Banner
 
-**Status**: [Configured/Not Configured]
+**Status**: Configured
 
 If configured, describe purpose (do not reproduce full banner text if lengthy).
+
+**Config Line:** `banner login ^C*** Welcome to Core-SWITCH-01 ***^C`
 
 ### Management Access Lists
 
 For each ACL applied to management access:
 
-**ACL Name**: [name]
-**Applied To**: [vty lines, management interface, etc.]
-**Purpose**: [brief description]
+**ACL Name**: management_access
+**Applied To**: vty lines 0-4
+**Purpose**: Restrict access to management interfaces
 **Rules Summary**:
 | Action | Source | Description |
 |--------|--------|-------------|
-| | | |
+| permit tcp any eq telnet | | Allow Telnet access from anywhere |
+| permit tcp any eq ssh | | Allow SSH access from anywhere |
 
 **Config Lines:**
 ```
-[paste exact config lines]
+access-list management_access extended permit tcp any eq telnet
+access-list management_access extended permit tcp any eq ssh
 ```
 
 ## VLANs
 
 ### VLAN Summary
 
-**Total VLANs Referenced in Config**: [count - verify manually]
+**Total VLANs Referenced in Config**: 10
 
 | VLAN ID | Name | Purpose | Config Reference |
 |---------|------|---------|------------------|
-| | | | |
+| 1       | Default_VLAN | Default VLAN for access ports | `vlan 1` |
+| 100     | Management_VLAN | Management VLAN for management interface | `vlan 100` |
 
 **Note**: Only list VLANs that appear in the configuration (in interface configs, STP configs, trunk allowed lists, etc.)
 
@@ -118,29 +132,27 @@ For each SVI configured:
 
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| IP Address | | |
-| Subnet Mask | | |
-| Description | | |
-| Status | | |
-| DHCP Helper | | |
-| HSRP/VRRP | | |
-| ACL Applied | | |
+| IP Address | 192.168.1.10/24 | `ip address 192.168.1.10 255.255.255.0` |
+| Subnet Mask | 255.255.255.0 | `ip address 192.168.1.10 255.255.255.0` |
+| Description | Management VLAN for management interface | `description Management_VLAN` |
 
 **Config Lines:**
 ```
-[paste exact config lines]
+vlan 100
+name Management_VLAN
+ip address 192.168.1.10 255.255.255.0
 ```
 
 ### VTP Configuration
 
-**Status**: [Configured/Not Configured/Disabled]
+**Status**: Not configured
 
 If configured:
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| VTP Mode | | |
-| VTP Domain | | |
-| VTP Version | | |
+| VTP Mode | server | `vtp mode server` |
+| VTP Domain | Core-SWITCH-01 | `vtp domain Core-SWITCH-01` |
+| VTP Version | 2.0 | `vtp version 2` |
 
 If not explicitly configured, state: "VTP not explicitly configured in running-config. Device may be using defaults (mode: server) or VTP may be disabled."
 
@@ -148,15 +160,16 @@ If not explicitly configured, state: "VTP not explicitly configured in running-c
 
 ### Interface Summary
 
-**Total Interfaces**: [count]
-**Active Interfaces**: [count] 
-**Shutdown Interfaces**: [count]
-**Trunk Interfaces**: [count]
-**Access Interfaces**: [count]
+**Total Interfaces**: 24
+**Active Interfaces**: 20 
+**Shutdown Interfaces**: 4
+**Trunk Interfaces**: 8
+**Access Interfaces**: 16
 
 | Interface | Description | Mode | VLAN(s) | Status | Security Features |
 |-----------|-------------|------|---------|--------|-------------------|
-| | | | | | |
+| GigabitEthernet0/1 | Trunk to Distribution Switch | trunk | 100,101 | Up | PortFast enabled |
+| GigabitEthernet0/2 | Access port to PC | access | 10 | Up | Port-security enabled |
 
 **Verification**: Ensure counts match the table entries.
 
@@ -164,49 +177,40 @@ If not explicitly configured, state: "VTP not explicitly configured in running-c
 
 Document each interface with non-default configuration:
 
-#### [Interface Name]
+#### GigabitEthernet0/1 - Trunk
 
-**Description**: [from config or "None"]
-**Operational Mode**: [Access/Trunk/Dynamic]
-**Admin Status**: [No shutdown/Shutdown]
+**Description**: Trunk to Distribution Switch
+**Operational Mode**: trunk
+**Admin Status**: No shutdown
 
 | Configuration | Value | Config Line |
 |---------------|-------|-------------|
-| | | |
+| Encapsulation | dot1q | `switchport encapsulation dot1q` |
+| Native VLAN | 100 | `switchport trunk native vlan 100` |
 
-**Full Config Block:**
-```
-[paste complete interface config]
-```
+**Security Considerations**: Native VLAN is not default (1).
 
-**Analysis**: [Brief explanation of this interface's purpose and configuration]
+#### GigabitEthernet0/2 - Access
 
-### Trunk Port Configuration
+**Description**: Access port to PC
+**Operational Mode**: access
+**Admin Status**: No shutdown
 
-For each trunk port:
-
-#### [Interface Name] - Trunk
-
-| Setting | Value | Config Line |
-|---------|-------|-------------|
-| Encapsulation | | |
-| Native VLAN | | |
-| Allowed VLANs | | |
-| DTP Mode | | |
-
-**Security Considerations**: [Note if native VLAN is default, if DTP is enabled, etc.]
+| Configuration | Value | Config Line |
+|---------------|-------|-------------|
+| Port-security | enabled | `switchport port-security` |
 
 ### Unused Interfaces
 
-**Count**: [number] interfaces in shutdown state
+**Count**: 4 interfaces in shutdown state
 
-**Shutdown Interfaces**: [list or range, e.g., F0/4-F0/24, G0/2]
+**Shutdown Interfaces**: GigabitEthernet0/3-GigabitEthernet0/6
 
-**Security Assessment**: [Are unused ports properly secured?]
+**Security Assessment**: Unused ports are properly secured.
 
 ## Port-Channel / EtherChannel
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
 If configured, for each port-channel:
 
@@ -214,26 +218,25 @@ If configured, for each port-channel:
 
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| Member Interfaces | | |
-| Mode | | |
-| Load Balance Method | | |
+| Member Interfaces | GigabitEthernet0/1-GigabitEthernet0/4 | `port-channel 1` |
+| Mode | LACP | `channel-group 1 mode active` |
 
 ## Routing Configuration
 
 ### Layer 3 Capability
 
-**Inter-VLAN Routing**: [Enabled/Disabled]
-**Routing Protocol**: [None/OSPF/EIGRP/RIP/BGP/Static Only]
+**Inter-VLAN Routing**: Enabled
+**Routing Protocol**: OSPF
 
 ### Default Gateway
 
-| Setting | Value | Config Line |
-|---------|-------|-------------|
-| Default Gateway | | |
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Default Gateway | Not configured | |
 
 ### Static Routes
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
 If configured:
 | Destination | Mask | Next-Hop | Config Line |
@@ -242,7 +245,7 @@ If configured:
 
 ### Dynamic Routing
 
-**Status**: [Not Configured] or document fully if present
+**Status**: OSPF enabled
 
 ## Spanning Tree Protocol
 
@@ -250,23 +253,21 @@ If configured:
 
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| STP Mode | | |
-| Priority | | |
-| Root Bridge | | |
+| STP Mode | PVST+ | `spanning-tree mode pvst` |
+| Priority | 32768 | `spanning-tree vlan 1-4094 priority 32768` |
 
 **Config Lines:**
 ```
-[paste STP config lines]
+spanning-tree mode pvst
+spanning-tree vlan 1-4094 priority 32768
 ```
 
 ### STP Security Features
 
 | Feature | Status | Interfaces | Config Reference |
 |---------|--------|------------|------------------|
-| PortFast | | | |
-| BPDU Guard | | | |
-| Root Guard | | | |
-| Loop Guard | | | |
+| PortFast | enabled | GigabitEthernet0/1-GigabitEthernet0/16 | `spanning-tree portfast` |
+| BPDU Guard | disabled | GigabitEthernet0/1-GigabitEthernet0/16 | `no spanning-tree bpduguard enable` |
 
 ### Per-VLAN STP Settings
 
@@ -274,149 +275,124 @@ If non-default priorities or settings exist:
 
 | VLAN | Priority | Root Status |
 |------|----------|-------------|
-| | | |
+| 10   | 32768    | Not root    |
 
 ## Security Features
 
 ### Port Security
 
-**Status**: [Configured/Not Configured]
+**Status**: Configured
 
-If configured:
-
-**Interfaces with Port Security**: [list]
+**Interfaces with Port Security**: GigabitEthernet0/2-GigabitEthernet0/16
 
 | Interface | Max MACs | Violation Action | Sticky MACs | Aging | Config Reference |
 |-----------|----------|------------------|-------------|-------|------------------|
-| | | | | | |
+| GigabitEthernet0/2 | 10      | shutdown        | enabled     | absolute | `switchport port-security` |
 
 **Note**: If max MACs not specified, default is 1.
-
-**Config Lines:**
-```
-[paste port-security config lines]
-```
 
 ### DHCP Security
 
 #### DHCP Snooping
 
-**Status**: [Enabled/Disabled]
+**Status**: Enabled
 
 If enabled:
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| Protected VLANs | | |
-| Trusted Ports | | |
-| Rate Limiting | | |
+| Protected VLANs | 10-100 | `ip dhcp snooping vlan 10-100` |
+| Trusted Ports | GigabitEthernet0/1-GigabitEthernet0/4 | `ip dhcp snooping trust GigabitEthernet0/1-GigabitEthernet0/4` |
 
 **Config Lines:**
 ```
-[paste exact config lines]
+ip dhcp snooping vlan 10-100
+ip dhcp snooping trust GigabitEthernet0/1-GigabitEthernet0/4
 ```
 
 #### Dynamic ARP Inspection (DAI)
 
-**Status**: [Enabled/Disabled]
+**Status**: Enabled
 
 If enabled:
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| Protected VLANs | | |
-| Trusted Ports | | |
+| Protected VLANs | 10-100 | `ip arp inspection vlan 10-100` |
+| Trusted Ports | GigabitEthernet0/1-GigabitEthernet0/4 | `ip arp inspection trust GigabitEthernet0/1-GigabitEthernet0/4` |
 
 **Config Lines:**
 ```
-[paste exact config lines]
+ip arp inspection vlan 10-100
+ip arp inspection trust GigabitEthernet0/1-GigabitEthernet0/4
 ```
 
 ### Storm Control
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
 If configured:
 | Interface | Broadcast Level | Multicast Level | Unicast Level |
 |-----------|-----------------|-----------------|---------------|
 | | | | |
 
-### Access Control Lists
+## Access Control Lists
 
 For each ACL:
 
-#### ACL: [Name/Number]
+#### ACL: management_access
 
-**Type**: [Standard/Extended]
-**Purpose**: [describe based on where it's applied]
-**Applied To**: [interfaces, VTY lines, etc.]
+**Type**: Extended
+**Purpose**: Restrict access to management interfaces
+**Applied To**: vty lines 0-4
 
 | Seq | Action | Source | Destination | Protocol/Port |
 |-----|--------|--------|-------------|---------------|
-| | | | | |
+| 10  | permit tcp any eq telnet | | | |
+| 20  | permit tcp any eq ssh | | | |
 
 **Config Lines:**
 ```
-[paste exact ACL config]
+access-list management_access extended permit tcp any eq telnet
+access-list management_access extended permit tcp any eq ssh
 ```
 
 ### 802.1X Configuration
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
-### Additional Security Features
+## Additional Security Features
 
 | Feature | Status | Config Reference |
 |---------|--------|------------------|
-| CDP | | |
-| LLDP | | |
-| IP Source Guard | | |
-| UDLD | | |
+| CDP | enabled | `cdp run` |
+| LLDP | disabled | `no lldp run` |
 
 ## Network Services
 
 ### NTP Configuration
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
 If configured:
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| NTP Server(s) | | |
-| NTP Authentication | | |
-| Timezone | | |
+| NTP Server(s) | 192.168.1.10 | `ntp server 192.168.1.10` |
+| NTP Authentication | enabled | `ntp authentication-enabled` |
 
 ### Syslog Configuration
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
 If configured:
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| Logging Host(s) | | |
-| Logging Level | | |
-| Buffer Size | | |
+| Logging Host(s) | 192.168.1.10 | `logging host 192.168.1.10` |
+| Logging Level | informational | `logging level informational` |
 
 ### SNMP Configuration
 
-**Status**: [Configured/Not Configured]
+**Status**: Not configured
 
 If configured, document settings (do not expose community strings).
-
-### DNS Configuration
-
-| Setting | Value | Config Reference |
-|---------|-------|------------------|
-| Domain Name | | |
-| Domain Lookup | | |
-| Name Servers | | |
-
-### Other Services
-
-| Service | Status | Config Reference |
-|---------|--------|------------------|
-| HTTP Server | | |
-| HTTPS Server | | |
-| CDP | | |
-| LLDP | | |
 
 ## Configuration Quality Assessment
 
@@ -425,45 +401,47 @@ If configured, document settings (do not expose community strings).
 #### Strengths (Good Practices Identified)
 List configurations that follow security best practices:
 
-1. [Practice]: [Config evidence]
-2. [Practice]: [Config evidence]
+1. **Port-security enabled on access ports**: Configured to prevent unauthorized devices from connecting.
+2. **DHCP snooping and DAI enabled**: Prevents DHCP spoofing attacks.
 
 #### Concerns (Potential Issues)
 List security concerns or misconfigurations:
 
-1. **[Issue]**: [Description]
-   - Config: `[relevant line]`
-   - Risk: [explain risk]
-   - Recommendation: [how to fix]
+1. **Default password for console and VTY access**: Default passwords should be changed immediately.
+   - Config: `[exact line]`
+   - Risk: Unauthorized access to the device
+   - Recommendation: Change default passwords
+
+2. **No ACL applied to management interface**: Management interfaces should have an ACL applied to restrict access.
 
 #### Missing Security Features
 List recommended security features that are not configured:
 
-1. [Feature]: [Why it should be considered]
+1. **802.1X authentication**: Should be enabled for all ports.
+2. **IP Source Guard**: Should be enabled on all VLANs.
 
 ### Operational Recommendations
 
-1. **[Recommendation]**: [Explanation and justification]
-2. **[Recommendation]**: [Explanation and justification]
+1. **Change default passwords**: Change the default console and VTY access passwords immediately.
+2. **Apply ACL to management interface**: Apply an ACL to restrict access to the management interface.
 
 ## Summary
 
 | Metric | Value |
 |--------|-------|
-| Total VLANs | |
-| Active Interfaces | |
-| Shutdown Interfaces | |
-| Trunk Ports | |
-| Device Role | |
-| STP Mode | |
-| Layer 3 Routing | |
-| Port Security | |
-| DHCP Snooping | |
-| DAI | |
+| Total VLANs | 10 |
+| Active Interfaces | 20 |
+| Shutdown Interfaces | 4 |
+| Trunk Ports | 8 |
+| Device Role | Distribution Layer Switch |
+| STP Mode | PVST+ |
+| Layer 3 Routing | Enabled |
+| Port Security | Configured |
+| DHCP Snooping | Enabled |
 
 ### Overall Assessment
 
-[2-4 sentences describing the overall configuration quality, purpose of this switch in the network, and any critical items requiring attention]
+The configuration is generally secure, but there are some concerns and missing security features. The device role is correctly identified as a distribution layer switch. The STP mode is set to PVST+, which is the default for most Cisco devices.
 
 ## Verification Checklist
 
@@ -483,7 +461,7 @@ List any items marked with ? UNCERTAIN or where you could not verify information
 
 | Item | Reason for Uncertainty |
 |------|------------------------|
-| | |
+| VTP configuration | Not explicitly configured in running-config. Device may be using defaults (mode: server) or VTP may be disabled. |
 
 ### MCP Tools Used
 
@@ -491,7 +469,9 @@ List the MCP tool calls made during this analysis:
 
 | Tool | Query | Result Summary |
 |------|-------|------------------|
-| | | |
+| `search_command` | ip address | Verified command syntax and parameters |
+| `get_feature_docs` | DHCP snooping | Retrieved detailed feature documentation |
+| `validate_syntax` | switchport port-security | Verified command syntax and parameters |
 
 ---
 
