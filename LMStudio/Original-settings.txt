@@ -1,0 +1,3 @@
+Temperature: 0.8
+Top K: 40
+Top P: 95
