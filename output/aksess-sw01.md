@@ -1,238 +1,500 @@
-# Switch Configuration Documentation: aksess-sw01.txt
+# Switch Configuration Documentation: [Extract hostname from config]
 
 ## Overview
-- **Hostname**: aksess-sw01
-- **IOS Version**: 12.2(37)SE1
-- **Configuration Purpose**: This switch appears to be a core layer device, acting as a management station and providing access to VLANs.
-- **Last Modified**: Not explicitly stated in the configuration file
-- **Domain Name**: krister.local
 
-## Device Information
-- **Model**: Not explicitly stated in the configuration file
-- **System Image**: The system image is 12.2(37)SE1, which is a standard Cisco IOS release.
-- **Serial Number**: Not available
-- **Hardware Details**: The switch has multiple FastEthernet and GigabitEthernet interfaces.
+| Field | Value | Confidence |
+|-------|-------|------------|
+| **Hostname** | [from config] | ✓ |
+| **IOS Version** | [from config] | ✓ |
+| **Domain Name** | [from config or "Not configured"] | |
+| **Device Role** | [Access/Distribution/Core] | [~ INFERRED with evidence] |
+| **Configuration Date** | [if available or "Not available"] | |
+
+### Device Role Analysis
+
+**Determined Role**: [Access/Distribution/Core] Layer Switch
+
+**Supporting Evidence:**
+- Evidence 1: [specific config line or feature]
+- Evidence 2: [specific config line or feature]
+- Evidence 3: [specific config line or feature]
+
+**Confidence**: [High/Medium/Low]
 
 ## Management & Access
 
-### Management Interfaces
-The management VLAN (VLAN 90) has an IP address of 10.90.0.11/24, which is the default gateway for this network segment.
+### Management Interface
 
-- **Management VLAN and IP addressing**:
-  - VLAN 90: Management SVI with IP address 10.90.0.11/24
-  - Default gateway configuration: `ip default-gateway 10.90.0.254`
-  - Management protocols enabled: SSH version 2 is supported (`ip ssh version 2`)
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Management VLAN | | |
+| IP Address | | |
+| Subnet Mask | | |
+| Default Gateway | | |
 
-### Access Control & Security
+**Config Lines:**
+```
+[paste exact config lines]
+```
+
+### Remote Access Configuration
 
 #### Console Access
-- **Console Access**: The console line has authentication set to the local database (`login authentication console`).
+- **Authentication**: [method] ✓
+- **Config**: `[exact line]`
 
-#### VTY Access
-- **VTY Access**:
-  - Line configuration: `line vty 0 4`
-  - Access class restrictions: `access-class MGMT-MGMT in`
-  - Transport protocols allowed: SSH is enabled (`transport input ssh`)
-  - Enable password status and encryption level: Not explicitly stated in the configuration file
+#### VTY Access  
+- **Lines Configured**: [range]
+- **Transport Input**: [protocols allowed]
+- **Access Control**: [ACL name if applied]
+- **Authentication**: [method]
 
-#### AAA Configuration
-- **AAA Configuration**: TACACS+ is configured for authentication, authorization, and accounting. The server host is set to `10.91.0.10` with a key of `KompleksNoekkel`.
+**Config Lines:**
+```
+[paste exact config lines]
+```
 
-### Login Banners
-- **Login Banners**: A login banner is configured (`banner login ^CUnauthorized access prohibited.^C`).
+#### SSH Configuration
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| SSH Version | | |
+| SSH Timeout | | |
 
-#### Management Access Lists
-- **Management Access Lists**:
-  - The management ACL (MGMT-MGMT) allows IP addresses within the ranges `10.90.0.0/24` and `10.91.0.0/24`.
+### AAA Configuration
+
+**Status**: [Configured/Not Configured]
+
+If configured:
+- **Authentication Methods**: 
+- **Authorization Methods**:
+- **Accounting Methods**:
+- **TACACS+/RADIUS Servers**:
+
+**Config Lines:**
+```
+[paste exact config lines]
+```
+
+### Login Banner
+
+**Status**: [Configured/Not Configured]
+
+If configured, describe purpose (do not reproduce full banner text if lengthy).
+
+### Management Access Lists
+
+For each ACL applied to management access:
+
+**ACL Name**: [name]
+**Applied To**: [vty lines, management interface, etc.]
+**Purpose**: [brief description]
+**Rules Summary**:
+| Action | Source | Description |
+|--------|--------|-------------|
+| | | |
+
+**Config Lines:**
+```
+[paste exact config lines]
+```
 
 ## VLANs
 
-### VLAN Database
+### VLAN Summary
 
-| VLAN ID | Name        | Purpose/Description |
-|---------|-------------|---------------------|
-| 11      |             |                     |
-| 12      |             |                     |
-| 90      | Management  | Management SVI     |
+**Total VLANs Referenced in Config**: [count - verify manually]
+
+| VLAN ID | Name | Purpose | Config Reference |
+|---------|------|---------|------------------|
+| | | | |
+
+**Note**: Only list VLANs that appear in the configuration (in interface configs, STP configs, trunk allowed lists, etc.)
 
 ### VLAN Interfaces (SVIs)
 
-#### VLAN 11 Interface
-- **VLAN 11 Interface**:
-  - IP Address: Not configured
-  - Description: Not provided
-  - DHCP Helper: Not configured
-  - HSRP/VRRP: Not configured
+For each SVI configured:
 
-#### VLAN 12 Interface
-- **VLAN 12 Interface**:
-  - IP Address: Not configured
-  - Description: Not provided
-  - DHCP Helper: Not configured
-  - HSRP/VRRP: Not configured
+#### VLAN [ID] Interface
 
-#### VLAN 90 Interface
-- **VLAN 90 Interface**:
-  - IP Address: `10.90.0.11/24`
-  - Description: Management SVI
-  - DHCP Helper: Not configured
-  - HSRP/VRRP: Not configured
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| IP Address | | |
+| Subnet Mask | | |
+| Description | | |
+| Status | | |
+| DHCP Helper | | |
+| HSRP/VRRP | | |
+| ACL Applied | | |
+
+**Config Lines:**
+```
+[paste exact config lines]
+```
 
 ### VTP Configuration
-- **VTP Mode**: This switch is not participating in VTP, as there are no VTP-related configuration statements.
-- **VTP Domain**: Not configured
-- **VTP Version**: Not configured
-- **Analysis**: Since this switch is not participating in VTP, it's recommended to configure a domain name and enable VTP for centralized management.
+
+**Status**: [Configured/Not Configured/Disabled]
+
+If configured:
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| VTP Mode | | |
+| VTP Domain | | |
+| VTP Version | | |
+
+If not explicitly configured, state: "VTP not explicitly configured in running-config. Device may be using defaults (mode: server) or VTP may be disabled."
 
 ## Physical Interfaces
 
 ### Interface Summary
 
-| Interface | Description      | Mode     | VLAN/Trunk | Speed/Duplex | Status    | Special Features       |
-|-----------|------------------|----------|------------|--------------|-----------|------------------------|
-| F0/1     | PC4-Access port  | Access   | 11         |             | Up        | Port Security, STP    |
-| F0/2     | PC5-Access port  | Access   | 12         |             | Up        | Port Security, STP    |
-| F0/3     | Management-PC   | Access   | 90         |             | Up        |                        |
-| G0/1     | dis-venstre-sw01 | Trunk    | 666 (Native) | Gigabit     | Up        | PortFast, BPDUGuard    |
-| F0/4-F0/23| Unused Ports    | Access   | Shutdown   |             | Down      |                        |
+**Total Interfaces**: [count]
+**Active Interfaces**: [count] 
+**Shutdown Interfaces**: [count]
+**Trunk Interfaces**: [count]
+**Access Interfaces**: [count]
+
+| Interface | Description | Mode | VLAN(s) | Status | Security Features |
+|-----------|-------------|------|---------|--------|-------------------|
+| | | | | | |
+
+**Verification**: Ensure counts match the table entries.
 
 ### Detailed Interface Configurations
 
-#### FastEthernet0/1
-- **Description**: PC4-Access port
-- **Mode**: Access
-- **Configuration Details**:
-  - `switchport access vlan 11`
-  - `ip dhcp snooping limit rate 15`
+Document each interface with non-default configuration:
 
-#### FastEthernet0/2
-- **Description**: PC5-Access port
-- **Mode**: Access
-- **Configuration Details**:
-  - `switchport access vlan 12`
-  - `ip dhcp snooping limit rate 15`
+#### [Interface Name]
 
-#### FastEthernet0/3
-- **Description**: Management-PC Access port
-- **Mode**: Access
-- **Configuration Details**:
-  - `switchport access vlan 90`
+**Description**: [from config or "None"]
+**Operational Mode**: [Access/Trunk/Dynamic]
+**Admin Status**: [No shutdown/Shutdown]
+
+| Configuration | Value | Config Line |
+|---------------|-------|-------------|
+| | | |
+
+**Full Config Block:**
+```
+[paste complete interface config]
+```
+
+**Analysis**: [Brief explanation of this interface's purpose and configuration]
+
+### Trunk Port Configuration
+
+For each trunk port:
+
+#### [Interface Name] - Trunk
+
+| Setting | Value | Config Line |
+|---------|-------|-------------|
+| Encapsulation | | |
+| Native VLAN | | |
+| Allowed VLANs | | |
+| DTP Mode | | |
+
+**Security Considerations**: [Note if native VLAN is default, if DTP is enabled, etc.]
+
+### Unused Interfaces
+
+**Count**: [number] interfaces in shutdown state
+
+**Shutdown Interfaces**: [list or range, e.g., F0/4-F0/24, G0/2]
+
+**Security Assessment**: [Are unused ports properly secured?]
 
 ## Port-Channel / EtherChannel
 
-Not configured.
+**Status**: [Configured/Not Configured]
+
+If configured, for each port-channel:
+
+#### Port-Channel [ID]
+
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Member Interfaces | | |
+| Mode | | |
+| Load Balance Method | | |
 
 ## Routing Configuration
 
-### Routing Protocol
-No routing protocol is enabled on this switch.
+### Layer 3 Capability
+
+**Inter-VLAN Routing**: [Enabled/Disabled]
+**Routing Protocol**: [None/OSPF/EIGRP/RIP/BGP/Static Only]
+
+### Default Gateway
+
+| Setting | Value | Config Line |
+|---------|-------|-------------|
+| Default Gateway | | |
 
 ### Static Routes
-No static routes are defined.
 
-### Default Route
-- **Default Route**: The default route points to the next hop at `10.90.0.254`.
+**Status**: [Configured/Not Configured]
 
-### Inter-VLAN Routing
-- **Status**: This switch does not appear to be configured for inter-VLAN routing, as no router-on-a-stick configuration is present.
-- **Method**: Not applicable
+If configured:
+| Destination | Mask | Next-Hop | Config Line |
+|-------------|------|----------|-------------|
+| | | | |
+
+### Dynamic Routing
+
+**Status**: [Not Configured] or document fully if present
 
 ## Spanning Tree Protocol
 
 ### STP Configuration
-- **Mode**: PVST+ (default)
-- **Root Bridge**: The root bridge is locally calculated based on the priority and MAC address of this switch.
 
-### STP Features
-- **PortFast**: Enabled (`spanning-tree portfast`) on all interfaces except trunk ports.
-- **BPDU Guard**: Enabled (`spanning-tree bpduguard enable`) for all access ports.
-- **Root Guard**: Not configured.
-- **Loop Guard**: Not configured.
-- **UDLD**: Not configured.
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| STP Mode | | |
+| Priority | | |
+| Root Bridge | | |
 
-## High Availability & Redundancy
+**Config Lines:**
+```
+[paste STP config lines]
+```
 
-### FHRP Configuration (HSRP/VRRP/GLBP)
-Not configured.
+### STP Security Features
 
-### Stack Configuration
-This switch does not appear to be part of a stack configuration.
+| Feature | Status | Interfaces | Config Reference |
+|---------|--------|------------|------------------|
+| PortFast | | | |
+| BPDU Guard | | | |
+| Root Guard | | | |
+| Loop Guard | | | |
 
-### Redundant Links
-No redundant link configurations are present in the provided output.
+### Per-VLAN STP Settings
 
-## Quality of Service (QoS)
+If non-default priorities or settings exist:
 
-Not configured.
+| VLAN | Priority | Root Status |
+|------|----------|-------------|
+| | | |
 
 ## Security Features
 
 ### Port Security
-- **Port Security**: Enabled on FastEthernet0/1, FastEthernet0/2, and FastEthernet0/3.
-  - Maximum MAC addresses allowed: 16
-  - Violation actions configured: Restrict (`switchport port-security violation restrict`)
-  - Static MAC addresses: Two entries are specified for each interface.
+
+**Status**: [Configured/Not Configured]
+
+If configured:
+
+**Interfaces with Port Security**: [list]
+
+| Interface | Max MACs | Violation Action | Sticky MACs | Aging | Config Reference |
+|-----------|----------|------------------|-------------|-------|------------------|
+| | | | | | |
+
+**Note**: If max MACs not specified, default is 1.
+
+**Config Lines:**
+```
+[paste port-security config lines]
+```
 
 ### DHCP Security
-- **DHCP Snooping**: Enabled on VLANs 11, 12, and 90.
-  - Trusted ports: None
 
-## Storm Control
-- **Storm Control**: Broadcast threshold is set to level 1 (`storm-control broadcast level 1`) for all interfaces except the trunk port.
+#### DHCP Snooping
 
-### Access Control Lists (ACLs)
-Two ACLs are configured:
+**Status**: [Enabled/Disabled]
 
-#### Standard ACL MGMT-MGMT
-- **Purpose**: Filter management access based on IP address.
-- **Rules**:
-  - `permit 10.90.0.0/24`
-  - `permit 10.91.0.0/24`
-  - `deny any`
+If enabled:
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Protected VLANs | | |
+| Trusted Ports | | |
+| Rate Limiting | | |
+
+**Config Lines:**
+```
+[paste exact config lines]
+```
+
+#### Dynamic ARP Inspection (DAI)
+
+**Status**: [Enabled/Disabled]
+
+If enabled:
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Protected VLANs | | |
+| Trusted Ports | | |
+
+**Config Lines:**
+```
+[paste exact config lines]
+```
+
+### Storm Control
+
+**Status**: [Configured/Not Configured]
+
+If configured:
+| Interface | Broadcast Level | Multicast Level | Unicast Level |
+|-----------|-----------------|-----------------|---------------|
+| | | | |
+
+### Access Control Lists
+
+For each ACL:
+
+#### ACL: [Name/Number]
+
+**Type**: [Standard/Extended]
+**Purpose**: [describe based on where it's applied]
+**Applied To**: [interfaces, VTY lines, etc.]
+
+| Seq | Action | Source | Destination | Protocol/Port |
+|-----|--------|--------|-------------|---------------|
+| | | | | |
+
+**Config Lines:**
+```
+[paste exact ACL config]
+```
+
+### 802.1X Configuration
+
+**Status**: [Configured/Not Configured]
+
+### Additional Security Features
+
+| Feature | Status | Config Reference |
+|---------|--------|------------------|
+| CDP | | |
+| LLDP | | |
+| IP Source Guard | | |
+| UDLD | | |
 
 ## Network Services
 
-### DHCP Server/Relay
-Not configured.
+### NTP Configuration
 
-### NTP (Network Time Protocol)
-- **NTP Server**: An NTP server at `10.91.0.123` is configured with authentication key 15 (`ntp authenticate`).
-- **NTP Authentication**: Enabled (`ntp authentication-key 15 md5`).
+**Status**: [Configured/Not Configured]
 
-### SNMP (Simple Network Management Protocol)
-Not configured.
+If configured:
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| NTP Server(s) | | |
+| NTP Authentication | | |
+| Timezone | | |
 
-### Syslog
-- **Syslog Level**: Not explicitly stated in the configuration file
-- **Logging Hosts**: One syslog host at `10.91.0.10`
-- **Logging Buffer**: Not configured
+### Syslog Configuration
 
-## Best Practices Analysis
+**Status**: [Configured/Not Configured]
 
-### Good Practices Identified
-- PortFast and BPDU Guard are enabled to prevent loops on access ports.
-- DHCP snooping is enabled for VLANs 11, 12, and 90.
+If configured:
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Logging Host(s) | | |
+| Logging Level | | |
+| Buffer Size | | |
 
-### Potential Issues or Concerns
-- There are no VTP-related configuration statements; it's recommended to configure a domain name and enable VTP for centralized management.
-- No routing protocol is configured; consider enabling an IGP (Interior Gateway Protocol) for intra-VLAN routing.
-- The switch has multiple unused ports in shutdown state.
+### SNMP Configuration
 
-### Recommendations for Improvement
-1. **Configure VTP**: Enable VTP, set a domain name, and configure the version for centralized VLAN management.
-2. **Implement Routing**: Configure a routing protocol to enable intra-VLAN routing.
-3. **Secure Unused Ports**: Remove any unnecessary interfaces from service.
+**Status**: [Configured/Not Configured]
 
-## Configuration Summary
+If configured, document settings (do not expose community strings).
 
-- **Total VLANs**: 4
-- **Total Configured Interfaces**: 23 (active) + 1 (trunk)
-- **Routing**: Disabled (no routing protocol configured)
-- **Spanning Tree**: PVST+ with local root bridge calculation
-- **Key Features Enabled**:
-  - PortFast on access ports
-  - BPDU Guard for access ports
-  - DHCP snooping for VLANs 11, 12, and 90
-  - Storm control with broadcast threshold level 1
-- **Security Posture**: Good practices identified; consider implementing additional security features.
-- **Overall Assessment**: The configuration is generally well-maintained but lacks VTP and routing configurations.
+### DNS Configuration
+
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Domain Name | | |
+| Domain Lookup | | |
+| Name Servers | | |
+
+### Other Services
+
+| Service | Status | Config Reference |
+|---------|--------|------------------|
+| HTTP Server | | |
+| HTTPS Server | | |
+| CDP | | |
+| LLDP | | |
+
+## Configuration Quality Assessment
+
+### Security Posture
+
+#### Strengths (Good Practices Identified)
+List configurations that follow security best practices:
+
+1. [Practice]: [Config evidence]
+2. [Practice]: [Config evidence]
+
+#### Concerns (Potential Issues)
+List security concerns or misconfigurations:
+
+1. **[Issue]**: [Description]
+   - Config: `[relevant line]`
+   - Risk: [explain risk]
+   - Recommendation: [how to fix]
+
+#### Missing Security Features
+List recommended security features that are not configured:
+
+1. [Feature]: [Why it should be considered]
+
+### Operational Recommendations
+
+1. **[Recommendation]**: [Explanation and justification]
+2. **[Recommendation]**: [Explanation and justification]
+
+## Summary
+
+| Metric | Value |
+|--------|-------|
+| Total VLANs | |
+| Active Interfaces | |
+| Shutdown Interfaces | |
+| Trunk Ports | |
+| Device Role | |
+| STP Mode | |
+| Layer 3 Routing | |
+| Port Security | |
+| DHCP Snooping | |
+| DAI | |
+
+### Overall Assessment
+
+[2-4 sentences describing the overall configuration quality, purpose of this switch in the network, and any critical items requiring attention]
+
+## Verification Checklist
+
+Before finalizing this documentation, verify:
+
+- [ ] All VLAN counts match actual VLANs in config
+- [ ] All interface counts match actual interfaces
+- [ ] Every security feature documented has a config line reference
+- [ ] Device role determination includes specific evidence
+- [ ] No features are documented that don't exist in the config
+- [ ] Trusted ports for DHCP snooping and DAI are correctly identified
+- [ ] All ACLs are documented with their application points
+
+### Items Requiring Human Review
+
+List any items marked with ? UNCERTAIN or where you could not verify information:
+
+| Item | Reason for Uncertainty |
+|------|------------------------|
+| | |
+
+### MCP Tools Used
+
+List the MCP tool calls made during this analysis:
+
+| Tool | Query | Result Summary |
+|------|-------|------------------|
+| | | |
+
+---
+
+*Documentation generated from running-config analysis*
+*Configuration File: [filename]*
+*Analysis Date: [current date]*
