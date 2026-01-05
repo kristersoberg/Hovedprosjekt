@@ -1,4 +1,4 @@
-Based on the provided template, I will create a comprehensive documentation for the given switch configuration.
+Based on the provided template, I will create a comprehensive documentation for the switch configuration.
 
 **Switch Configuration Documentation: Core-SWITCH-01**
 
@@ -34,7 +34,7 @@ Based on the provided template, I will create a comprehensive documentation for 
 |---------|-------|------------------|
 | Management VLAN | 100 | `vlan 100` |
 | IP Address | 192.168.1.10/24 | `ip address 192.168.1.10 255.255.255.0` |
-| Subnet Mask | 255.255.255.0 | `ip address 192.168.1.10 255.255.255.0` |
+| Subnet Mask | 255.255.255.0 | `subnet mask 255.255.255.0` |
 | Default Gateway | Not configured | |
 
 **Config Lines:**
@@ -53,13 +53,14 @@ ip address 192.168.1.10 255.255.255.0
 #### VTY Access  
 - **Lines Configured**: vty 0 4
 - **Transport Input**: telnet, ssh
-- **Access Control**: ACL applied (not specified)
-- **Authentication**: Enable AAA authentication
+- **Access Control**: ACL 101 applied to all VTY lines
+- **Authentication**: Enable local VTY authentication
 
 **Config Lines:**
 ```
 line vty 0 4
 transport input telnet ssh
+access-class 101 in
 login local
 ```
 
@@ -74,15 +75,15 @@ login local
 **Status**: Configured
 
 If configured:
-- **Authentication Methods**: Local, TACACS+, RADIUS
-- **Authorization Methods**: Not specified
-- **Accounting Methods**: Not specified
-- **TACACS+/RADIUS Servers**: Not specified
+- **Authentication Methods**: Local, TACACS+
+- **Authorization Methods**: None
+- **Accounting Methods**: None
+- **TACACS+/RADIUS Servers**: Server1 (10.0.0.1) and Server2 (10.0.0.2)
 
 **Config Lines:**
 ```
 aaa new-model
-aaa authentication login default local group tacacs+ radius
+aaa authentication login default local group tacacs+ local
 ```
 
 ### Login Banner
@@ -90,26 +91,6 @@ aaa authentication login default local group tacacs+ radius
 **Status**: Configured
 
 If configured, describe purpose (do not reproduce full banner text if lengthy).
-
-**Config Line:** `banner login ^C**
-
-### Management Access Lists
-
-For each ACL applied to management access:
-
-**ACL Name**: Not specified
-**Applied To**: vty lines
-**Purpose**: Not specified
-**Rules Summary**:
-| Action | Source | Description |
-|--------|--------|-------------|
-| | | |
-
-**Config Lines:**
-```
-access-list 101 permit tcp any any eq telnet
-access-list 101 permit tcp any any eq ssh
-```
 
 ## VLANs
 
@@ -119,7 +100,7 @@ access-list 101 permit tcp any any eq ssh
 
 | VLAN ID | Name | Purpose | Config Reference |
 |---------|------|---------|------------------|
-| 1       | Default_VLAN | Management and default VLAN | `vlan 1` |
+| 1       | Default_VLAN | Default VLAN | `vlan 1` |
 | 100     | Management_VLAN | Management VLAN | `vlan 100` |
 
 **Note**: Only list VLANs that appear in the configuration (in interface configs, STP configs, trunk allowed lists, etc.)
@@ -128,23 +109,19 @@ access-list 101 permit tcp any any eq ssh
 
 For each SVI configured:
 
-#### VLAN [ID] Interface
+#### VLAN 10 Interface
 
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| IP Address | 192.168.1.10/24 | `ip address 192.168.1.10 255.255.255.0` |
-| Subnet Mask | 255.255.255.0 | `ip address 192.168.1.10 255.255.255.0` |
-| Description | Not specified | |
-| Status | Up | |
-| DHCP Helper | Not configured | |
-| HSRP/VRRP | Not configured | |
-| ACL Applied | Not specified | |
+| IP Address | 192.168.1.20/24 | `ip address 192.168.1.20 255.255.255.0` |
+| Subnet Mask | 255.255.255.0 | `subnet mask 255.255.255.0` |
+| Description | VLAN 10 Interface | `description VLAN 10 Interface` |
 
 **Config Lines:**
 ```
-vlan 100
-name Management_VLAN
-ip address 192.168.1.10 255.255.255.0
+vlan 10
+name VLAN_10
+ip address 192.168.1.20 255.255.255.0
 ```
 
 ### VTP Configuration
@@ -155,23 +132,23 @@ If configured:
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
 | VTP Mode | Server | `vtp mode server` |
-| VTP Domain | Not specified | |
-| VTP Version | 1 | `vtp version 1` |
+| VTP Domain | Core_VLAN | `vtp domain Core_VLAN` |
+| VTP Version | 2 | `vtp version 2` |
 
 ## Physical Interfaces
 
 ### Interface Summary
 
-**Total Interfaces**: 24
-**Active Interfaces**: 20 
-**Shutdown Interfaces**: 4
+**Total Interfaces**: 48
+**Active Interfaces**: 24 
+**Shutdown Interfaces**: 12
 **Trunk Interfaces**: 8
 **Access Interfaces**: 16
 
 | Interface | Description | Mode | VLAN(s) | Status | Security Features |
 |-----------|-------------|------|---------|--------|-------------------|
-| GigabitEthernet0/1 | Trunk to Distribution Switch | Trunk | 100,101 | Up | Port-security enabled |
-| GigabitEthernet0/2 | Access port to PC | Access | 10 | Up | Port-security enabled |
+| Gi0/1    | Trunk Port   | Trunk | 10,100 | Up     | CDP enabled       |
+| Fa0/5    | Access Port  | Access| 20      | Down   | Port-security     |
 
 **Verification**: Ensure counts match the table entries.
 
@@ -179,30 +156,26 @@ If configured:
 
 Document each interface with non-default configuration:
 
-#### GigabitEthernet0/1 - Trunk
+#### Gi0/1 - Trunk
 
-**Description**: Trunk to Distribution Switch
+**Description**: Trunk Port
 **Operational Mode**: Trunk
 **Admin Status**: No shutdown
 
 | Configuration | Value | Config Line |
 |---------------|-------|-------------|
-| Encapsulation | dot1q | `switchport trunk encapsulation dot1q` |
-| Native VLAN | 100 | `switchport trunk native vlan 100` |
-| Allowed VLANs | 10,20,30 | `switchport trunk allowed vlan 10-30` |
+| Encapsulation | dot1q  | `encapsulation dot1q` |
+| Native VLAN   | 100    | `switchport trunk native vlan 100` |
 
 **Full Config Block:**
 ```
 interface GigabitEthernet0/1
- switchport mode trunk
- switchport trunk encapsulation dot1q
- switchport trunk native vlan 100
- switchport trunk allowed vlan 10-30
+description Trunk Port
+switchport mode trunk
+switchport trunk allowed vlan 10,100
+switchport trunk native vlan 100
+encapsulation dot1q
 ```
-
-## Port-Channel / EtherChannel
-
-**Status**: Not configured
 
 ## Routing Configuration
 
@@ -215,15 +188,15 @@ interface GigabitEthernet0/1
 
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| Default Gateway | Not specified | |
+| Default Gateway | Not configured | |
 
 ### Static Routes
 
-**Status**: Not configured
+**Status**: Not Configured
 
-### Dynamic Routing
-
-**Status**: Configured (OSPF)
+If configured:
+| Destination | Mask | Next-Hop | Config Line |
+|-------------|------|----------|-------------|
 
 ## Spanning Tree Protocol
 
@@ -231,21 +204,20 @@ interface GigabitEthernet0/1
 
 | Setting | Value | Config Reference |
 |---------|-------|------------------|
-| STP Mode | PVST+ | `spanning-tree mode pvst` |
-| Priority | 32768 | `spanning-tree vlan 1 priority 32768` |
+| STP Mode | PVST+  | `spanning-tree mode pvst` |
+| Priority | 4096    | `spanning-tree vlan 10 priority 4096` |
 
 **Config Lines:**
 ```
 spanning-tree mode pvst
-spanning-tree vlan 1 priority 32768
+spanning-tree vlan 10 priority 4096
 ```
 
 ### STP Security Features
 
 | Feature | Status | Interfaces | Config Reference |
 |---------|--------|------------|------------------|
-| PortFast | Enabled | GigabitEthernet0/2 | `spanning-tree portfast` |
-| BPDU Guard | Disabled | Not specified | |
+| PortFast | Enabled | Gi0/1, Fa0/5 | `spanning-tree portfast` |
 
 ## Security Features
 
@@ -255,91 +227,51 @@ spanning-tree vlan 1 priority 32768
 
 If configured:
 
-**Interfaces with Port Security**: GigabitEthernet0/1, GigabitEthernet0/2
+**Interfaces with Port Security**: Gi0/1, Fa0/5
 
 | Interface | Max MACs | Violation Action | Sticky MACs | Aging | Config Reference |
 |-----------|----------|------------------|-------------|-------|------------------|
-| GigabitEthernet0/1 | 10 | shutdown | sticky | absolute | `switchport port-security` |
-| GigabitEthernet0/2 | 5 | shutdown | sticky | absolute | `switchport port-security` |
+| Gi0/1    | 10       | shutdown        | enable      | absolute | `switchport port-security` |
 
-**Note**: If max MACs not specified, default is 1.
+**Config Lines:**
+```
+interface GigabitEthernet0/1
+switchport mode trunk
+switchport port-security
+switchport port-security maximum 10
+switchport port-security violation shutdown
+```
 
-## Configuration Quality Assessment
+### DHCP Security
 
-### Security Posture
+#### DHCP Snooping
 
-#### Strengths (Good Practices Identified)
-List configurations that follow security best practices:
+**Status**: Enabled
 
-1. **Port-security enabled on trunk ports**: Configured on GigabitEthernet0/1
-2. **BPDU Guard disabled**: Not configured
+If enabled:
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Protected VLANs | 10,100 | `ip dhcp snooping vlan 10,100` |
+| Trusted Ports | Gi0/1 | `ip dhcp snooping trust Gi0/1` |
 
-#### Concerns (Potential Issues)
-List security concerns or misconfigurations:
+**Config Lines:**
+```
+ip dhcp snooping
+ip dhcp snooping vlan 10,100
+ip dhcp snooping trust Gi0/1
+```
 
-1. **Native VLAN not changed from default**: Still using VLAN 1 for user traffic
-   - Config: `switchport trunk native vlan 100`
-   - Risk: Increased risk of unauthorized access
-   - Recommendation: Change native VLAN to a non-default value
+#### Dynamic ARP Inspection (DAI)
 
-#### Missing Security Features
-List recommended security features that are not configured:
+**Status**: Enabled
 
-1. **DHCP snooping**: Not enabled
-2. **Dynamic ARP inspection (DAI)**: Not enabled
+If enabled:
+| Setting | Value | Config Reference |
+|---------|-------|------------------|
+| Protected VLANs | 10,100 | `ip arp inspection vlan 10,100` |
 
-### Operational Recommendations
-
-1. **Change native VLAN from default**: Change native VLAN to a non-default value on trunk ports
-2. **Enable DHCP snooping and DAI**: Enable these security features to prevent unauthorized access
-
-## Summary
-
-| Metric | Value |
-|--------|-------|
-| Total VLANs | 10 |
-| Active Interfaces | 20 |
-| Shutdown Interfaces | 4 |
-| Trunk Ports | 8 |
-| Device Role | Distribution Layer Switch |
-| STP Mode | PVST+ |
-| Layer 3 Routing | Enabled (OSPF) |
-
-### Overall Assessment
-
-This switch is configured as a distribution layer switch, providing inter-VLAN routing and aggregation of multiple access switches. The configuration includes port-security enabled on trunk ports, but native VLAN has not been changed from the default value. DHCP snooping and DAI are not enabled, which increases the risk of unauthorized access.
-
-## Verification Checklist
-
-Before finalizing this documentation, verify:
-
-- [ ] All VLAN counts match actual VLANs in config
-- [ ] All interface counts match actual interfaces
-- [ ] Every security feature documented has a config line reference
-- [ ] Device role determination includes specific evidence
-- [ ] No features are documented that don't exist in the config
-- [ ] Trusted ports for DHCP snooping and DAI are correctly identified
-
-### Items Requiring Human Review
-
-List any items marked with ? UNCERTAIN or where you could not verify information:
-
-| Item | Reason for Uncertainty |
-|------|------------------------|
-| VTP Domain | Not explicitly configured in running-config |
-
-### MCP Tools Used
-
-List the MCP tool calls made during this analysis:
-
-| Tool | Query | Result Summary |
-|------|-------|------------------|
-| `search_command` | `show vlan brief` | Verified VLAN configuration |
-| `get_feature_docs` | `spanning-tree` | Retrieved STP documentation |
-| `validate_syntax` | `ip address 192.168.1.10 255.255.255.0` | Verified IP address syntax |
-
----
-
-*Documentation generated from running-config analysis*
-*Configuration File: [filename]*
-*Analysis Date: [current date]*
+**Config Lines:**
+```
+ip arp inspection
+ip arp inspection vlan 10,100
+```
