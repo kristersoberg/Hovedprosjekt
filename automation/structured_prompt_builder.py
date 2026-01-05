@@ -13,16 +13,14 @@ from datetime import datetime
 class StructuredPromptBuilder:
     """Build LLM prompts from structured configuration data."""
 
-    def __init__(self, structured_data: Dict[str, Any], mcp_docs: str = ""):
+    def __init__(self, structured_data: Dict[str, Any]):
         """
         Initialize with structured config data.
 
         Args:
             structured_data: Parsed configuration data from config_parser.py
-            mcp_docs: Optional MCP documentation to include
         """
         self.data = structured_data
-        self.mcp_docs = mcp_docs
 
     def build_prompt(self) -> str:
         """Build complete prompt for LLM."""
@@ -71,9 +69,6 @@ You are provided with STRUCTURED, PRE-PARSED configuration data. This data has b
         prompt += self._format_security()
         prompt += "\n\n### Network Services (✓ ALL VERIFIED)\n"
         prompt += self._format_services()
-
-        if self.mcp_docs:
-            prompt += f"\n\n## CISCO DOCUMENTATION REFERENCE\n\n{self.mcp_docs}\n"
 
         prompt += "\n\n---\n\n"
         prompt += self._build_task_instructions()
@@ -385,22 +380,31 @@ Generate comprehensive Markdown documentation for this network device. Use the S
 
 2. **Hostname is: {hostname}** - Use this exact hostname throughout the document. Do NOT change it.
 
-3. **Mark confidence levels**:
+3. **MENTION ALL DATA POINTS** - This is CRITICAL for documentation completeness:
+   - If a domain name is present in device_info, you MUST mention it
+   - If VLANs are listed, you MUST mention ALL VLAN IDs (not just some of them)
+   - If interface counts are provided (total, active, shutdown), you MUST include these statistics
+   - If security features list specific VLANs (e.g., DHCP snooping VLANs), you MUST mention which VLANs
+   - If CDP status is shown as disabled, you MUST explicitly state "CDP is disabled"
+   - DO NOT skip any configuration items present in the structured data
+   - DO NOT assume the reader knows implicit details - state everything explicitly
+
+4. **Mark confidence levels**:
    - ✓ VERIFIED - for any data from the structured data above
    - ~ INFERRED - for your analysis (device role, recommendations, security assessment)
    - ? UNCERTAIN - for anything not available in the data
 
-4. **Device role determination** - Analyze the configuration to determine if this is an Access, Distribution, or Core layer switch:
+5. **Device role determination** - Analyze the configuration to determine if this is an Access, Distribution, or Core layer switch:
    - Access layer: Many access ports, port security, no routing
    - Distribution layer: VLANs with IPs (SVIs), inter-VLAN routing, aggregation
    - Core layer: High-speed interfaces, routing protocols, minimal VLANs
 
-5. **Security assessment** - Based on the structured data, identify:
+6. **Security assessment** - Based on the structured data, identify:
    - Good practices (SSH-only access, DHCP snooping, port security, etc.)
    - Security gaps (missing features that should be configured)
    - Recommendations for improvement
 
-6. **Include config line references** - When documenting features, cite the exact config lines from the raw configuration section
+7. **Include config line references** - When documenting features, cite the exact config lines from the raw configuration section
 
 ### Document Structure:
 
@@ -409,24 +413,33 @@ Generate comprehensive Markdown documentation for this network device. Use the S
 
 ## Device Information
 [Use device_info from structured data]
+- MUST include: hostname, IOS version, domain name (if present), config register
 
 ## Management & Access
 [Use management config from structured data]
+- MUST include: management IP, gateway, SSH version, VTY settings
 
 ## AAA Configuration
 [Use aaa from structured data]
 
 ## VLANs
 [Use vlans from structured data]
+- MUST list ALL VLAN IDs explicitly (e.g., "VLANs configured: 11, 12, 90, 666")
+- Include total count
 
 ## Physical Interfaces
-[Use interfaces from structured data - include summary statistics and key interfaces]
+[Use interfaces from structured data]
+- MUST include summary statistics: total count, active count, shutdown count
+- List key active interfaces with their configurations
 
 ## Spanning Tree Protocol
 [Use spanning_tree from structured data]
 
 ## Security Features
 [Use security from structured data]
+- MUST specify which VLANs have DHCP snooping enabled (e.g., "VLANs 11, 12")
+- MUST explicitly state CDP status (enabled/disabled)
+- Include DAI, port security, IP source guard status
 
 ## Network Services
 [Use services from structured data]

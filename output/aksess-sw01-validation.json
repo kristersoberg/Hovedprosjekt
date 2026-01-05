@@ -1,65 +1,65 @@
 {
   "total_checks": 25,
-  "passed_checks": 21,
-  "failed_checks": 4,
-  "accuracy_percentage": 84.0,
-  "hallucination_count": 4,
+  "passed_checks": 19,
+  "failed_checks": 6,
+  "accuracy_percentage": 76.0,
+  "hallucination_count": 6,
   "warnings": [],
   "results": [
     {
       "field": "Hostname",
       "expected": "aksess-sw01",
-      "found": "Hostname: aksess-sw01",
+      "found": "# Network Device Documentation: aksess-sw01",
       "passed": true,
-      "location": "Line with: Hostname: aksess-sw01...",
+      "location": "Line with: # Network Device Documentation: aksess-sw01...",
       "error": null
     },
     {
       "field": "IOS Version",
       "expected": "12.2(37)SE1",
-      "found": "IOS version 12.2(37)SE1",
+      "found": "IOS version `12.2(37)SE1",
       "passed": true,
-      "location": "Line with: IOS version 12.2(37)SE1...",
+      "location": "Line with: IOS version `12.2(37)SE1...",
       "error": null
     },
     {
       "field": "Domain Name",
       "expected": "krister.local",
-      "found": "Domain Name: krister.local",
-      "passed": true,
-      "location": "Line with: Domain Name: krister.local...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'krister.local' not found in documentation"
     },
     {
       "field": "Management IP Address",
       "expected": "10.90.0.11",
-      "found": "IP address 10.90.0.11",
+      "found": "IP address `10.90.0.11",
       "passed": true,
-      "location": "Line with: IP address 10.90.0.11...",
+      "location": "Line with: IP address `10.90.0.11...",
       "error": null
     },
     {
       "field": "Default Gateway",
       "expected": "10.90.0.254",
-      "found": "Gateway: 10.90.0.254",
+      "found": "gateway `10.90.0.254",
       "passed": true,
-      "location": "Line with: Gateway: 10.90.0.254...",
+      "location": "Line with: gateway `10.90.0.254...",
       "error": null
     },
     {
       "field": "SSH Version",
       "expected": "2",
-      "found": "SSH is enabled with version 2",
+      "found": "SSH Configuration**: SSH version 2",
       "passed": true,
-      "location": "Line with: SSH is enabled with version 2...",
+      "location": "Line with: SSH Configuration**: SSH version 2...",
       "error": null
     },
     {
       "field": "VTY Transport Input",
       "expected": "ssh",
-      "found": "transport input set to ssh",
+      "found": "transport input set to SSH",
       "passed": true,
-      "location": "Line with: transport input set to ssh...",
+      "location": "Line with: transport input set to SSH...",
       "error": null
     },
     {
@@ -115,7 +115,7 @@
       "expected": "26",
       "found": "26",
       "passed": true,
-      "location": "Line with: Total Interfaces: 26...",
+      "location": "Line with: 26 interfaces...",
       "error": null
     },
     {
@@ -129,10 +129,10 @@
     {
       "field": "Shutdown Interfaces",
       "expected": "22",
-      "found": "22",
-      "passed": true,
-      "location": "Line with: Shutdown: 22...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 22 not found in documentation"
     },
     {
       "field": "Interface FastEthernet0/1",
@@ -177,9 +177,9 @@
     {
       "field": "Dynamic ARP Inspection",
       "expected": "enabled",
-      "found": "ARP inspection is also enabled",
+      "found": "ARP inspection is enabled",
       "passed": true,
-      "location": "Line with: ARP inspection is also enabled...",
+      "location": "Line with: ARP inspection is enabled...",
       "error": null
     },
     {
@@ -193,17 +193,17 @@
     {
       "field": "NTP Server 10.91.0.123",
       "expected": "10.91.0.123",
-      "found": "NTP is enabled with servers at IP address 10.91.0.123",
+      "found": "NTP**: NTP is enabled with a server at IP address `10.91.0.123",
       "passed": true,
-      "location": "Line with: NTP is enabled with servers at IP address 10.91.0....",
+      "location": "Line with: NTP**: NTP is enabled with a server at IP address ...",
       "error": null
     },
     {
       "field": "Syslog Server 10.91.0.10",
       "expected": "10.91.0.10",
-      "found": "Syslog is also enabled with servers at IP address 10.91.0.10",
+      "found": "Syslog**: Syslog is enabled with a server at IP address `10.91.0.10",
       "passed": true,
-      "location": "Line with: Syslog is also enabled with servers at IP address ...",
+      "location": "Line with: Syslog**: Syslog is enabled with a server at IP ad...",
       "error": null
     }
   ]

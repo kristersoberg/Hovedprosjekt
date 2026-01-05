@@ -7,13 +7,11 @@
     "max_tokens": 4000,
     "timeout": 300000
   },
-  "mcp": {
-    "server_path": "./mcp_server/server-v2.py",
+  "logging": {
     "enabled": true,
-    "debug": true,
-    "max_prompt_size": 50000,
-    "max_commands": 15,
-    "max_features": 10
+    "log_dir": "./logs",
+    "verbose": false,
+    "debug": false
   },
   "git": {
     "enabled": true,

@@ -40,17 +40,31 @@ class CiscoConfigParser:
             self.load_config()
 
         return {
-            "device_info": self._extract_device_info(),
-            "management": self._extract_management_config(),
-            "aaa": self._extract_aaa_config(),
-            "vlans": self._extract_vlans(),
-            "interfaces": self._extract_interfaces(),
-            "routing": self._extract_routing(),
-            "spanning_tree": self._extract_spanning_tree(),
-            "security": self._extract_security_features(),
-            "services": self._extract_network_services(),
+            "device_info": self._extract_with_fallback(self._extract_device_info, "device_info"),
+            "management": self._extract_with_fallback(self._extract_management_config, "management"),
+            "aaa": self._extract_with_fallback(self._extract_aaa_config, "aaa"),
+            "vlans": self._extract_with_fallback(self._extract_vlans, "vlans"),
+            "interfaces": self._extract_with_fallback(self._extract_interfaces, "interfaces"),
+            "routing": self._extract_with_fallback(self._extract_routing, "routing"),
+            "spanning_tree": self._extract_with_fallback(self._extract_spanning_tree, "spanning_tree"),
+            "security": self._extract_with_fallback(self._extract_security_features, "security"),
+            "services": self._extract_with_fallback(self._extract_network_services, "services"),
+            "qos": self._extract_with_fallback(self._extract_qos_config, "qos"),
+            "stacking": self._extract_with_fallback(self._extract_stacking_config, "stacking"),
             "raw_config": self.config_text
         }
+
+    def _extract_with_fallback(self, extraction_func, section_name: str) -> Dict[str, Any]:
+        """
+        Wrapper to catch exceptions in individual extraction functions.
+        Ensures parser doesn't crash on unexpected config variations.
+        """
+        try:
+            return extraction_func()
+        except Exception as e:
+            print(f"   Warning: Failed to extract {section_name}: {e}")
+            # Return empty structure instead of crashing
+            return {}
 
     def _extract_device_info(self) -> Dict[str, Any]:
         """Extract basic device information."""
@@ -708,11 +722,12 @@ class CiscoConfigParser:
         return routing
 
     def _extract_spanning_tree(self) -> Dict[str, Any]:
-        """Extract spanning tree configuration."""
+        """Extract spanning tree configuration (PVST+, Rapid-PVST+, MST)."""
         stp = {
             "mode": None,
             "vlan_priorities": {},
-            "global_features": []
+            "global_features": [],
+            "mst_configuration": None  # For MST mode
         }
 
         # STP mode
@@ -722,7 +737,7 @@ class CiscoConfigParser:
             if match:
                 stp["mode"] = match.group(1)
 
-        # Per-VLAN priorities
+        # Per-VLAN priorities (PVST/Rapid-PVST)
         priority_objs = self.parse.find_objects(r'^spanning-tree\s+vlan\s+.+\s+priority\s+')
         for obj in priority_objs:
             match = re.search(r'^spanning-tree\s+vlan\s+(.+?)\s+priority\s+(\d+)', obj.text)
@@ -733,12 +748,51 @@ class CiscoConfigParser:
                 for vlan_id in vlan_ids:
                     stp["vlan_priorities"][vlan_id] = priority
 
+        # MST Configuration
+        mst_config_obj = self.parse.find_objects(r'^spanning-tree\s+mst\s+configuration')
+        if mst_config_obj:
+            stp["mst_configuration"] = {
+                "name": None,
+                "revision": None,
+                "instances": {}
+            }
+
+            # MST region name
+            name_obj = mst_config_obj[0].re_search_children(r'^\s+name\s+')
+            if name_obj:
+                match = re.search(r'^\s+name\s+(.+)', name_obj[0].text)
+                if match:
+                    stp["mst_configuration"]["name"] = match.group(1).strip()
+
+            # MST revision
+            rev_obj = mst_config_obj[0].re_search_children(r'^\s+revision\s+')
+            if rev_obj:
+                match = re.search(r'^\s+revision\s+(\d+)', rev_obj[0].text)
+                if match:
+                    stp["mst_configuration"]["revision"] = int(match.group(1))
+
+        # MST instance priorities
+        mst_priority = self.parse.find_objects(r'^spanning-tree\s+mst\s+\d+\s+priority\s+')
+        if mst_priority and stp["mst_configuration"]:
+            for obj in mst_priority:
+                match = re.search(r'^spanning-tree\s+mst\s+(\d+)\s+priority\s+(\d+)', obj.text)
+                if match:
+                    instance = int(match.group(1))
+                    priority = int(match.group(2))
+                    stp["mst_configuration"]["instances"][instance] = {"priority": priority}
+
         # Global STP features
         if self.parse.find_objects(r'^spanning-tree\s+portfast\s+default'):
             stp["global_features"].append("portfast-default")
 
         if self.parse.find_objects(r'^spanning-tree\s+extend\s+system-id'):
             stp["global_features"].append("extend-system-id")
+
+        if self.parse.find_objects(r'^spanning-tree\s+uplinkfast'):
+            stp["global_features"].append("uplinkfast")
+
+        if self.parse.find_objects(r'^spanning-tree\s+backbonefast'):
+            stp["global_features"].append("backbonefast")
 
         return stp
 
@@ -909,6 +963,122 @@ class CiscoConfigParser:
                 services["dns"]["name_servers"].append(match.group(1))
 
         return services
+
+    def _extract_qos_config(self) -> Dict[str, Any]:
+        """
+        Extract QoS/CoS configuration (common on distribution/core switches).
+
+        Returns:
+            Dictionary containing QoS configuration
+        """
+        qos = {
+            "enabled": False,
+            "class_maps": [],
+            "policy_maps": [],
+            "service_policies": []
+        }
+
+        # MLS QoS (Modular QoS CLI) - common on Catalyst switches
+        if self.parse.find_objects(r'^mls\s+qos'):
+            qos["enabled"] = True
+
+        # Class maps
+        class_maps = self.parse.find_objects(r'^class-map\s+')
+        for cm in class_maps:
+            match = re.search(r'^class-map\s+(?:match-\w+\s+)?(\S+)', cm.text)
+            if match:
+                class_name = match.group(1)
+                class_info = {
+                    "name": class_name,
+                    "match_criteria": []
+                }
+
+                # Extract match criteria
+                matches = cm.re_search_children(r'^\s+match\s+')
+                for m in matches:
+                    class_info["match_criteria"].append(m.text.strip())
+
+                qos["class_maps"].append(class_info)
+
+        # Policy maps
+        policy_maps = self.parse.find_objects(r'^policy-map\s+')
+        for pm in policy_maps:
+            match = re.search(r'^policy-map\s+(\S+)', pm.text)
+            if match:
+                policy_name = match.group(1)
+                policy_info = {
+                    "name": policy_name,
+                    "classes": []
+                }
+
+                # Extract class associations
+                classes = pm.re_search_children(r'^\s+class\s+')
+                for cls in classes:
+                    class_match = re.search(r'^\s+class\s+(\S+)', cls.text)
+                    if class_match:
+                        policy_info["classes"].append(class_match.group(1))
+
+                qos["policy_maps"].append(policy_info)
+
+        # Service policies (where applied)
+        all_interfaces = self.parse.find_objects(r'^interface\s+')
+        for intf in all_interfaces:
+            service_policies = intf.re_search_children(r'^\s+service-policy\s+')
+            for sp in service_policies:
+                match = re.search(r'^\s+service-policy\s+(input|output)\s+(\S+)', sp.text)
+                if match:
+                    direction = match.group(1)
+                    policy_name = match.group(2)
+                    intf_match = re.search(r'^interface\s+(\S+)', intf.text)
+                    if intf_match:
+                        qos["service_policies"].append({
+                            "interface": intf_match.group(1),
+                            "direction": direction,
+                            "policy_map": policy_name
+                        })
+
+        return qos
+
+    def _extract_stacking_config(self) -> Dict[str, Any]:
+        """
+        Extract switch stack configuration (Catalyst 3750/3850/9300 series).
+
+        Returns:
+            Dictionary containing stacking configuration
+        """
+        stacking = {
+            "enabled": False,
+            "stack_members": [],
+            "priority": {}
+        }
+
+        # Catalyst 3750/3850/9300 style stacking
+        stack_objs = self.parse.find_objects(r'^switch\s+\d+\s+')
+        if stack_objs:
+            stacking["enabled"] = True
+
+            for obj in stack_objs:
+                # Extract switch number and priority
+                match = re.search(r'^switch\s+(\d+)\s+priority\s+(\d+)', obj.text)
+                if match:
+                    member_id = int(match.group(1))
+                    priority = int(match.group(2))
+
+                    if member_id not in stacking["stack_members"]:
+                        stacking["stack_members"].append(member_id)
+                    stacking["priority"][member_id] = priority
+                else:
+                    # Just switch number without priority
+                    match = re.search(r'^switch\s+(\d+)', obj.text)
+                    if match:
+                        member_id = int(match.group(1))
+                        if member_id not in stacking["stack_members"]:
+                            stacking["stack_members"].append(member_id)
+
+        # Sort stack members
+        stacking["stack_members"].sort()
+
+        return stacking
 
 
 def parse_config_to_json(config_file_path: str, output_json_path: Optional[str] = None) -> Dict[str, Any]:

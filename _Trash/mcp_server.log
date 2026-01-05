@@ -343,3 +343,72 @@
 2026-01-05 14:33:00,547 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
 2026-01-05 14:33:00,547 - mcp.server.lowlevel.server - DEBUG - Response sent
 2026-01-05 14:33:00,547 - cisco-docs-mcp - INFO - Server shutting down...
+2026-01-05 15:02:14,532 - asyncio - DEBUG - Using proactor: IocpProactor
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Starting Cisco Documentation MCP Server v2 (Verbose Edition)
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Debug mode: ENABLED
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Logging to file: C:\Hovedprosjekt lokalt\Hovedprosjekt\logs\mcp_server.log
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Set MCP_DEBUG=true environment variable for debug logging
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - ------------------------------------------------------------
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - ============================================================
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Initializing Cisco Documentation MCP Server v2
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - ============================================================
+2026-01-05 15:02:14,532 - mcp.server.lowlevel.server - DEBUG - Initializing server 'cisco-docs-server'
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Server name: cisco-docs-server
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Cache directory: C:\Hovedprosjekt lokalt\Hovedprosjekt\docs_cache
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Basic commands file: C:\Hovedprosjekt lokalt\Hovedprosjekt\docs_cache\basic_commands.json
+2026-01-05 15:02:14,532 - cisco-docs-mcp - DEBUG - Cache directory already exists
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Scheduling basic documentation initialization...
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Setting up request handlers...
+2026-01-05 15:02:14,532 - cisco-docs-mcp - DEBUG - Registering list_tools handler...
+2026-01-05 15:02:14,532 - mcp.server.lowlevel.server - DEBUG - Registering handler for ListToolsRequest
+2026-01-05 15:02:14,532 - cisco-docs-mcp - DEBUG - Registering call_tool handler...
+2026-01-05 15:02:14,532 - mcp.server.lowlevel.server - DEBUG - Registering handler for CallToolRequest
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Registered 2 handlers: list_tools, call_tool
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Server initialization complete
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - ============================================================
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Starting MCP server with stdio transport...
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - ============================================================
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Server is now ready to accept connections
+2026-01-05 15:02:14,532 - cisco-docs-mcp - INFO - Waiting for client to connect...
+2026-01-05 15:02:14,536 - cisco-docs-mcp - INFO - Client connected! Server is now active
+2026-01-05 15:02:14,536 - cisco-docs-mcp - INFO - Checking for basic commands documentation...
+2026-01-05 15:02:14,536 - cisco-docs-mcp - INFO - Basic commands file exists, loading...
+2026-01-05 15:02:14,536 - cisco-docs-mcp - INFO - Loaded 12 commands from cache
+2026-01-05 15:02:14,536 - cisco-docs-mcp - DEBUG - Available commands: interface, ip address, switchport, vlan, spanning-tree, router, access-list, line, enable secret, hostname, trunk, channel-group
+2026-01-05 15:02:14,536 - mcp.server.lowlevel.server - DEBUG - Received message: root=InitializedNotification(method='notifications/initialized', params=None, jsonrpc='2.0')
+2026-01-05 15:02:14,536 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x00000278A4338D70>
+2026-01-05 15:02:14,536 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2026-01-05 15:02:14,536 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2026-01-05 15:02:14,536 - mcp.server.lowlevel.server - DEBUG - Tool cache miss for get_feature_docs, refreshing cache
+2026-01-05 15:02:14,536 - cisco-docs-mcp - INFO - Received list_tools request
+2026-01-05 15:02:14,536 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2026-01-05 15:02:14,543 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2026-01-05 15:02:14,543 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "VLAN",
+  "ios_version": "12.2(37)SE1"
+}
+2026-01-05 15:02:14,543 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'VLAN' (IOS 12.2(37)SE1)
+2026-01-05 15:02:14,543 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2026-01-05 15:02:14,543 - cisco-docs-mcp - INFO - Found feature documentation: 'VLAN'
+2026-01-05 15:02:14,543 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.000s
+2026-01-05 15:02:14,543 - mcp.server.lowlevel.server - DEBUG - Response sent
+2026-01-05 15:02:14,543 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x00000278A4974980>
+2026-01-05 15:02:14,543 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2026-01-05 15:02:14,543 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type ListToolsRequest
+2026-01-05 15:02:14,543 - cisco-docs-mcp - INFO - Received list_tools request
+2026-01-05 15:02:14,543 - cisco-docs-mcp - INFO - Returning 4 available tools: search_command, get_feature_docs, validate_syntax, explain_config_section
+2026-01-05 15:02:14,543 - mcp.server.lowlevel.server - DEBUG - Response sent
+2026-01-05 15:02:14,543 - mcp.server.lowlevel.server - DEBUG - Received message: <mcp.shared.session.RequestResponder object at 0x00000278A47FA2A0>
+2026-01-05 15:02:14,543 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2026-01-05 15:02:14,546 - mcp.server.lowlevel.server - DEBUG - Dispatching request of type CallToolRequest
+2026-01-05 15:02:14,546 - cisco-docs-mcp - INFO - Received call_tool request: get_feature_docs
+2026-01-05 15:02:14,546 - cisco-docs-mcp - DEBUG - Arguments: {
+  "feature": "STP",
+  "ios_version": "12.2(37)SE1"
+}
+2026-01-05 15:02:14,546 - cisco-docs-mcp - INFO - Retrieving feature documentation: 'STP' (IOS 12.2(37)SE1)
+2026-01-05 15:02:14,547 - cisco-docs-mcp - DEBUG - Available features: VLAN, OSPF, STP, EtherChannel, VTP
+2026-01-05 15:02:14,547 - cisco-docs-mcp - INFO - Found feature documentation: 'STP'
+2026-01-05 15:02:14,547 - cisco-docs-mcp - INFO - Tool get_feature_docs completed in 0.001s
+2026-01-05 15:02:14,547 - mcp.server.lowlevel.server - DEBUG - Response sent
+2026-01-05 15:02:14,548 - cisco-docs-mcp - INFO - Server shutting down...
