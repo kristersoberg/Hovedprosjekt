@@ -1,0 +1,210 @@
+{
+  "total_checks": 25,
+  "passed_checks": 21,
+  "failed_checks": 4,
+  "accuracy_percentage": 84.0,
+  "hallucination_count": 4,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "aksess-sw01",
+      "found": "Hostname: aksess-sw01",
+      "passed": true,
+      "location": "Line with: Hostname: aksess-sw01...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "12.2(37)SE1",
+      "found": "IOS version 12.2(37)SE1",
+      "passed": true,
+      "location": "Line with: IOS version 12.2(37)SE1...",
+      "error": null
+    },
+    {
+      "field": "Domain Name",
+      "expected": "krister.local",
+      "found": "Domain Name: krister.local",
+      "passed": true,
+      "location": "Line with: Domain Name: krister.local...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.90.0.11",
+      "found": "IP address 10.90.0.11",
+      "passed": true,
+      "location": "Line with: IP address 10.90.0.11...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.90.0.254",
+      "found": "Gateway: 10.90.0.254",
+      "passed": true,
+      "location": "Line with: Gateway: 10.90.0.254...",
+      "error": null
+    },
+    {
+      "field": "SSH Version",
+      "expected": "2",
+      "found": "SSH is enabled with version 2",
+      "passed": true,
+      "location": "Line with: SSH is enabled with version 2...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh",
+      "found": "transport input set to ssh",
+      "passed": true,
+      "location": "Line with: transport input set to ssh...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "4",
+      "found": "4",
+      "passed": true,
+      "location": "Line with: 4 VLANs...",
+      "error": null
+    },
+    {
+      "field": "VLAN 11",
+      "expected": "11",
+      "found": "VLAN 11",
+      "passed": true,
+      "location": "Line with: VLAN 11...",
+      "error": null
+    },
+    {
+      "field": "VLAN 12",
+      "expected": "12",
+      "found": "VLAN 12",
+      "passed": true,
+      "location": "Line with: VLAN 12...",
+      "error": null
+    },
+    {
+      "field": "VLAN 90",
+      "expected": "90",
+      "found": "VLAN 90",
+      "passed": true,
+      "location": "Line with: VLAN 90...",
+      "error": null
+    },
+    {
+      "field": "VLAN 666",
+      "expected": "666",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '666' not found in documentation"
+    },
+    {
+      "field": "VLAN 90 IP",
+      "expected": "10.90.0.11",
+      "found": "10.90.0.11",
+      "passed": true,
+      "location": "Line with: 10.90.0.11...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: Total Interfaces: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "4",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 4 not found in documentation"
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "22",
+      "found": "22",
+      "passed": true,
+      "location": "Line with: Shutdown: 22...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": "Line with: FastEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": "Line with: FastEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "DHCP Snooping Status",
+      "expected": "enabled",
+      "found": "DHCP snooping is enabled",
+      "passed": true,
+      "location": "Line with: DHCP snooping is enabled...",
+      "error": null
+    },
+    {
+      "field": "DHCP Snooping VLANs",
+      "expected": "11,12",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '11,12' not found in documentation"
+    },
+    {
+      "field": "Dynamic ARP Inspection",
+      "expected": "enabled",
+      "found": "ARP inspection is also enabled",
+      "passed": true,
+      "location": "Line with: ARP inspection is also enabled...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "disabled",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'disabled' not found in documentation"
+    },
+    {
+      "field": "NTP Server 10.91.0.123",
+      "expected": "10.91.0.123",
+      "found": "NTP is enabled with servers at IP address 10.91.0.123",
+      "passed": true,
+      "location": "Line with: NTP is enabled with servers at IP address 10.91.0....",
+      "error": null
+    },
+    {
+      "field": "Syslog Server 10.91.0.10",
+      "expected": "10.91.0.10",
+      "found": "Syslog is also enabled with servers at IP address 10.91.0.10",
+      "passed": true,
+      "location": "Line with: Syslog is also enabled with servers at IP address ...",
+      "error": null
+    }
+  ]
+}

@@ -201,12 +201,13 @@ node server.js
 | File | Purpose | Target Audience |
 |------|---------|----------------|
 | **README.md** | Complete reference | All users |
-| **QUICKSTART.md** | Fast setup | New users |
+| **QUICKSTART.md** | Fast setup (consolidated) | New users |
 | **ARCHITECTURE.md** | Technical deep-dive | Developers |
 | **TROUBLESHOOTING.md** | Problem solving | Users with issues |
 | **PROJECT_SUMMARY.md** | Overview | Decision makers |
 | **WORKFLOW.md** | Visual diagrams | Visual learners |
 | **INDEX.md** | This file | All users |
+| **archive/** | Historical documentation | Reference only |
 
 ### Configuration Files
 

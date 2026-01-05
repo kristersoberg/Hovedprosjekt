@@ -17,6 +17,9 @@ from typing import Optional, Dict, Any, List
 from git import Repo, InvalidGitRepositoryError
 
 from mcp_client import CiscoMCPClient
+from config_parser import parse_config_to_json
+from structured_prompt_builder import StructuredPromptBuilder
+from validator import DocumentationValidator
 
 
 class ConfigProcessor:
@@ -53,26 +56,54 @@ class ConfigProcessor:
     def process(self) -> Path:
         """Process the configuration file and generate documentation."""
         try:
-            print(" Reading configuration file...")
-            config_content = self._read_config_file()
+            print(" Parsing configuration into structured data...")
+            structured_data = parse_config_to_json(str(self.config_file_path))
 
-            print(" Extracting IOS version...")
-            ios_version = self._extract_ios_version(config_content)
-            print(f"   Detected IOS version: {ios_version or 'Unknown'}")
+            device_info = structured_data.get("device_info", {})
+            hostname = device_info.get("hostname") or "Unknown"
+            ios_version = device_info.get("ios_version") or "Unknown"
+            print(f"   Detected device: {hostname}")
+            print(f"   IOS version: {ios_version}")
+            print(f"   VLANs found: {len(structured_data.get('vlans', {}).get('vlan_ids', []))}")
+            print(f"   Interfaces found: {len(structured_data.get('interfaces', []))}")
 
-            print(" Loading prompt template...")
-            prompt = self._build_prompt(config_content, ios_version)
+            # Build structured prompt
+            print(" Building structured prompt...")
+            prompt_builder = StructuredPromptBuilder(structured_data)
 
-            # Enrich prompt with MCP documentation if enabled
+            # Enrich with MCP documentation if enabled
+            mcp_docs = ""
             if self.config.get("mcp", {}).get("enabled", True):
                 print(" Enriching with Cisco documentation from MCP server...")
-                prompt = asyncio.run(self._enrich_prompt_with_mcp(config_content, ios_version, prompt))
+                mcp_docs = asyncio.run(self._fetch_mcp_docs(structured_data))
+                prompt_builder.mcp_docs = mcp_docs
+
+            prompt = prompt_builder.build_prompt()
+
+            print(f"   Prompt size: {len(prompt)} characters")
 
             print(" Sending to LLM for analysis...")
             documentation = self._call_llm(prompt)
 
             print(" Saving documentation...")
             output_path = self._save_documentation(documentation)
+
+            # Validate documentation
+            if self.config.get("validation", {}).get("enabled", True):
+                print(" Validating documentation...")
+                validation_report = self._validate_documentation(structured_data, documentation, output_path)
+
+                # Save validation report
+                validation_report_path = output_path.parent / f"{output_path.stem}-validation.json"
+                with open(validation_report_path, 'w', encoding='utf-8') as f:
+                    json.dump(validation_report.to_dict(), f, indent=2, ensure_ascii=False)
+
+                print(f"   Accuracy: {validation_report.accuracy_percentage:.1f}%")
+                print(f"   Passed: {validation_report.passed_checks}/{validation_report.total_checks} checks")
+
+                if validation_report.failed_checks > 0:
+                    print(f"   WARNING: {validation_report.failed_checks} checks failed")
+                    print(f"   Validation report: {validation_report_path}")
 
             if self.config.get("git", {}).get("enabled", True):
                 print(" Committing to Git...")
@@ -225,6 +256,69 @@ Evaluate against Cisco best practices and provide recommendations.
 
         return features
 
+    async def _fetch_mcp_docs(self, structured_data: Dict[str, Any]) -> str:
+        """
+        Fetch relevant Cisco documentation from MCP server based on structured data.
+
+        Args:
+            structured_data: Parsed configuration data
+
+        Returns:
+            MCP documentation string to include in prompt
+        """
+        try:
+            device_info = structured_data.get("device_info", {})
+            ios_version = device_info.get("ios_version")
+
+            # Identify features from structured data
+            features = []
+            if structured_data.get("vlans", {}).get("vlan_ids"):
+                features.append("VLAN")
+            if structured_data.get("spanning_tree", {}).get("mode"):
+                features.append("STP")
+            if "OSPF" in structured_data.get("routing", {}).get("routing_protocols", []):
+                features.append("OSPF")
+            if "EIGRP" in structured_data.get("routing", {}).get("routing_protocols", []):
+                features.append("EIGRP")
+            if structured_data.get("vlans", {}).get("vtp", {}).get("mode"):
+                features.append("VTP")
+            if any(i.get("channel_group") for i in structured_data.get("interfaces", [])):
+                features.append("EtherChannel")
+
+            # Get MCP configuration limits
+            mcp_config = self.config.get("mcp", {})
+            max_features = mcp_config.get("max_features", 5)
+            debug_mode = mcp_config.get("debug", False)
+
+            # Connect to MCP server and fetch documentation
+            client = CiscoMCPClient(self.mcp_server_path, debug=debug_mode)
+
+            documentation_parts = []
+
+            async with client.connect():
+                print(f"   Connected to MCP server")
+                print(f"   Fetching docs for {len(features[:max_features])} features")
+
+                # Fetch feature documentation
+                for feature in features[:max_features]:
+                    print(f"     - {feature}")
+                    result = await client.get_feature_docs(feature, ios_version)
+                    if result["success"]:
+                        doc_data = result['data']
+                        # Trim to keep only essential info
+                        if len(doc_data) > 800:
+                            doc_data = doc_data[:800] + "..."
+                        documentation_parts.append(f"### Feature: {feature}\n{doc_data}\n")
+
+            if documentation_parts:
+                return "\n".join(documentation_parts)
+            else:
+                return ""
+
+        except Exception as e:
+            print(f"   Warning: Failed to fetch MCP documentation: {e}")
+            return ""
+
     async def _enrich_prompt_with_mcp(self, config_content: str, ios_version: Optional[str], prompt: str) -> str:
         """
         Enrich the prompt with relevant Cisco documentation from MCP server.
@@ -340,6 +434,22 @@ Use this documentation to provide accurate explanations.
             print(f"   Warning: Failed to enrich with MCP docs: {str(e)}")
             print("   Continuing with original prompt...")
             return prompt
+
+    def _validate_documentation(self, structured_data: Dict[str, Any], documentation: str, output_path: Path):
+        """
+        Validate generated documentation against structured data.
+
+        Args:
+            structured_data: Parsed configuration data
+            documentation: Generated markdown documentation
+            output_path: Path where documentation was saved
+
+        Returns:
+            ValidationReport
+        """
+        validator = DocumentationValidator(structured_data, documentation)
+        report = validator.validate_all()
+        return report
 
     def _call_llm(self, prompt: str) -> str:
         """Call the LLM API."""

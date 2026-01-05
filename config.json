@@ -24,5 +24,9 @@
   "processing": {
     "auto_start_on_file_change": true,
     "delete_old_documentation": false
+  },
+  "validation": {
+    "enabled": true,
+    "save_reports": true
   }
 }

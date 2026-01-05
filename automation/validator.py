@@ -1,0 +1,545 @@
+"""
+Documentation Validator
+
+Validates generated documentation against source configuration data.
+Provides accuracy metrics for research evaluation.
+"""
+
+import re
+import json
+from typing import Dict, Any, List, Tuple
+from pathlib import Path
+from dataclasses import dataclass, field
+
+
+@dataclass
+class ValidationResult:
+    """Result of validation check."""
+    field_name: str
+    expected_value: Any
+    found_value: Any = None
+    passed: bool = False
+    location: str = None  # Where in markdown this was found
+    error_message: str = None
+
+
+@dataclass
+class ValidationReport:
+    """Complete validation report."""
+    total_checks: int = 0
+    passed_checks: int = 0
+    failed_checks: int = 0
+    warnings: List[str] = field(default_factory=list)
+    results: List[ValidationResult] = field(default_factory=list)
+
+    @property
+    def accuracy_percentage(self) -> float:
+        """Calculate accuracy percentage."""
+        if self.total_checks == 0:
+            return 0.0
+        return (self.passed_checks / self.total_checks) * 100
+
+    @property
+    def hallucination_count(self) -> int:
+        """Count of hallucinated (incorrect) facts."""
+        return self.failed_checks
+
+    def add_result(self, result: ValidationResult):
+        """Add a validation result."""
+        self.results.append(result)
+        self.total_checks += 1
+        if result.passed:
+            self.passed_checks += 1
+        else:
+            self.failed_checks += 1
+
+    def add_warning(self, message: str):
+        """Add a warning."""
+        self.warnings.append(message)
+
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "total_checks": self.total_checks,
+            "passed_checks": self.passed_checks,
+            "failed_checks": self.failed_checks,
+            "accuracy_percentage": round(self.accuracy_percentage, 2),
+            "hallucination_count": self.hallucination_count,
+            "warnings": self.warnings,
+            "results": [
+                {
+                    "field": r.field_name,
+                    "expected": str(r.expected_value),
+                    "found": str(r.found_value) if r.found_value else "Not found",
+                    "passed": r.passed,
+                    "location": r.location,
+                    "error": r.error_message
+                }
+                for r in self.results
+            ]
+        }
+
+
+class DocumentationValidator:
+    """Validate generated documentation against source data."""
+
+    def __init__(self, structured_data: Dict[str, Any], markdown_content: str):
+        """
+        Initialize validator.
+
+        Args:
+            structured_data: Parsed configuration data
+            markdown_content: Generated markdown documentation
+        """
+        self.data = structured_data
+        self.markdown = markdown_content
+        self.report = ValidationReport()
+
+    def validate_all(self) -> ValidationReport:
+        """
+        Run all validation checks.
+
+        Returns:
+            ValidationReport with all results
+        """
+        print("  Running validation checks...")
+
+        self._validate_device_info()
+        self._validate_management()
+        self._validate_vlans()
+        self._validate_interfaces()
+        self._validate_security()
+        self._validate_services()
+
+        print(f"    Completed {self.report.total_checks} checks")
+        print(f"    Passed: {self.report.passed_checks}")
+        print(f"    Failed: {self.report.failed_checks}")
+        print(f"    Accuracy: {self.report.accuracy_percentage:.1f}%")
+
+        return self.report
+
+    def _validate_device_info(self):
+        """Validate device information."""
+        device_info = self.data.get("device_info", {})
+
+        # Hostname - CRITICAL
+        hostname = device_info.get("hostname")
+        if hostname:
+            result = self._check_field_in_markdown(
+                "Hostname",
+                hostname,
+                [
+                    rf"hostname[:\s]+[`\"]?{re.escape(hostname)}[`\"]?",
+                    rf"#\s+.*{re.escape(hostname)}",  # In title
+                    rf"Device[:\s]+{re.escape(hostname)}"
+                ]
+            )
+            self.report.add_result(result)
+
+        # IOS Version
+        ios_version = device_info.get("ios_version")
+        if ios_version:
+            result = self._check_field_in_markdown(
+                "IOS Version",
+                ios_version,
+                [rf"IOS[:\s]+.*{re.escape(ios_version)}"]
+            )
+            self.report.add_result(result)
+
+        # Domain Name
+        domain_name = device_info.get("domain_name")
+        if domain_name:
+            result = self._check_field_in_markdown(
+                "Domain Name",
+                domain_name,
+                [rf"domain[:\s]+.*{re.escape(domain_name)}"]
+            )
+            self.report.add_result(result)
+
+    def _validate_management(self):
+        """Validate management configuration."""
+        mgmt = self.data.get("management", {})
+
+        # Management IP
+        mgmt_ip = mgmt.get("ip_address")
+        if mgmt_ip:
+            result = self._check_field_in_markdown(
+                "Management IP Address",
+                mgmt_ip,
+                [rf"(?:IP|address)[:\s]+.*{re.escape(mgmt_ip)}"]
+            )
+            self.report.add_result(result)
+
+        # Default Gateway
+        gateway = mgmt.get("default_gateway")
+        if gateway:
+            result = self._check_field_in_markdown(
+                "Default Gateway",
+                gateway,
+                [rf"(?:gateway|Gateway)[:\s]+.*{re.escape(gateway)}"]
+            )
+            self.report.add_result(result)
+
+        # SSH Version
+        ssh_version = mgmt.get("ssh", {}).get("version")
+        if ssh_version:
+            result = self._check_field_in_markdown(
+                "SSH Version",
+                ssh_version,
+                [rf"SSH[:\s]+.*(?:version|v)[\s]*{re.escape(ssh_version)}"]
+            )
+            self.report.add_result(result)
+
+        # VTY Transport
+        vty_transport = mgmt.get("vty", {}).get("transport_input")
+        if vty_transport:
+            transport_str = ', '.join(vty_transport) if isinstance(vty_transport, list) else str(vty_transport)
+            result = self._check_field_in_markdown(
+                "VTY Transport Input",
+                transport_str,
+                [rf"(?:transport|Transport)[:\s]+.*{re.escape(transport_str)}"]
+            )
+            self.report.add_result(result)
+
+    def _validate_vlans(self):
+        """Validate VLAN configuration."""
+        vlans = self.data.get("vlans", {})
+
+        # Total VLAN count
+        vlan_ids = vlans.get("vlan_ids", [])
+        if vlan_ids:
+            vlan_count = len(vlan_ids)
+            result = self._check_numeric_value_in_markdown(
+                "VLAN Count",
+                vlan_count,
+                [
+                    rf"(?:Total|total)\s+VLANs?[:\s]+(\d+)",
+                    rf"(\d+)\s+VLANs?"
+                ]
+            )
+            self.report.add_result(result)
+
+            # Check individual VLANs are mentioned
+            for vlan_id in vlan_ids[:5]:  # Check first 5 VLANs
+                result = self._check_field_in_markdown(
+                    f"VLAN {vlan_id}",
+                    str(vlan_id),
+                    [
+                        rf"VLAN\s+{vlan_id}\b",
+                        rf"vlan\s+{vlan_id}\b"
+                    ]
+                )
+                self.report.add_result(result)
+
+        # SVI interfaces
+        svi_interfaces = vlans.get("svi_interfaces", [])
+        for svi in svi_interfaces:
+            if svi.get("ip_address"):
+                result = self._check_field_in_markdown(
+                    f"VLAN {svi['vlan_id']} IP",
+                    svi["ip_address"],
+                    [rf"{re.escape(svi['ip_address'])}"]
+                )
+                self.report.add_result(result)
+
+    def _validate_interfaces(self):
+        """Validate interface configuration."""
+        interfaces = self.data.get("interfaces", [])
+
+        if not interfaces:
+            return
+
+        # Total interface count
+        total = len(interfaces)
+        result = self._check_numeric_value_in_markdown(
+            "Total Interfaces",
+            total,
+            [
+                rf"(?:Total|total)\s+(?:interfaces|Interfaces)[:\s]+(\d+)",
+                rf"(\d+)\s+(?:interfaces|Interfaces)"
+            ]
+        )
+        self.report.add_result(result)
+
+        # Active interfaces count
+        active = sum(1 for i in interfaces if not i.get("shutdown"))
+        result = self._check_numeric_value_in_markdown(
+            "Active Interfaces",
+            active,
+            [
+                rf"(?:Active|active)[:\s]+(\d+)",
+                rf"(\d+)\s+active"
+            ]
+        )
+        self.report.add_result(result)
+
+        # Shutdown interfaces count
+        shutdown = total - active
+        result = self._check_numeric_value_in_markdown(
+            "Shutdown Interfaces",
+            shutdown,
+            [
+                rf"(?:Shutdown|shutdown)[:\s]+(\d+)",
+                rf"(\d+)\s+shutdown"
+            ]
+        )
+        self.report.add_result(result)
+
+        # Check first few interfaces are mentioned
+        for intf in interfaces[:3]:
+            intf_name = intf.get("name")
+            if intf_name:
+                result = self._check_field_in_markdown(
+                    f"Interface {intf_name}",
+                    intf_name,
+                    [rf"{re.escape(intf_name)}"]
+                )
+                self.report.add_result(result)
+
+    def _validate_security(self):
+        """Validate security features."""
+        security = self.data.get("security", {})
+
+        # DHCP Snooping
+        dhcp_snoop = security.get("dhcp_snooping", {})
+        if dhcp_snoop.get("enabled"):
+            result = self._check_field_in_markdown(
+                "DHCP Snooping Status",
+                "enabled",
+                [
+                    rf"DHCP\s+Snooping[:\s]+.*(?:Enabled|enabled|✓)",
+                    rf"dhcp\s+snooping"
+                ]
+            )
+            self.report.add_result(result)
+
+            # DHCP Snooping VLANs
+            dhcp_vlans = dhcp_snoop.get("vlans", [])
+            if dhcp_vlans:
+                vlan_str = ','.join(map(str, dhcp_vlans))
+                result = self._check_field_in_markdown(
+                    "DHCP Snooping VLANs",
+                    vlan_str,
+                    [rf"snooping.*(?:VLAN|vlan)s?[:\s]+.*{re.escape(vlan_str)}"]
+                )
+                self.report.add_result(result)
+
+        # ARP Inspection
+        dai = security.get("arp_inspection", {})
+        if dai.get("enabled"):
+            result = self._check_field_in_markdown(
+                "Dynamic ARP Inspection",
+                "enabled",
+                [
+                    rf"(?:DAI|ARP\s+Inspection)[:\s]+.*(?:Enabled|enabled|✓)",
+                    rf"arp\s+inspection"
+                ]
+            )
+            self.report.add_result(result)
+
+        # CDP Status
+        cdp_enabled = security.get("cdp_enabled", True)
+        cdp_status = "disabled" if not cdp_enabled else "enabled"
+        result = self._check_field_in_markdown(
+            "CDP Status",
+            cdp_status,
+            [rf"CDP[:\s]+.*{cdp_status}"]
+        )
+        self.report.add_result(result)
+
+    def _validate_services(self):
+        """Validate network services."""
+        services = self.data.get("services", {})
+
+        # NTP
+        ntp = services.get("ntp", {})
+        if ntp.get("enabled"):
+            ntp_servers = ntp.get("servers", [])
+            if ntp_servers:
+                for server in ntp_servers[:2]:  # Check first 2 servers
+                    result = self._check_field_in_markdown(
+                        f"NTP Server {server}",
+                        server,
+                        [rf"NTP.*{re.escape(server)}"]
+                    )
+                    self.report.add_result(result)
+
+        # Syslog
+        syslog = services.get("syslog", {})
+        if syslog.get("enabled"):
+            syslog_servers = syslog.get("servers", [])
+            if syslog_servers:
+                for server in syslog_servers[:2]:
+                    result = self._check_field_in_markdown(
+                        f"Syslog Server {server}",
+                        server,
+                        [rf"(?:Syslog|syslog|[Ll]ogging).*{re.escape(server)}"]
+                    )
+                    self.report.add_result(result)
+
+    def _check_field_in_markdown(
+        self,
+        field_name: str,
+        expected_value: Any,
+        patterns: List[str]
+    ) -> ValidationResult:
+        """
+        Check if a field value appears in markdown.
+
+        Args:
+            field_name: Name of field being checked
+            expected_value: Expected value
+            patterns: List of regex patterns to try
+
+        Returns:
+            ValidationResult
+        """
+        result = ValidationResult(
+            field_name=field_name,
+            expected_value=expected_value
+        )
+
+        # Try each pattern
+        for pattern in patterns:
+            try:
+                match = re.search(pattern, self.markdown, re.IGNORECASE | re.MULTILINE)
+                if match:
+                    result.passed = True
+                    result.found_value = match.group(0)
+                    result.location = f"Line with: {match.group(0)[:50]}..."
+                    return result
+            except re.error as e:
+                result.error_message = f"Regex error: {e}"
+                continue
+
+        # Not found
+        result.passed = False
+        result.found_value = None
+        result.error_message = f"Value '{expected_value}' not found in documentation"
+
+        return result
+
+    def _check_numeric_value_in_markdown(
+        self,
+        field_name: str,
+        expected_value: int,
+        patterns: List[str]
+    ) -> ValidationResult:
+        """
+        Check if a numeric value appears in markdown.
+
+        Args:
+            field_name: Name of field being checked
+            expected_value: Expected numeric value
+            patterns: List of regex patterns with capture group for number
+
+        Returns:
+            ValidationResult
+        """
+        result = ValidationResult(
+            field_name=field_name,
+            expected_value=expected_value
+        )
+
+        # Try each pattern
+        for pattern in patterns:
+            try:
+                match = re.search(pattern, self.markdown, re.IGNORECASE | re.MULTILINE)
+                if match:
+                    # Extract the number from capture group
+                    found_number = int(match.group(1))
+                    result.found_value = found_number
+                    result.location = f"Line with: {match.group(0)[:50]}..."
+
+                    if found_number == expected_value:
+                        result.passed = True
+                        return result
+                    else:
+                        result.passed = False
+                        result.error_message = f"Expected {expected_value}, found {found_number}"
+                        return result
+            except (re.error, ValueError, IndexError) as e:
+                continue
+
+        # Not found
+        result.passed = False
+        result.found_value = None
+        result.error_message = f"Numeric value {expected_value} not found in documentation"
+
+        return result
+
+
+def validate_documentation(
+    structured_data_path: str,
+    markdown_path: str,
+    output_report_path: str = None
+) -> ValidationReport:
+    """
+    Validate generated documentation against structured data.
+
+    Args:
+        structured_data_path: Path to structured JSON data
+        markdown_path: Path to generated markdown
+        output_report_path: Optional path to save validation report
+
+    Returns:
+        ValidationReport
+    """
+    # Load structured data
+    with open(structured_data_path, 'r', encoding='utf-8') as f:
+        structured_data = json.load(f)
+
+    # Load markdown
+    with open(markdown_path, 'r', encoding='utf-8') as f:
+        markdown_content = f.read()
+
+    # Run validation
+    validator = DocumentationValidator(structured_data, markdown_content)
+    report = validator.validate_all()
+
+    # Save report if requested
+    if output_report_path:
+        with open(output_report_path, 'w', encoding='utf-8') as f:
+            json.dump(report.to_dict(), f, indent=2, ensure_ascii=False)
+        print(f"  Validation report saved: {output_report_path}")
+
+    return report
+
+
+if __name__ == "__main__":
+    import sys
+
+    if len(sys.argv) < 3:
+        print("Usage: python validator.py <structured_json> <markdown_file> [output_report.json]")
+        sys.exit(1)
+
+    structured_json = sys.argv[1]
+    markdown_file = sys.argv[2]
+    output_report = sys.argv[3] if len(sys.argv) > 3 else None
+
+    print(f"Validating: {markdown_file}")
+    print(f"Against: {structured_json}")
+
+    report = validate_documentation(structured_json, markdown_file, output_report)
+
+    print("\n" + "="*60)
+    print("VALIDATION REPORT")
+    print("="*60)
+    print(f"Total Checks: {report.total_checks}")
+    print(f"Passed: {report.passed_checks} ✓")
+    print(f"Failed: {report.failed_checks} ✗")
+    print(f"Accuracy: {report.accuracy_percentage:.1f}%")
+    print(f"Hallucinations: {report.hallucination_count}")
+
+    if report.warnings:
+        print(f"\nWarnings: {len(report.warnings)}")
+        for warning in report.warnings:
+            print(f"  - {warning}")
+
+    if report.failed_checks > 0:
+        print(f"\nFailed Checks:")
+        for result in report.results:
+            if not result.passed:
+                print(f"  ✗ {result.field_name}: {result.error_message}")
+
+    print("="*60)

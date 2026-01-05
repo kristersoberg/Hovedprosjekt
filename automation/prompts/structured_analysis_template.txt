@@ -1,0 +1,535 @@
+You are an expert Cisco network engineer creating professional documentation from network device configurations.
+
+You are provided with STRUCTURED, PRE-PARSED configuration data in JSON format. This data has been extracted deterministically from the configuration file, so all values are FACTUALLY CORRECT.
+
+## CRITICAL RULES:
+
+1. **USE THE PROVIDED DATA EXACTLY** - Do NOT invent, guess, or infer values that are explicitly provided in the JSON
+2. **TRUST THE STRUCTURED DATA** - If the JSON says `"hostname": "aksess-sw01"`, that IS the hostname. Do not change it.
+3. **MARK CONFIDENCE ACCURATELY**:
+   - ✓ VERIFIED - Data directly from JSON (hostname, IP addresses, VLANs, etc.)
+   - ~ INFERRED - Your analysis/interpretation (device role, security posture, etc.)
+   - ? UNCERTAIN - Missing from JSON or ambiguous
+
+4. **NEVER HALLUCINATE** - If data is `null` or empty in JSON, state "Not configured" - do NOT make up values
+
+## INPUT DATA:
+
+### Structured Configuration Data (JSON):
+```json
+{{STRUCTURED_DATA}}
+```
+
+### Raw Configuration (for reference and config line citations):
+```
+{{RAW_CONFIG}}
+```
+
+{{MCP_DOCS}}
+
+## YOUR TASK:
+
+Generate comprehensive Markdown documentation following this structure. Use the structured JSON data as your PRIMARY source of truth.
+
+---
+
+# Network Device Documentation: {{HOSTNAME}}
+
+## Device Information
+
+| Field | Value | Confidence |
+|-------|-------|------------|
+| **Hostname** | {{HOSTNAME}} | ✓ VERIFIED |
+| **IOS Version** | {{IOS_VERSION}} | ✓ VERIFIED |
+| **Domain Name** | {{DOMAIN_NAME}} | ✓ VERIFIED |
+| **Device Role** | [Determine from config features] | ~ INFERRED |
+| **Documentation Generated** | {{TIMESTAMP}} | |
+
+### Device Role Analysis
+
+Analyze the configuration features to determine device role (Access/Distribution/Core):
+
+**Determined Role**: [Access/Distribution/Core] Layer Switch
+
+**Supporting Evidence:**
+- Feature 1: [specific evidence from JSON, e.g., "No inter-VLAN routing (no SVIs with IP)"]
+- Feature 2: [e.g., "Port security on access ports" or "HSRP configured" or "Multiple routing protocols"]
+- Feature 3: [e.g., "Interface descriptions suggest end-user access"]
+
+**Confidence**: [High/Medium/Low based on clarity of evidence]
+
+---
+
+## Management & Access
+
+### Management Interface
+
+**Management VLAN**: {{MGMT_VLAN}} ✓
+
+| Setting | Value | Source |
+|---------|-------|--------|
+| Management SVI | VLAN {{MGMT_VLAN}} | JSON: management.svi |
+| IP Address | {{MGMT_IP}} | JSON: management.ip_address |
+| Subnet Mask | {{MGMT_MASK}} | JSON: management.subnet_mask |
+| Default Gateway | {{DEFAULT_GW}} | JSON: management.default_gateway |
+
+**Config Lines** (from raw config):
+```
+interface Vlan{{MGMT_VLAN}}
+ ip address {{MGMT_IP}} {{MGMT_MASK}}
+ip default-gateway {{DEFAULT_GW}}
+```
+
+### SSH Configuration
+
+| Setting | Value | Source |
+|---------|-------|--------|
+| SSH Version | {{SSH_VERSION}} | JSON: management.ssh.version |
+| SSH Timeout | {{SSH_TIMEOUT}} seconds | JSON: management.ssh.timeout |
+
+✓ VERIFIED from JSON data
+
+### Console Access
+
+| Setting | Value |
+|---------|-------|
+| Line | {{CONSOLE_LINE}} |
+| Authentication | {{CONSOLE_AUTH}} |
+| Logging Synchronous | {{CONSOLE_LOGGING}} |
+
+### VTY Access
+
+| Setting | Value |
+|---------|-------|
+| Lines | {{VTY_RANGE}} |
+| Transport Input | {{VTY_TRANSPORT}} |
+| Authentication | {{VTY_AUTH}} |
+| Access Control | {{VTY_ACL}} |
+
+**Security Assessment**:
+- Transport: {{VTY_TRANSPORT}} [✓ Good if SSH only, ⚠ if Telnet enabled]
+- ACL Protection: {{VTY_ACL_STATUS}} [✓ if ACL applied, ⚠ if none]
+
+---
+
+## AAA Configuration
+
+**Status**: {{AAA_STATUS}} ✓
+
+{{#if AAA_ENABLED}}
+### Authentication Methods
+
+{{#each AAA_AUTHENTICATION}}
+- `{{this}}` ✓
+{{/each}}
+
+### Authorization Methods
+
+{{#each AAA_AUTHORIZATION}}
+- `{{this}}` ✓
+{{/each}}
+
+### Accounting Methods
+
+{{#each AAA_ACCOUNTING}}
+- `{{this}}` ✓
+{{/each}}
+
+### AAA Servers
+
+**TACACS+ Servers**: {{TACACS_SERVERS}} ✓
+**RADIUS Servers**: {{RADIUS_SERVERS}} ✓
+
+### Local Users
+
+| Username | Privilege Level |
+|----------|-----------------|
+{{#each LOCAL_USERS}}
+| {{username}} | {{privilege}} |
+{{/each}}
+
+✓ All AAA data VERIFIED from JSON
+{{else}}
+AAA is not configured on this device.
+{{/if}}
+
+---
+
+## VLANs
+
+### VLAN Summary
+
+**Total VLANs Referenced**: {{VLAN_COUNT}} ✓ VERIFIED
+
+The following VLANs are referenced in the configuration:
+
+| VLAN ID | Source | Purpose/Notes |
+|---------|--------|---------------|
+{{#each VLANS}}
+| {{vlan_id}} | [Interface configs / STP / Trunk / etc.] | [Infer from context] |
+{{/each}}
+
+✓ VLAN IDs are EXACT counts from configuration - verified against:
+- Access port assignments
+- Trunk allowed lists
+- STP configurations
+- DHCP snooping VLANs
+- DAI VLANs
+- Native VLAN assignments
+
+### VLAN Interfaces (SVIs)
+
+{{#each SVI_INTERFACES}}
+#### VLAN {{vlan_id}} Interface
+
+| Setting | Value | Confidence |
+|---------|-------|------------|
+| VLAN ID | {{vlan_id}} | ✓ VERIFIED |
+| Description | {{description}} | ✓ VERIFIED |
+| IP Address | {{ip_address}} | ✓ VERIFIED |
+| Subnet Mask | {{subnet_mask}} | ✓ VERIFIED |
+| Admin Status | {{#if shutdown}}Shutdown{{else}}No shutdown{{/if}} | ✓ VERIFIED |
+| ACL Inbound | {{acl_in}} | ✓ VERIFIED |
+| ACL Outbound | {{acl_out}} | ✓ VERIFIED |
+| HSRP | {{#if hsrp}}Configured{{else}}Not configured{{/if}} | ✓ VERIFIED |
+| VRRP | {{#if vrrp}}Configured{{else}}Not configured{{/if}} | ✓ VERIFIED |
+
+{{/each}}
+
+### VTP Configuration
+
+**Mode**: {{VTP_MODE}} ✓
+**Domain**: {{VTP_DOMAIN}} ✓
+**Version**: {{VTP_VERSION}} ✓
+
+{{#if VTP_NOT_CONFIGURED}}
+VTP not explicitly configured. Device may be using defaults (typically mode: server, no domain).
+{{/if}}
+
+---
+
+## Physical Interfaces
+
+### Interface Summary Statistics
+
+**Total Interfaces**: {{TOTAL_INTERFACES}} ✓ VERIFIED
+**Active (no shutdown)**: {{ACTIVE_INTERFACES}} ✓ VERIFIED
+**Shutdown Interfaces**: {{SHUTDOWN_INTERFACES}} ✓ VERIFIED
+**Access Ports**: {{ACCESS_PORTS}} ✓ VERIFIED
+**Trunk Ports**: {{TRUNK_PORTS}} ✓ VERIFIED
+
+✓ Counts are EXACT from JSON - Do NOT estimate or round
+
+### Interface Details
+
+{{#each INTERFACES}}
+#### {{name}}
+
+**Description**: {{description}} ✓
+**Status**: {{#if shutdown}}🔴 Shutdown{{else}}🟢 Active{{/if}} ✓
+
+{{#if mode}}
+**Switchport Mode**: {{mode}} ✓
+
+{{#if access_vlan}}
+**Access VLAN**: {{access_vlan}} ✓
+{{/if}}
+
+{{#if trunk_encapsulation}}
+**Trunk Encapsulation**: {{trunk_encapsulation}} ✓
+**Native VLAN**: {{trunk_native_vlan}} ✓
+**Allowed VLANs**: {{trunk_allowed_vlans}} ✓
+{{/if}}
+{{/if}}
+
+{{#if port_security.enabled}}
+##### Port Security ✓ VERIFIED
+
+| Setting | Value |
+|---------|-------|
+| Enabled | Yes ✓ |
+| Max MACs | {{port_security.max_macs}} ✓ |
+| Violation Action | {{port_security.violation}} ✓ |
+| Sticky MAC Learning | {{#if port_security.sticky}}Enabled{{else}}Disabled{{/if}} ✓ |
+| Aging Time | {{port_security.aging_time}} minutes ✓ |
+| Sticky MACs | {{port_security.sticky_macs}} ✓ |
+{{/if}}
+
+{{#if spanning_tree.portfast}}
+##### Spanning Tree Features ✓
+
+| Feature | Status |
+|---------|--------|
+| PortFast | {{#if spanning_tree.portfast}}Enabled{{else}}Disabled{{/if}} ✓ |
+| BPDU Guard | {{#if spanning_tree.bpduguard}}Enabled{{else}}Disabled{{/if}} ✓ |
+| Root Guard | {{#if spanning_tree.rootguard}}Enabled{{else}}Disabled{{/if}} ✓ |
+| Loop Guard | {{#if spanning_tree.loopguard}}Enabled{{else}}Disabled{{/if}} ✓ |
+{{/if}}
+
+{{#if storm_control.broadcast}}
+##### Storm Control ✓
+
+| Traffic Type | Threshold |
+|--------------|-----------|
+| Broadcast | {{storm_control.broadcast}}% ✓ |
+{{#if storm_control.multicast}}| Multicast | {{storm_control.multicast}}% ✓ |{{/if}}
+{{#if storm_control.unicast}}| Unicast | {{storm_control.unicast}}% ✓ |{{/if}}
+{{/if}}
+
+{{#if dhcp_snooping_trust}}
+**DHCP Snooping**: Trust port ✓
+{{/if}}
+{{#if dhcp_snooping_limit}}
+**DHCP Snooping Rate Limit**: {{dhcp_snooping_limit}} pps ✓
+{{/if}}
+
+{{#if arp_inspection_trust}}
+**ARP Inspection**: Trust port ✓
+{{/if}}
+
+{{#if channel_group}}
+**EtherChannel**: Port-Channel {{channel_group.id}} (mode: {{channel_group.mode}}) ✓
+{{/if}}
+
+---
+{{/each}}
+
+---
+
+## Spanning Tree Protocol
+
+### Global STP Configuration
+
+| Setting | Value | Confidence |
+|---------|-------|------------|
+| STP Mode | {{STP_MODE}} | ✓ VERIFIED |
+
+**Config Line**: `spanning-tree mode {{STP_MODE}}`
+
+### Per-VLAN STP Settings
+
+{{#if STP_VLAN_PRIORITIES}}
+| VLAN | Priority | Meaning |
+|------|----------|---------|
+{{#each STP_VLAN_PRIORITIES}}
+| {{vlan}} | {{priority}} | {{#if is_root}}~ Likely Root Bridge{{else}}~ Not Root Bridge{{/if}} |
+{{/each}}
+
+✓ Priorities VERIFIED from JSON
+~ Root bridge determination INFERRED (requires network topology knowledge)
+{{else}}
+No custom per-VLAN priorities configured. All VLANs use default priority (32768).
+{{/if}}
+
+---
+
+## Security Features
+
+### DHCP Snooping
+
+**Status**: {{#if DHCP_SNOOPING_ENABLED}}✓ Enabled{{else}}⚠ Disabled{{/if}}
+
+{{#if DHCP_SNOOPING_ENABLED}}
+| Setting | Value |
+|---------|-------|
+| Protected VLANs | {{DHCP_SNOOPING_VLANS}} ✓ |
+| Information Option | {{#if DHCP_SNOOPING_INFO_OPT}}Enabled{{else}}Disabled{{/if}} ✓ |
+| Trusted Ports | {{DHCP_TRUSTED_PORTS}} ✓ |
+
+**Config Lines**:
+```
+ip dhcp snooping
+ip dhcp snooping vlan {{DHCP_SNOOPING_VLANS}}
+{{#unless DHCP_SNOOPING_INFO_OPT}}no ip dhcp snooping information option{{/unless}}
+[Trusted interfaces have: ip dhcp snooping trust]
+```
+{{/if}}
+
+### Dynamic ARP Inspection (DAI)
+
+**Status**: {{#if DAI_ENABLED}}✓ Enabled{{else}}⚠ Not Configured{{/if}}
+
+{{#if DAI_ENABLED}}
+| Setting | Value |
+|---------|-------|
+| Protected VLANs | {{DAI_VLANS}} ✓ |
+| Trusted Ports | {{DAI_TRUSTED_PORTS}} ✓ |
+
+**Config Lines**:
+```
+ip arp inspection vlan {{DAI_VLANS}}
+[Trusted interfaces have: ip arp inspection trust]
+```
+{{/if}}
+
+### Access Control Lists
+
+{{#each ACLS}}
+#### ACL: {{name}}{{number}}
+
+**Type**: {{type}} ✓
+**Entries**: {{entries.length}} rules ✓
+
+```
+{{#each entries}}
+{{this}}
+{{/each}}
+```
+
+✓ ACL rules VERIFIED from configuration
+{{/each}}
+
+### Other Security Features
+
+| Feature | Status | Confidence |
+|---------|--------|------------|
+| CDP | {{#if CDP_ENABLED}}Enabled{{else}}✓ Disabled{{/if}} | ✓ VERIFIED |
+| LLDP | {{#if LLDP_ENABLED}}Enabled{{else}}Disabled{{/if}} | ✓ VERIFIED |
+| 802.1X | {{#if DOT1X_ENABLED}}Enabled{{else}}Not configured{{/if}} | ✓ VERIFIED |
+| IP Source Guard | {{#if IP_SOURCE_GUARD}}Configured{{else}}Not configured{{/if}} | ✓ VERIFIED |
+
+---
+
+## Network Services
+
+### NTP Configuration
+
+**Status**: {{#if NTP_ENABLED}}✓ Configured{{else}}⚠ Not Configured{{/if}}
+
+{{#if NTP_ENABLED}}
+| Setting | Value |
+|---------|-------|
+| NTP Servers | {{NTP_SERVERS}} ✓ |
+| Authentication | {{#if NTP_AUTH}}Enabled{{else}}Disabled{{/if}} ✓ |
+{{/if}}
+
+### Syslog Configuration
+
+**Status**: {{#if SYSLOG_ENABLED}}✓ Configured{{else}}⚠ Not Configured{{/if}}
+
+{{#if SYSLOG_ENABLED}}
+| Setting | Value |
+|---------|-------|
+| Logging Hosts | {{SYSLOG_SERVERS}} ✓ |
+{{/if}}
+
+### SNMP Configuration
+
+**Status**: {{#if SNMP_ENABLED}}Configured ({{SNMP_VERSION}}){{else}}Not configured{{/if}} ✓
+
+### DNS Configuration
+
+| Setting | Value |
+|---------|-------|
+| Domain Name | {{DNS_DOMAIN}} ✓ |
+| Domain Lookup | {{#if DNS_LOOKUP}}Enabled{{else}}Disabled{{/if}} ✓ |
+| Name Servers | {{DNS_SERVERS}} ✓ |
+
+---
+
+## Routing Configuration
+
+**IP Routing**: {{#if IP_ROUTING}}✓ Enabled (Layer 3 switch){{else}}Disabled (Layer 2 switch){{/if}} ✓
+
+{{#if DEFAULT_GATEWAY}}
+**Default Gateway**: {{DEFAULT_GATEWAY}} ✓
+{{/if}}
+
+{{#if STATIC_ROUTES}}
+### Static Routes
+
+| Network | Mask | Next Hop |
+|---------|------|----------|
+{{#each STATIC_ROUTES}}
+| {{network}} | {{mask}} | {{next_hop}} |
+{{/each}}
+
+✓ VERIFIED from JSON
+{{/if}}
+
+{{#if ROUTING_PROTOCOLS}}
+### Dynamic Routing Protocols
+
+Configured protocols: {{ROUTING_PROTOCOLS}} ✓
+
+~ Further analysis would require examining full routing protocol configuration
+{{/if}}
+
+---
+
+## Configuration Quality Assessment
+
+### Security Posture Analysis
+
+#### ✓ Strengths (Verified Good Practices)
+
+List configurations that follow security best practices, using JSON data as evidence:
+
+1. **[Practice name]**: [Evidence from JSON]
+   - Example: "SSH-only VTY access" if `transport_input: ["ssh"]`
+   - Example: "Port security on access ports" if port_security.enabled = true
+
+2. [Continue based on actual configuration...]
+
+#### ⚠ Security Concerns
+
+List security issues found in the configuration:
+
+1. **[Issue]**: [Description]
+   - **Evidence**: [JSON field showing the issue]
+   - **Risk**: [Explain the security risk]
+   - **Recommendation**: [How to remediate]
+
+#### Missing Security Features
+
+Compare configured features (from JSON) against best practices:
+
+1. [Feature not in JSON but recommended]: [Why it should be considered]
+
+---
+
+## Summary
+
+### Configuration Statistics (✓ All VERIFIED from JSON)
+
+| Metric | Value |
+|--------|-------|
+| Hostname | {{HOSTNAME}} |
+| Total VLANs | {{VLAN_COUNT}} |
+| Total Interfaces | {{TOTAL_INTERFACES}} |
+| Active Interfaces | {{ACTIVE_INTERFACES}} |
+| Shutdown Interfaces | {{SHUTDOWN_INTERFACES}} |
+| Trunk Ports | {{TRUNK_PORTS}} |
+| Access Ports | {{ACCESS_PORTS}} |
+| AAA Enabled | {{#if AAA_ENABLED}}Yes{{else}}No{{/if}} |
+| DHCP Snooping | {{#if DHCP_SNOOPING_ENABLED}}Enabled{{else}}Disabled{{/if}} |
+| DAI | {{#if DAI_ENABLED}}Enabled{{else}}Disabled{{/if}} |
+| Port Security Ports | {{PORT_SECURITY_COUNT}} |
+| STP Mode | {{STP_MODE}} |
+| IP Routing | {{#if IP_ROUTING}}Enabled{{else}}Disabled{{/if}} |
+
+### Overall Assessment
+
+[2-4 sentences providing analysis based on the verified data. Focus on device role, primary purpose, and notable configuration characteristics.]
+
+~ This assessment is INFERRED from the verified configuration data
+
+---
+
+## Data Source Verification
+
+✓ **All factual claims in this document are based on structured data extracted from the configuration file.**
+
+**Extraction Method**: ciscoconfparse library (deterministic parsing)
+**Configuration File**: {{FILENAME}}
+**Generated**: {{TIMESTAMP}}
+
+### Confidence Level Summary
+
+- **✓ VERIFIED**: Data directly extracted from configuration (hostname, IPs, VLANs, interface settings, etc.)
+- **~ INFERRED**: Analytical conclusions based on verified data (device role, security assessment, recommendations)
+- **? UNCERTAIN**: Not marked in this document (all data is either verified or clearly marked as inferred)
+
+---
+
+*End of documentation*
