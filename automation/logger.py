@@ -61,33 +61,34 @@ class DocumentationLogger:
         file_handler.setFormatter(detailed_formatter)
         self.logger.addHandler(file_handler)
 
-        # Console handler - configurable verbosity
-        console_handler = logging.StreamHandler(sys.stdout)
+        # Console handler - configurable verbosity with UTF-8 encoding
+        import io
+        console_handler = logging.StreamHandler(io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace'))
         console_handler.setLevel(self.console_level)
         console_handler.setFormatter(console_formatter)
         self.logger.addHandler(console_handler)
 
         self.log_file_path = log_file
 
-    def debug(self, message: str):
+    def debug(self, message: str, exc_info: bool = False):
         """Log debug message."""
-        self.logger.debug(message)
+        self.logger.debug(message, exc_info=exc_info)
 
-    def info(self, message: str):
+    def info(self, message: str, exc_info: bool = False):
         """Log info message."""
-        self.logger.info(message)
+        self.logger.info(message, exc_info=exc_info)
 
-    def warning(self, message: str):
+    def warning(self, message: str, exc_info: bool = False):
         """Log warning message."""
-        self.logger.warning(message)
+        self.logger.warning(message, exc_info=exc_info)
 
-    def error(self, message: str):
+    def error(self, message: str, exc_info: bool = False):
         """Log error message."""
-        self.logger.error(message)
+        self.logger.error(message, exc_info=exc_info)
 
-    def critical(self, message: str):
+    def critical(self, message: str, exc_info: bool = False):
         """Log critical message."""
-        self.logger.critical(message)
+        self.logger.critical(message, exc_info=exc_info)
 
     def section(self, title: str):
         """Log a section header (always visible)."""

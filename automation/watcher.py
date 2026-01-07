@@ -13,6 +13,7 @@ from pathlib import Path
 from datetime import datetime
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+from metrics_tracker import init_metrics
 
 
 class ConfigFileHandler(FileSystemEventHandler):
@@ -89,6 +90,13 @@ def main():
 
     # Ensure configs directory exists
     configs_dir.mkdir(exist_ok=True)
+
+    # Initialize metrics tracker
+    metrics_dir = project_root / "metrics"
+    metrics_dir.mkdir(exist_ok=True)
+    metrics_db = metrics_dir / "processing_metrics.db"
+    init_metrics(metrics_db)
+    print(f" Metrics database: {metrics_db}")
 
     print(" Starting Cisco Config Watcher...")
     print(f" Monitoring directory: {configs_dir}")

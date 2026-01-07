@@ -26,5 +26,11 @@
   "validation": {
     "enabled": true,
     "save_reports": true
+  },
+  "security": {
+    "sanitize_secrets": true,
+    "redact_passwords": true,
+    "redact_snmp_communities": true,
+    "redact_tacacs_keys": true
   }
 }

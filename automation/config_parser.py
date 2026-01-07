@@ -34,6 +34,60 @@ class CiscoConfigParser:
         self.parse = CiscoConfParse(self.config_file_path, syntax='ios')
         return True
 
+    def sanitize_secrets(self, config_text: str) -> str:
+        """
+        Sanitize sensitive information from configuration text.
+
+        Args:
+            config_text: Raw configuration text
+
+        Returns:
+            Sanitized configuration text with secrets redacted
+        """
+        sanitized = config_text
+
+        # Define patterns to redact with their replacements
+        patterns = [
+            # Username passwords (type 5, 7, or plaintext)
+            (r'(username\s+\S+\s+(?:privilege\s+\d+\s+)?(?:secret|password)\s+(?:\d+\s+)?)\S+', r'\1<REDACTED>'),
+
+            # Enable passwords
+            (r'(enable\s+(?:secret|password)\s+(?:\d+\s+)?)\S+', r'\1<REDACTED>'),
+
+            # SNMP community strings
+            (r'(snmp-server\s+community\s+)\S+', r'\1<REDACTED>'),
+
+            # TACACS/RADIUS keys
+            (r'(tacacs-server\s+key\s+(?:\d+\s+)?)\S+', r'\1<REDACTED>'),
+            (r'(radius-server\s+key\s+(?:\d+\s+)?)\S+', r'\1<REDACTED>'),
+
+            # Crypto keys (ISAKMP, IPsec)
+            (r'(key\s+\d+\s+)\S+', r'\1<REDACTED>'),
+            (r'(pre-shared-key\s+(?:address\s+\S+\s+)?key\s+)\S+', r'\1<REDACTED>'),
+
+            # Line passwords (VTY, console, aux)
+            (r'(password\s+(?:\d+\s+)?)\S+', r'\1<REDACTED>'),
+
+            # SNMP v3 auth/priv passwords
+            (r'(snmp-server\s+user\s+\S+\s+\S+\s+(?:v3\s+)?auth\s+\w+\s+)\S+', r'\1<REDACTED>'),
+            (r'(snmp-server\s+user\s+\S+\s+\S+\s+(?:v3\s+)?.*?priv\s+\w+\s+)\S+', r'\1<REDACTED>'),
+
+            # Dot1x passwords
+            (r'(dot1x\s+.*?password\s+(?:\d+\s+)?)\S+', r'\1<REDACTED>'),
+        ]
+
+        secrets_found = 0
+        for pattern, replacement in patterns:
+            matches = re.findall(pattern, sanitized, re.IGNORECASE | re.MULTILINE)
+            if matches:
+                secrets_found += len(matches)
+            sanitized = re.sub(pattern, replacement, sanitized, flags=re.IGNORECASE | re.MULTILINE)
+
+        if secrets_found > 0:
+            print(f"   Sanitized {secrets_found} secret(s) from configuration")
+
+        return sanitized
+
     def extract_all(self) -> Dict[str, Any]:
         """Extract all configuration data into structured JSON."""
         if not self.parse:
@@ -1081,19 +1135,39 @@ class CiscoConfigParser:
         return stacking
 
 
-def parse_config_to_json(config_file_path: str, output_json_path: Optional[str] = None) -> Dict[str, Any]:
+def parse_config_to_json(config_file_path: str, output_json_path: Optional[str] = None, sanitize_secrets: bool = False) -> Dict[str, Any]:
     """
     Parse a Cisco IOS configuration file and return structured JSON.
 
     Args:
         config_file_path: Path to the configuration file
         output_json_path: Optional path to save JSON output
+        sanitize_secrets: Whether to redact sensitive information (passwords, keys, etc.)
 
     Returns:
         Dictionary containing structured configuration data
     """
     parser = CiscoConfigParser(config_file_path)
     parser.load_config()
+
+    # Sanitize secrets if requested
+    if sanitize_secrets:
+        parser.config_text = parser.sanitize_secrets(parser.config_text)
+        # Re-parse with sanitized config
+        from pathlib import Path
+        import tempfile
+
+        # Create temporary file with sanitized config
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False, encoding='utf-8') as tmp:
+            tmp.write(parser.config_text)
+            tmp_path = tmp.name
+
+        # Re-parse with sanitized config
+        parser.parse = CiscoConfParse(tmp_path, syntax='ios')
+
+        # Clean up temp file
+        Path(tmp_path).unlink()
+
     structured_data = parser.extract_all()
 
     if output_json_path:
