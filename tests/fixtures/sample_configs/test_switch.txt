@@ -6,6 +6,9 @@ hostname TEST-SW-01
 !
 interface Vlan1
  ip address 192.168.1.10 255.255.255.0
+ standby 1 ip 192.168.1.1
+ standby 1 priority 110
+ standby 1 preempt
  no shutdown
 !
 interface GigabitEthernet0/1
@@ -18,6 +21,15 @@ interface GigabitEthernet0/2
  switchport access vlan 10
  switchport mode access
  spanning-tree portfast
+!
+interface range GigabitEthernet0/23-24
+ description EtherChannel to Distribution
+ switchport mode trunk
+ channel-group 1 mode active
+!
+interface Port-channel1
+ description Port-Channel to Distribution
+ switchport mode trunk
 !
 vlan 10
  name DATA

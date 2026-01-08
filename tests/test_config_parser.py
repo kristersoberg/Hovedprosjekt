@@ -54,9 +54,9 @@ class TestCiscoConfigParser(unittest.TestCase):
         self.assertIn(30, vlans['vlan_ids'])
 
         # Check VLAN names
-        #self.assertEqual(vlans['vlan_names'].get(10), 'DATA')
-        #self.assertEqual(vlans['vlan_names'].get(20), 'VOICE')
-        #self.assertEqual(vlans['vlan_names'].get(30), 'GUEST')
+        self.assertEqual(vlans['vlan_names'].get(10), 'DATA')
+        self.assertEqual(vlans['vlan_names'].get(20), 'VOICE')
+        self.assertEqual(vlans['vlan_names'].get(30), 'GUEST')
 
     def test_extract_interfaces(self):
         """Test interface extraction."""
@@ -96,6 +96,32 @@ class TestCiscoConfigParser(unittest.TestCase):
         self.assertEqual(mgmt['svi'], 1)
         self.assertEqual(mgmt['ip_address'], '192.168.1.10')
         self.assertEqual(mgmt['subnet_mask'], '255.255.255.0')
+
+    def test_extract_hsrp_config(self):
+        """Test HSRP extraction from SVIs."""
+        vlans = self.parser._extract_vlans()
+
+        # Find VLAN 1 SVI
+        vlan1_svi = next((svi for svi in vlans['svi_interfaces'] if svi['vlan_id'] == 1), None)
+        self.assertIsNotNone(vlan1_svi)
+
+        # Check HSRP configuration
+        self.assertGreater(len(vlan1_svi['hsrp']), 0)
+        hsrp_group = vlan1_svi['hsrp'][0]
+        self.assertEqual(hsrp_group['group'], 1)
+        self.assertEqual(hsrp_group['virtual_ip'], '192.168.1.1')
+        self.assertEqual(hsrp_group['priority'], 110)
+        self.assertTrue(hsrp_group['preempt'])
+
+    def test_extract_channel_group(self):
+        """Test EtherChannel/channel-group extraction."""
+        interfaces = self.parser._extract_interfaces()
+
+        # Find interface with channel-group (range GigabitEthernet0/23-24)
+        channel_intf = next((i for i in interfaces if i['channel_group']['number'] is not None), None)
+        self.assertIsNotNone(channel_intf)
+        self.assertEqual(channel_intf['channel_group']['number'], 1)
+        self.assertEqual(channel_intf['channel_group']['mode'], 'active')
 
     def test_sanitize_secrets(self):
         """Test secrets sanitization."""

@@ -31,10 +31,10 @@ def run_all_tests():
     print(f"Errors: {len(result.errors)}")
 
     if result.wasSuccessful():
-        print("\n✓ All tests passed!")
+        print("\nAll tests passed!")
         return 0
     else:
-        print("\n❌ Some tests failed.")
+        print("\nSome tests failed.")
         return 1
 
 

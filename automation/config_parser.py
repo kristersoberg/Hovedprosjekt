@@ -344,6 +344,7 @@ class CiscoConfigParser:
         """Extract VLAN configuration."""
         vlans = {
             "vlan_ids": [],
+            "vlan_names": {},  # {vlan_id: name}
             "svi_interfaces": [],
             "vtp": {
                 "mode": None,
@@ -403,6 +404,29 @@ class CiscoConfigParser:
 
         vlans["vlan_ids"] = sorted(list(vlan_ids_set))
 
+        # Extract VLAN names from explicit VLAN declarations
+        vlan_declarations = self.parse.find_objects(r'^vlan\s+\d+')
+        for vlan_decl in vlan_declarations:
+            # Get VLAN ID
+            vlan_match = re.search(r'^vlan\s+(\d+)', vlan_decl.text)
+            if not vlan_match:
+                continue
+
+            vlan_id = int(vlan_match.group(1))
+
+            # Get VLAN name
+            name_lines = vlan_decl.re_search_children(r'^\s+name\s+')
+            if name_lines:
+                name_match = re.search(r'^\s+name\s+(.+)', name_lines[0].text)
+                if name_match:
+                    vlans["vlan_names"][vlan_id] = name_match.group(1).strip()
+                    # Also add to vlan_ids if not already there
+                    if vlan_id not in vlan_ids_set:
+                        vlan_ids_set.add(vlan_id)
+
+        # Update vlan_ids list with any VLANs found in declarations
+        vlans["vlan_ids"] = sorted(list(vlan_ids_set))
+
         # VLAN interfaces (SVIs)
         vlan_intfs = self.parse.find_objects(r'^interface\s+Vlan')
         for vlan_intf in vlan_intfs:
@@ -420,8 +444,8 @@ class CiscoConfigParser:
                 "shutdown": False,
                 "acl_in": None,
                 "acl_out": None,
-                "hsrp": False,
-                "vrrp": False
+                "hsrp": [],  # List of HSRP groups
+                "vrrp": []   # List of VRRP groups
             }
 
             # Description
@@ -456,13 +480,109 @@ class CiscoConfigParser:
                 if match:
                     svi_info["acl_out"] = match.group(1)
 
-            # HSRP
-            if vlan_intf.re_search_children(r'^\s+standby\s+'):
-                svi_info["hsrp"] = True
+            # HSRP - Extract detailed configuration
+            hsrp_lines = vlan_intf.re_search_children(r'^\s+standby\s+')
+            hsrp_groups = {}  # Track groups to aggregate config
 
-            # VRRP
-            if vlan_intf.re_search_children(r'^\s+vrrp\s+'):
-                svi_info["vrrp"] = True
+            for hsrp_line in hsrp_lines:
+                # Extract group number and parse different HSRP commands
+                # Format: standby <group> <command>
+                group_match = re.search(r'^\s+standby\s+(\d+)\s+(.+)', hsrp_line.text)
+                if group_match:
+                    group_num = int(group_match.group(1))
+                    config = group_match.group(2).strip()
+
+                    # Initialize group if not exists
+                    if group_num not in hsrp_groups:
+                        hsrp_groups[group_num] = {
+                            "group": group_num,
+                            "virtual_ip": None,
+                            "priority": None,
+                            "preempt": False,
+                            "track": []
+                        }
+
+                    # Parse specific HSRP config
+                    if config.startswith('ip '):
+                        # Virtual IP: standby 1 ip 192.168.1.1
+                        ip_match = re.search(r'ip\s+(\S+)', config)
+                        if ip_match:
+                            hsrp_groups[group_num]["virtual_ip"] = ip_match.group(1)
+
+                    elif config.startswith('priority '):
+                        # Priority: standby 1 priority 110
+                        priority_match = re.search(r'priority\s+(\d+)', config)
+                        if priority_match:
+                            hsrp_groups[group_num]["priority"] = int(priority_match.group(1))
+
+                    elif config.startswith('preempt'):
+                        # Preempt: standby 1 preempt
+                        hsrp_groups[group_num]["preempt"] = True
+
+                    elif config.startswith('track'):
+                        # Track: standby 1 track 1 decrement 20
+                        track_match = re.search(r'track\s+(\d+)(?:\s+decrement\s+(\d+))?', config)
+                        if track_match:
+                            track_info = {
+                                "object": int(track_match.group(1)),
+                                "decrement": int(track_match.group(2)) if track_match.group(2) else None
+                            }
+                            hsrp_groups[group_num]["track"].append(track_info)
+
+            # Convert groups dict to list
+            svi_info["hsrp"] = list(hsrp_groups.values())
+
+            # VRRP - Extract detailed configuration
+            vrrp_lines = vlan_intf.re_search_children(r'^\s+vrrp\s+')
+            vrrp_groups = {}  # Track groups to aggregate config
+
+            for vrrp_line in vrrp_lines:
+                # Extract group number and parse different VRRP commands
+                # Format: vrrp <group> <command>
+                group_match = re.search(r'^\s+vrrp\s+(\d+)\s+(.+)', vrrp_line.text)
+                if group_match:
+                    group_num = int(group_match.group(1))
+                    config = group_match.group(2).strip()
+
+                    # Initialize group if not exists
+                    if group_num not in vrrp_groups:
+                        vrrp_groups[group_num] = {
+                            "group": group_num,
+                            "virtual_ip": None,
+                            "priority": None,
+                            "preempt": False,
+                            "track": []
+                        }
+
+                    # Parse specific VRRP config
+                    if config.startswith('ip '):
+                        # Virtual IP: vrrp 1 ip 192.168.1.1
+                        ip_match = re.search(r'ip\s+(\S+)', config)
+                        if ip_match:
+                            vrrp_groups[group_num]["virtual_ip"] = ip_match.group(1)
+
+                    elif config.startswith('priority '):
+                        # Priority: vrrp 1 priority 110
+                        priority_match = re.search(r'priority\s+(\d+)', config)
+                        if priority_match:
+                            vrrp_groups[group_num]["priority"] = int(priority_match.group(1))
+
+                    elif config.startswith('preempt'):
+                        # Preempt: vrrp 1 preempt
+                        vrrp_groups[group_num]["preempt"] = True
+
+                    elif config.startswith('track'):
+                        # Track: vrrp 1 track 1 decrement 20
+                        track_match = re.search(r'track\s+(\d+)(?:\s+decrement\s+(\d+))?', config)
+                        if track_match:
+                            track_info = {
+                                "object": int(track_match.group(1)),
+                                "decrement": int(track_match.group(2)) if track_match.group(2) else None
+                            }
+                            vrrp_groups[group_num]["track"].append(track_info)
+
+            # Convert groups dict to list
+            svi_info["vrrp"] = list(vrrp_groups.values())
 
             vlans["svi_interfaces"].append(svi_info)
 
@@ -555,7 +675,10 @@ class CiscoConfigParser:
                 "dhcp_snooping_trust": False,
                 "dhcp_snooping_limit": None,
                 "arp_inspection_trust": False,
-                "channel_group": None,
+                "channel_group": {
+                    "number": None,
+                    "mode": None  # active, passive, desirable, auto, on
+                },
                 "ip_address": None,
                 "subnet_mask": None
             }
@@ -699,10 +822,8 @@ class CiscoConfigParser:
             if channel:
                 match = re.search(r'^\s+channel-group\s+(\d+)\s+mode\s+(\S+)', channel[0].text)
                 if match:
-                    intf_info["channel_group"] = {
-                        "id": int(match.group(1)),
-                        "mode": match.group(2)
-                    }
+                    intf_info["channel_group"]["number"] = int(match.group(1))
+                    intf_info["channel_group"]["mode"] = match.group(2)
 
             # IP address (for routed interfaces)
             ip_addr = intf_obj.re_search_children(r'^\s+ip\s+address\s+')

@@ -1,9 +1,9 @@
 {
   "total_checks": 24,
-  "passed_checks": 17,
-  "failed_checks": 7,
-  "accuracy_percentage": 70.83,
-  "hallucination_count": 7,
+  "passed_checks": 18,
+  "failed_checks": 6,
+  "accuracy_percentage": 75.0,
+  "hallucination_count": 6,
   "warnings": [],
   "results": [
     {
@@ -57,10 +57,10 @@
     {
       "field": "VTY Transport Input",
       "expected": "ssh",
-      "found": "Not found",
-      "passed": false,
-      "location": null,
-      "error": "Value 'ssh' not found in documentation"
+      "found": "Transport Input: ssh",
+      "passed": true,
+      "location": "Line with: Transport Input: ssh...",
+      "error": null
     },
     {
       "field": "VLAN Count",
@@ -161,9 +161,9 @@
     {
       "field": "DHCP Snooping Status",
       "expected": "enabled",
-      "found": "DHCP Snooping: Enabled on VLANs 11, 12 (✓",
+      "found": "DHCP Snooping: Enabled",
       "passed": true,
-      "location": "Line with: DHCP Snooping: Enabled on VLANs 11, 12 (✓...",
+      "location": "Line with: DHCP Snooping: Enabled...",
       "error": null
     },
     {
@@ -177,9 +177,9 @@
     {
       "field": "Dynamic ARP Inspection",
       "expected": "enabled",
-      "found": "ARP Inspection: Enabled on VLANs 11, 12 (✓",
+      "found": "ARP Inspection: Enabled",
       "passed": true,
-      "location": "Line with: ARP Inspection: Enabled on VLANs 11, 12 (✓...",
+      "location": "Line with: ARP Inspection: Enabled...",
       "error": null
     },
     {
