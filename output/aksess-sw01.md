@@ -1,111 +1,345 @@
 # Network Device Documentation: aksess-sw01
 
 ## Device Information
-- Hostname: aksess-sw01 ✓
-- IOS Version: 12.2(37)SE1 ✓
-- Domain Name: krister.local ✓
-- Config Register: Not shown (Not configured)
+- **Hostname**: aksess-sw01 ✓ VERIFIED
+- **IOS Version**: 12.2(37)SE1 ✓ VERIFIED
+- **Domain Name**: krister.local ✓ VERIFIED
+- **Config Register**: Not configured ✓ VERIFIED
 
 ## Management & Access
-- Management IP Address: 10.90.0.11 ✓
-- Default Gateway: 10.90.0.254 ✓
-- SSH Version: 2 ✓
-- SSH Timeout: 60 seconds ✓
-- VTY Settings:
-  - Lines: line vty 0 4 ✓
-  - Transport Input: ssh ✓
-  - Authentication: default ✓
+- **Management VLAN**: 90 ✓ VERIFIED
+- **IP Address**: 10.90.0.11 ✓ VERIFIED
+- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED
+- **Default Gateway**: 10.90.0.254 ✓ VERIFIED
+
+### SSH Configuration
+- **SSH Version**: 2 ✓ VERIFIED
+- **SSH Timeout**: 60 seconds ✓ VERIFIED
+
+### Console Access
+- **Line**: line con 0 ✓ VERIFIED
+- **Authentication**: console ✓ VERIFIED
+- **Logging Synchronous**: True ✓ VERIFIED
+
+### VTY Access
+- **Lines**: line vty 0 4 ✓ VERIFIED
+- **Transport Input**: ssh ✓ VERIFIED
+- **Access Class**: MGMT-MGMT (in) ✓ VERIFIED
 
 ## AAA Configuration
-- AAA is enabled ✓
-- Authentication Lists:
-  - aaa authentication login console local ✓
-  - aaa authentication login default group tacacs+ local ✓
-- Authorization Lists:
-  - aaa authorization exec default group tacacs+ local ✓
-- Accounting:
-  - aaa accounting exec default start-stop group tacacs+ ✓
+- **AAA Enabled**: Yes ✓ VERIFIED
+- **Authentication Lists**:
+  - aaa authentication login console local ✓ VERIFIED
+  - aaa authentication login default group tacacs+ local ✓ VERIFIED
+- **Authorization Lists**:
+  - aaa authorization exec default group tacacs+ local ✓ VERIFIED
+- **Accounting**:
+  - aaa accounting exec default start-stop group tacacs+ ✓ VERIFIED
+- **TACACS+ Servers**: 10.91.0.10 ✓ VERIFIED
+- **Local Users**: emergency-admin (privilege 15) ✓ VERIFIED
 
 ## VLANs
-- Total VLANs Referenced: 4 ✓
-- VLAN IDs: 11, 12, 90, 666 ✓
-- VLAN Interfaces (SVIs): 2 configured
-  - **VLAN 1**
-    - Status: Shutdown ✓
-  - **VLAN 90**
-    - Description: Management SVI ✓
-    - IP Address: 10.90.0.11 255.255.255.0 ✓
-    - Status: Active ✓
-    - ACL In: MGMT-MGMT ✓
+- **Total VLANs Referenced**: 4 ✓ VERIFIED
+- **VLAN IDs**: 11, 12, 90, 666 ✓ VERIFIED
+- **VLAN Interfaces (SVIs)**: 2 configured ✓ VERIFIED
+  - **VLAN 1**:
+    - Status: Shutdown ✓ VERIFIED
+  - **VLAN 90**:
+    - Description: Management SVI ✓ VERIFIED
+    - IP: 10.90.0.11 255.255.255.0 ✓ VERIFIED
+    - Status: Active ✓ VERIFIED
+    - ACL In: MGMT-MGMT ✓ VERIFIED
 
 ## Physical Interfaces
-- Total Interfaces: 26 ✓
-- Active (no shutdown): 4 ✓
-- Shutdown: 22 ✓
-- Access Ports: 3 ✓
-- Trunk Ports: 1 ✓
-- Port Security Enabled: 3 interfaces ✓
-- Detailed Interface List:
-  - **FastEthernet0/1** 
-    - PC4-Access port | Mode: access | VLAN: 11 | Port-Sec: ✓
-  - **FastEthernet0/2**
-    - PC5-Access port | Mode: access | VLAN: 12 | Port-Sec: ✓
-  - **FastEthernet0/3** 
-    - Management-PC Access port | Mode: access | VLAN: 90 | Port-Sec: ✓
-  - **GigabitEthernet0/1**
-    - dis-venstre-sw01 gig0/1 | Mode: trunk | Allowed VLANs: 11, 12, 90
+- **Total Interfaces**: 26 ✓ VERIFIED
+- **Active (no shutdown)**: 4 ✓ VERIFIED
+- **Shutdown**: 22 ✓ VERIFIED
+- **Access Ports**: 3 ✓ VERIFIED
+- **Trunk Ports**: 1 ✓ VERIFIED
+- **Port Security Enabled**: 3 interfaces ✓ VERIFIED
 
-## Spanning Tree Protocol
-- STP Mode: pvst ✓
-- Per-VLAN Priorities:
-  - VLAN 11: 28672 ✓
-  - VLAN 12: 28672 ✓
-  - VLAN 90: 28672 ✓
+### Detailed Interface List:
+- **FastEthernet0/1** - PC4-Access port | Mode: access | VLAN: 11 | Port-Sec: ✓ VERIFIED
+- **FastEthernet0/2** - PC5-Access port | Mode: access | VLAN: 12 | Port-Sec: ✓ VERIFIED
+- **FastEthernet0/3** - Management-PC Access port | Mode: access | VLAN: 90 | Port-Sec: ✓ VERIFIED
+- **GigabitEthernet0/1** - dis-venstre-sw01 gig0/1 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 11, 12, 90 | Trust for ARP and DHCP snooping ✓ VERIFIED
 
-## Security Features
-- DHCP Snooping: Enabled on VLANs 11, 12 ✓
-  - Information Option: Disabled ✓
-- Dynamic ARP Inspection: Enabled on VLANs 11, 12 ✓
-- Access Control Lists:
-  - Standard ACL 'MGMT-MGMT': 3 entries ✓
-- CDP: Disabled ✓
+## Spanning Tree
+- **Mode**: PVST ✓ VERIFIED
+- **VLAN Priority**:
+  - VLAN 11-12, 90: 28672 ✓ VERIFIED
 
-## Network Services
-- Syslog: Enabled ✓
-  - Servers: 10.91.0.10 ✓
-- DNS Domain Name: krister.local ✓
-- DNS Lookup: Disabled (Not configured)
+## IP Services
+### ARP Inspection
+- **Enabled on VLANs**: 11-12 ✓ VERIFIED
 
-## Routing Configuration
-- IP Routing: Disabled ✓
-- Default Gateway: 10.90.0.254 ✓
+### DHCP Snooping
+- **Enabled on VLANs**: 11-12 ✓ VERIFIED
+- **Information Option Disabled**: Yes ✓ VERIFIED
+
+## Logging and Authentication
+- **Logging Server**: 10.91.0.10 ✓ VERIFIED
+- **NTP Configuration**:
+  - NTP Authentication Key: 15 (Redacted) ✓ VERIFIED
+  - NTP Trusted-Key: 15 ✓ VERIFIED
+  - NTP Server: 10.91.0.123 with key 15 (Redacted) ✓ VERIFIED
+
+## Access Control Lists
+- **Standard ACL**: MGMT-MGMT
+  - Permit 10.90.0.0/24 ✓ VERIFIED
+  - Permit 10.91.0.0/24 ✓ VERIFIED
+  - Deny any ✓ VERIFIED
 
 ## Configuration Quality Assessment
+### Spanning Tree and Port Security
+- **PortFast**: Enabled on FastEthernet ports (0/1, 0/2, 0/3) ✓ VERIFIED
+- **BPDU Guard**: Enabled on FastEthernet ports (0/1, 0/2, 0/3) ✓ VERIFIED
 
-### Security Posture
+### DHCP and ARP Inspection
+- **DHCP Snooping Trust**: Configured on GigabitEthernet0/1 for VLANs 11, 12, 90 ✓ VERIFIED
+- **ARP Inspection Trust**: Configured on GigabitEthernet0/1 for VLANs 11, 12, 90 ✓ VERIFIED
 
-#### Strengths
-- SSH-only access is enabled.
-- DHCP snooping and DAI are enabled on VLANs 11, 12.
-- Port security is enabled on three interfaces.
+### Security Measures
+- **Port Security**: Enabled and configured with sticky MAC addresses on FastEthernet ports (0/1, 0/2, 0/3) ✓ VERIFIED
+- **Storm Control**: Configured to restrict broadcast traffic levels on FastEthernet ports (0/1, 0/2, 0/3) ✓ VERIFIED
 
-#### Areas for Improvement
-- The device has a large number of shutdown interfaces (22).
-- CDP is disabled, which may make it harder to troubleshoot the network.
-- There are no ACLs configured on any other VLANs besides VLAN 90.
-- IP source guard and 802.1X are not configured.
-
-#### Recommendations
-- Enable IP source guard on all VLANs.
-- Configure 802.1X authentication for all access ports.
-- Consider enabling CDP to improve network troubleshooting capabilities.
-- Review the configuration to ensure that all interfaces are properly secured.
-
-## Summary
-
-The aksess-sw01 device appears to be a distribution layer switch, given its configuration and interface counts. It has a good security posture, with SSH-only access enabled, DHCP snooping and DAI enabled on VLANs 11, 12, and port security enabled on three interfaces. However, there are areas for improvement, including enabling IP source guard and 802.1X authentication, and reviewing the configuration to ensure that all interfaces are properly secured.
+### Access and Authentication
+- **AAA Configuration**: Properly configured with TACACS+ for authentication and accounting ✓ VERIFIED
+- **VTY Lines**: Secure access via SSH with ACL MGMT-MGMT applied ✓ VERIFIED
 
 ---
 
-**Data Source**: Structured configuration analysis
-**Generated**: 2026-01-07T14:17:36.782121
+**Data Source**: Structured configuration analysis  
+**Generated**: 2026-01-12T22:08:37.805005
+
+### Raw Configuration (for config line citations)
+
+```
+Building configuration...
+
+Current configuration : 4036 bytes
+!
+version 12.2(37)SE1
+service timestamps log datetime msec
+service timestamps debug datetime msec
+no service password-encryption
+!
+hostname aksess-sw01
+!
+!
+!
+!
+!
+!
+aaa new-model
+!
+aaa authentication login console local 
+aaa authentication login default group tacacs+ local 
+!
+!
+aaa authorization exec default group tacacs+ local
+!
+aaa accounting exec default start-stop group tacacs+
+!
+!
+!
+!
+!
+!
+username emergency-admin privilege 15 secret 5 <REDACTED>
+!
+!
+!
+!
+!
+!
+!
+!
+ip arp inspection vlan 11-12
+!
+ip dhcp snooping vlan 11-12
+no ip dhcp snooping information option
+ip dhcp snooping
+!
+ip ssh version 2
+ip ssh time-out 60
+no ip domain-lookup
+ip domain-name krister.local
+!
+!
+spanning-tree mode pvst
+spanning-tree vlan 11-12,90 priority 28672
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/1
+ description PC4-Access port
+ ip dhcp snooping limit rate 15
+ switchport access vlan 11
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 00E0.A374.124E
+ switchport port-security aging time 3
+ storm-control broadcast level 1
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ description PC5-Access port
+ ip dhcp snooping limit rate 15
+ switchport access vlan 12
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 0060.2F97.3B3E
+ switchport port-security aging time 3
+ storm-control broadcast level 1
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ description Management-PC Access port
+ switchport access vlan 90
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky 
+ switchport port-security violation restrict 
+ switchport port-security mac-address sticky 0006.2A05.E16C
+ switchport port-security aging time 3
+ storm-control broadcast level 1
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ shutdown
+!
+interface FastEthernet0/5
+ shutdown
+!
+interface FastEthernet0/6
+ shutdown
+!
+interface FastEthernet0/7
+ shutdown
+!
+interface FastEthernet0/8
+ shutdown
+!
+interface FastEthernet0/9
+ shutdown
+!
+interface FastEthernet0/10
+ shutdown
+!
+interface FastEthernet0/11
+ shutdown
+!
+interface FastEthernet0/12
+ shutdown
+!
+interface FastEthernet0/13
+ shutdown
+!
+interface FastEthernet0/14
+ shutdown
+!
+interface FastEthernet0/15
+ shutdown
+!
+interface FastEthernet0/16
+ shutdown
+!
+interface FastEthernet0/17
+ shutdown
+!
+interface FastEthernet0/18
+ shutdown
+!
+interface FastEthernet0/19
+ shutdown
+!
+interface FastEthernet0/20
+ shutdown
+!
+interface FastEthernet0/21
+ shutdown
+!
+interface FastEthernet0/22
+ shutdown
+!
+interface FastEthernet0/23
+ shutdown
+!
+interface FastEthernet0/24
+ shutdown
+!
+interface GigabitEthernet0/1
+ description dis-venstre-sw01 gig0/1
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 11-12,90
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet0/2
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan90
+ description Management SVI
+ mac-address 000d.bd10.6201
+ ip address 10.90.0.11 255.255.255.0
+ ip access-group MGMT-MGMT in
+!
+ip default-gateway 10.90.0.254
+ip classless
+!
+ip flow-export version 9
+!
+!
+ip access-list standard MGMT-MGMT
+ permit 10.90.0.0 0.0.0.255
+ permit 10.91.0.0 0.0.0.255
+ deny any
+!
+no cdp run
+!
+banner login ^CUnauthorized access prohibited.^C
+!
+tacacs-server host 10.91.0.10 key KompleksNoekkel
+!
+!
+!
+!
+logging 10.91.0.10
+line con 0
+ logging synchronous
+ login authentication console
+!
+line aux 0
+!
+line vty 0 4
+ access-class MGMT-MGMT in
+ login authentication default
+ transport input ssh
+!
+!
+!
+ntp authentication-key 15 <REDACTED> 080A43431915001C011F3C0539382B3A37 7
+ntp authenticate
+ntp trusted-key 15
+<REDACTED> server 10.91.0.123 key 15
+<REDACTED>
+end
+```
