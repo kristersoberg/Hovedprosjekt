@@ -515,7 +515,10 @@ Evaluate against Cisco best practices and provide recommendations.
                             }
                         ],
                         "temperature": llm_config.get("temperature", 0.7),
-                        "max_tokens": llm_config.get("max_tokens", 8000)
+                        "max_tokens": llm_config.get("max_tokens", 8000),
+                        "options": {
+                            "num_ctx": llm_config.get("num_ctx", 4096)
+                        }
                     }
 
                 response = requests.post(

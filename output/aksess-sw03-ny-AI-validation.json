@@ -1,9 +1,9 @@
 {
   "total_checks": 24,
-  "passed_checks": 23,
-  "failed_checks": 1,
-  "accuracy_percentage": 95.83,
-  "hallucination_count": 1,
+  "passed_checks": 14,
+  "failed_checks": 10,
+  "accuracy_percentage": 58.33,
+  "hallucination_count": 10,
   "warnings": [],
   "results": [
     {
@@ -41,18 +41,18 @@
     {
       "field": "Default Gateway",
       "expected": "10.90.0.254",
-      "found": "Gateway**: 10.90.0.254",
-      "passed": true,
-      "location": "Line with: Gateway**: 10.90.0.254...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '10.90.0.254' not found in documentation"
     },
     {
       "field": "SSH Version",
       "expected": "2",
-      "found": "SSH Version**: 2",
-      "passed": true,
-      "location": "Line with: SSH Version**: 2...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '2' not found in documentation"
     },
     {
       "field": "VTY Transport Input",
@@ -65,10 +65,10 @@
     {
       "field": "VLAN Count",
       "expected": "4",
-      "found": "4",
-      "passed": true,
-      "location": "Line with: **Total VLANs Referenced**: 4...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 4 not found in documentation"
     },
     {
       "field": "VLAN 11",
@@ -81,10 +81,10 @@
     {
       "field": "VLAN 12",
       "expected": "12",
-      "found": "VLAN: 12",
-      "passed": true,
-      "location": "Line with: VLAN: 12...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '12' not found in documentation"
     },
     {
       "field": "VLAN 90",
@@ -97,10 +97,10 @@
     {
       "field": "VLAN 666",
       "expected": "666",
-      "found": "VLAN: 666",
-      "passed": true,
-      "location": "Line with: VLAN: 666...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '666' not found in documentation"
     },
     {
       "field": "VLAN 90 IP",
@@ -113,26 +113,26 @@
     {
       "field": "Total Interfaces",
       "expected": "26",
-      "found": "26",
-      "passed": true,
-      "location": "Line with: **Total Interfaces**: 26...",
-      "error": null
+      "found": "3",
+      "passed": false,
+      "location": "Line with: 3 interfaces...",
+      "error": "Expected 26, found 3"
     },
     {
       "field": "Active Interfaces",
       "expected": "4",
-      "found": "4",
-      "passed": true,
-      "location": "Line with: **Active (no shutdown)**: 4...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 4 not found in documentation"
     },
     {
       "field": "Shutdown Interfaces",
       "expected": "22",
-      "found": "22",
-      "passed": true,
-      "location": "Line with: **Shutdown**: 22...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 22 not found in documentation"
     },
     {
       "field": "Interface FastEthernet0/1",
@@ -161,18 +161,18 @@
     {
       "field": "DHCP Snooping Status",
       "expected": "enabled",
-      "found": "DHCP snooping ✓",
+      "found": "DHCP Snooping\n- **Enabled on VLANs**: 11-12 ✓",
       "passed": true,
-      "location": "Line with: DHCP snooping ✓...",
+      "location": "Line with: DHCP Snooping\n- **Enabled on VLANs**: 11-12 ✓...",
       "error": null
     },
     {
       "field": "DHCP Snooping VLANs",
       "expected": "11,12",
-      "found": "Enabled on VLANs**: 11-12",
-      "passed": true,
-      "location": "Line with: Enabled on VLANs**: 11-12...",
-      "error": null
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '11,12' not found in documentation"
     },
     {
       "field": "Dynamic ARP Inspection",

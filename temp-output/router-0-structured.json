@@ -1,0 +1,577 @@
+{
+  "device_info": {
+    "hostname": "sentral-router-01",
+    "ios_version": "15.1",
+    "domain_name": "krister.local",
+    "config_register": null
+  },
+  "management": {
+    "svi": null,
+    "ip_address": null,
+    "subnet_mask": null,
+    "default_gateway": null,
+    "ssh": {
+      "version": "2",
+      "timeout": "60"
+    },
+    "console": {
+      "range": "line con 0",
+      "authentication": "console",
+      "transport_input": null,
+      "access_class": null,
+      "exec_timeout": null,
+      "logging_synchronous": true
+    },
+    "vty": {
+      "range": "line vty 0 4",
+      "authentication": "default",
+      "transport_input": [
+        "ssh"
+      ],
+      "access_class": {
+        "acl": "MGMT-MGMT",
+        "direction": "in"
+      },
+      "exec_timeout": null,
+      "logging_synchronous": false
+    },
+    "banner": "Configured"
+  },
+  "aaa": {
+    "enabled": true,
+    "authentication": [
+      "aaa authentication login console local",
+      "aaa authentication login default group tacacs+ local"
+    ],
+    "authorization": [
+      "aaa authorization exec default group tacacs+ local"
+    ],
+    "accounting": [
+      "aaa accounting exec default start-stop group tacacs+"
+    ],
+    "tacacs_servers": [
+      "10.91.0.10"
+    ],
+    "radius_servers": [],
+    "local_users": [
+      {
+        "username": "emergency-admin",
+        "privilege": 15
+      }
+    ]
+  },
+  "vlans": {
+    "vlan_ids": [],
+    "vlan_names": {},
+    "svi_interfaces": [
+      {
+        "vlan_id": 1,
+        "description": null,
+        "ip_address": null,
+        "subnet_mask": null,
+        "shutdown": true,
+        "acl_in": null,
+        "acl_out": null,
+        "hsrp": [],
+        "vrrp": []
+      }
+    ],
+    "vtp": {
+      "mode": null,
+      "domain": null,
+      "version": null
+    }
+  },
+  "interfaces": [
+    {
+      "name": "GigabitEthernet0/0",
+      "description": null,
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": true,
+      "speed": "auto",
+      "duplex": "auto",
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": null,
+      "subnet_mask": null
+    },
+    {
+      "name": "GigabitEthernet0/1",
+      "description": "dis-venstre-sw01 GIG0/2",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": "auto",
+      "duplex": "auto",
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": null,
+      "subnet_mask": null
+    },
+    {
+      "name": "GigabitEthernet0/1.11",
+      "description": "Usergroup 1-1",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": null,
+      "duplex": null,
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": "192.168.11.254",
+      "subnet_mask": "255.255.255.0"
+    },
+    {
+      "name": "GigabitEthernet0/1.12",
+      "description": "Usergroup 1-2",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": null,
+      "duplex": null,
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": "192.168.12.254",
+      "subnet_mask": "255.255.255.0"
+    },
+    {
+      "name": "GigabitEthernet0/1.90",
+      "description": "Management LEFT SIDE",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": null,
+      "duplex": null,
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": "10.90.0.254",
+      "subnet_mask": "255.255.255.0"
+    },
+    {
+      "name": "GigabitEthernet0/2",
+      "description": "dis-hoyre-sw01 GIG0/2",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": "auto",
+      "duplex": "auto",
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": null,
+      "subnet_mask": null
+    },
+    {
+      "name": "GigabitEthernet0/2.21",
+      "description": "Usergroup 2-1",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": null,
+      "duplex": null,
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": "192.168.21.254",
+      "subnet_mask": "255.255.255.0"
+    },
+    {
+      "name": "GigabitEthernet0/2.22",
+      "description": "Usergroup 2-2",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": null,
+      "duplex": null,
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": "192.168.22.254",
+      "subnet_mask": "255.255.255.0"
+    },
+    {
+      "name": "GigabitEthernet0/2.91",
+      "description": "Management RIGHT-SIDE",
+      "mode": null,
+      "access_vlan": null,
+      "trunk_encapsulation": null,
+      "trunk_native_vlan": null,
+      "trunk_allowed_vlans": [],
+      "shutdown": false,
+      "speed": null,
+      "duplex": null,
+      "port_security": {
+        "enabled": false,
+        "max_macs": null,
+        "violation": null,
+        "sticky": false,
+        "aging_time": null,
+        "sticky_macs": []
+      },
+      "spanning_tree": {
+        "portfast": false,
+        "bpduguard": false,
+        "rootguard": false,
+        "loopguard": false
+      },
+      "storm_control": {
+        "broadcast": null,
+        "multicast": null,
+        "unicast": null
+      },
+      "dhcp_snooping_trust": false,
+      "dhcp_snooping_limit": null,
+      "arp_inspection_trust": false,
+      "channel_group": {
+        "number": null,
+        "mode": null
+      },
+      "ip_address": "10.91.0.254",
+      "subnet_mask": "255.255.255.0"
+    }
+  ],
+  "routing": {
+    "ip_routing_enabled": false,
+    "default_gateway": null,
+    "static_routes": [],
+    "routing_protocols": []
+  },
+  "spanning_tree": {
+    "mode": "pvst",
+    "vlan_priorities": {},
+    "global_features": [],
+    "mst_configuration": null
+  },
+  "security": {
+    "dhcp_snooping": {
+      "enabled": false,
+      "vlans": [],
+      "information_option": true
+    },
+    "arp_inspection": {
+      "enabled": false,
+      "vlans": []
+    },
+    "ip_source_guard": false,
+    "acls": [
+      {
+        "type": "standard",
+        "name": "MGMT-MGMT",
+        "entries": [
+          "permit 10.90.0.0 0.0.0.255",
+          "permit 10.91.0.0 0.0.0.255",
+          "deny any"
+        ]
+      },
+      {
+        "type": "extended",
+        "name": "USERS_TO_SERV21",
+        "entries": [
+          "permit udp any any eq bootps",
+          "permit udp any any eq bootpc",
+          "permit ip 192.168.11.0 0.0.0.255 host 192.168.21.211",
+          "permit ip 192.168.11.0 0.0.0.255 host 192.168.21.212",
+          "permit udp 192.168.11.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "permit tcp 192.168.11.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "deny ip any any"
+        ]
+      },
+      {
+        "type": "extended",
+        "name": "USERS_TO_SERV22",
+        "entries": [
+          "permit udp any any eq bootps",
+          "permit udp any any eq bootpc",
+          "permit ip 192.168.12.0 0.0.0.255 host 192.168.22.221",
+          "permit ip 192.168.12.0 0.0.0.255 host 192.168.22.222",
+          "permit udp 192.168.12.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "permit tcp 192.168.12.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "deny ip any any"
+        ]
+      },
+      {
+        "type": "extended",
+        "name": "MGMT-RIGHT",
+        "entries": [
+          "permit ip 10.91.0.0 0.0.0.255 192.168.11.0 0.0.0.255",
+          "permit ip 10.91.0.0 0.0.0.255 192.168.12.0 0.0.0.255",
+          "permit ip 10.91.0.0 0.0.0.255 192.168.21.0 0.0.0.255",
+          "permit ip 10.91.0.0 0.0.0.255 192.168.22.0 0.0.0.255",
+          "permit ip 10.91.0.0 0.0.0.255 10.91.0.0 0.0.0.255",
+          "permit ip 10.91.0.0 0.0.0.255 10.90.0.0 0.0.0.255",
+          "permit udp 10.91.0.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "permit tcp 10.91.0.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "deny ip any any"
+        ]
+      },
+      {
+        "type": "extended",
+        "name": "MGMT-LEFT",
+        "entries": [
+          "permit ip 10.90.0.0 0.0.0.255 192.168.11.0 0.0.0.255",
+          "permit ip 10.90.0.0 0.0.0.255 192.168.12.0 0.0.0.255",
+          "permit ip 10.90.0.0 0.0.0.255 192.168.21.0 0.0.0.255",
+          "permit ip 10.90.0.0 0.0.0.255 192.168.22.0 0.0.0.255",
+          "permit ip 10.90.0.0 0.0.0.255 10.91.0.0 0.0.0.255",
+          "permit ip 10.90.0.0 0.0.0.255 10.90.0.0 0.0.0.255",
+          "permit udp 10.90.0.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "permit tcp 10.90.0.0 0.0.0.255 host 10.91.0.123 eq domain",
+          "deny ip any any"
+        ]
+      }
+    ],
+    "cdp_enabled": true,
+    "lldp_enabled": false,
+    "dot1x_enabled": false
+  },
+  "services": {
+    "ntp": {
+      "enabled": true,
+      "servers": [
+        "10.91.0.123"
+      ],
+      "authentication": true
+    },
+    "syslog": {
+      "enabled": true,
+      "servers": [
+        "10.91.0.10"
+      ]
+    },
+    "snmp": {
+      "enabled": false,
+      "version": null
+    },
+    "dns": {
+      "domain_name": "krister.local",
+      "domain_lookup": false,
+      "name_servers": []
+    }
+  },
+  "qos": {
+    "enabled": false,
+    "class_maps": [],
+    "policy_maps": [],
+    "service_policies": []
+  },
+  "stacking": {
+    "enabled": false,
+    "stack_members": [],
+    "priority": {}
+  },
+  "raw_config": "Building configuration...\n\nCurrent configuration : 4676 bytes\n!\nversion 15.1\nservice timestamps log datetime msec\nservice timestamps debug datetime msec\nno service password-encryption\n!\nhostname sentral-router-01\n!\n!\n!\nenable secret 5 $1$mERr$kpwEi4n9oE4fwUz4vrkmx1\n!\n!\nip dhcp excluded-address 192.168.11.1 192.168.11.149\nip dhcp excluded-address 192.168.11.151 192.168.11.254\nip dhcp excluded-address 192.168.12.1 192.168.12.149\nip dhcp excluded-address 192.168.12.151 192.168.12.254\n!\nip dhcp pool VLAN11-Pool\n network 192.168.11.0 255.255.255.0\n default-router 192.168.11.254\n dns-server 10.91.0.123\nip dhcp pool VLAN12-Pool\n network 192.168.12.0 255.255.255.0\n default-router 192.168.12.254\n dns-server 10.91.0.123\n!\n!\naaa new-model\n!\naaa authentication login console local \naaa authentication login default group tacacs+ local \n!\n!\naaa authorization exec default group tacacs+ local\n!\naaa accounting exec default start-stop group tacacs+\n!\n!\n!\n!\nip cef\nno ipv6 cef\n!\n!\n!\nusername emergency-admin privilege 15 secret 5 $1$mERr$.fNz7nAvKcvhZSXHFfhcj.\n!\n!\nlicense udi pid CISCO2911/K9 sn FTX15244012-\n!\n!\n!\n!\n!\n!\n!\n!\n!\nip ssh version 2\nip ssh time-out 60\nno ip domain-lookup\nip domain-name krister.local\n!\n!\nspanning-tree mode pvst\n!\n!\n!\n!\n!\n!\ninterface GigabitEthernet0/0\n no ip address\n duplex auto\n speed auto\n shutdown\n!\ninterface GigabitEthernet0/1\n description dis-venstre-sw01 GIG0/2\n no ip address\n duplex auto\n speed auto\n!\ninterface GigabitEthernet0/1.11\n description Usergroup 1-1\n encapsulation dot1Q 11\n ip address 192.168.11.254 255.255.255.0\n ip access-group USERS_TO_SERV21 in\n!\ninterface GigabitEthernet0/1.12\n description Usergroup 1-2\n encapsulation dot1Q 12\n ip address 192.168.12.254 255.255.255.0\n ip access-group USERS_TO_SERV22 in\n!\ninterface GigabitEthernet0/1.90\n description Management LEFT SIDE\n encapsulation dot1Q 90\n ip address 10.90.0.254 255.255.255.0\n ip access-group MGMT-LEFT in\n!\ninterface GigabitEthernet0/2\n description dis-hoyre-sw01 GIG0/2\n no ip address\n duplex auto\n speed auto\n!\ninterface GigabitEthernet0/2.21\n description Usergroup 2-1\n encapsulation dot1Q 21\n ip address 192.168.21.254 255.255.255.0\n!\ninterface GigabitEthernet0/2.22\n description Usergroup 2-2\n encapsulation dot1Q 22\n ip address 192.168.22.254 255.255.255.0\n!\ninterface GigabitEthernet0/2.91\n description Management RIGHT-SIDE\n encapsulation dot1Q 91\n ip address 10.91.0.254 255.255.255.0\n ip access-group MGMT-RIGHT in\n!\ninterface Vlan1\n no ip address\n shutdown\n!\nip classless\n!\nip flow-export version 9\n!\n!\nip access-list standard MGMT-MGMT\n permit 10.90.0.0 0.0.0.255\n permit 10.91.0.0 0.0.0.255\n deny any\nip access-list extended USERS_TO_SERV21\n permit udp any any eq bootps\n permit udp any any eq bootpc\n permit ip 192.168.11.0 0.0.0.255 host 192.168.21.211\n permit ip 192.168.11.0 0.0.0.255 host 192.168.21.212\n permit udp 192.168.11.0 0.0.0.255 host 10.91.0.123 eq domain\n permit tcp 192.168.11.0 0.0.0.255 host 10.91.0.123 eq domain\n deny ip any any\nip access-list extended USERS_TO_SERV22\n permit udp any any eq bootps\n permit udp any any eq bootpc\n permit ip 192.168.12.0 0.0.0.255 host 192.168.22.221\n permit ip 192.168.12.0 0.0.0.255 host 192.168.22.222\n permit udp 192.168.12.0 0.0.0.255 host 10.91.0.123 eq domain\n permit tcp 192.168.12.0 0.0.0.255 host 10.91.0.123 eq domain\n deny ip any any\nip access-list extended MGMT-RIGHT\n permit ip 10.91.0.0 0.0.0.255 192.168.11.0 0.0.0.255\n permit ip 10.91.0.0 0.0.0.255 192.168.12.0 0.0.0.255\n permit ip 10.91.0.0 0.0.0.255 192.168.21.0 0.0.0.255\n permit ip 10.91.0.0 0.0.0.255 192.168.22.0 0.0.0.255\n permit ip 10.91.0.0 0.0.0.255 10.91.0.0 0.0.0.255\n permit ip 10.91.0.0 0.0.0.255 10.90.0.0 0.0.0.255\n permit udp 10.91.0.0 0.0.0.255 host 10.91.0.123 eq domain\n permit tcp 10.91.0.0 0.0.0.255 host 10.91.0.123 eq domain\n deny ip any any\nip access-list extended MGMT-LEFT\n permit ip 10.90.0.0 0.0.0.255 192.168.11.0 0.0.0.255\n permit ip 10.90.0.0 0.0.0.255 192.168.12.0 0.0.0.255\n permit ip 10.90.0.0 0.0.0.255 192.168.21.0 0.0.0.255\n permit ip 10.90.0.0 0.0.0.255 192.168.22.0 0.0.0.255\n permit ip 10.90.0.0 0.0.0.255 10.91.0.0 0.0.0.255\n permit ip 10.90.0.0 0.0.0.255 10.90.0.0 0.0.0.255\n permit udp 10.90.0.0 0.0.0.255 host 10.91.0.123 eq domain\n permit tcp 10.90.0.0 0.0.0.255 host 10.91.0.123 eq domain\n deny ip any any\n!\nbanner login ^CUnauthorized access prohibited.^C\n!\ntacacs-server host 10.91.0.10 key KompleksNoekkel\n!\n!\n!\nlogging 10.91.0.10\nline con 0\n logging synchronous\n login authentication console\n!\nline aux 0\n!\nline vty 0 4\n access-class MGMT-MGMT in\n login authentication default\n transport input ssh\n!\n!\nntp authentication-key 15 md5 080A43431915001C011F3C0539382B3A37 7\nntp authenticate\nntp trusted-key 15\nntp server 10.91.0.123 key 15\n!\nend"
+}

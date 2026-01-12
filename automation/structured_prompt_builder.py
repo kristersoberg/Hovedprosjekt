@@ -412,12 +412,20 @@ Generate comprehensive Markdown documentation for this network device. Use the S
 # Network Device Documentation: {hostname}
 
 ## Device Information
-[Use device_info from structured data]
-- MUST include: hostname, IOS version, domain name (if present), config register
+- **Hostname**: {hostname} ✓ VERIFIED
+- **IOS Version**: [ios_version from data] ✓ VERIFIED
+- **Domain Name**: [domain_name from data or "Not configured"] ✓ VERIFIED
+- **Config Register**: [config_register from data or "Not configured"] ✓ VERIFIED
+
+NOTE: ALWAYS include these exact fields. Use the exact hostname from structured_data.
 
 ## Management & Access
-[Use management config from structured data]
-- MUST include: management IP, gateway, SSH version, VTY settings
+- **Management VLAN**: [svi number if present] ✓ VERIFIED
+- **IP Address**: [ip_address if present] ✓ VERIFIED
+- **Default Gateway**: [default_gateway if present] ✓ VERIFIED
+- **SSH Version**: [ssh.version from data] ✓ VERIFIED
+- **SSH Timeout**: [ssh.timeout from data] seconds ✓ VERIFIED
+- **VTY Transport Input**: [vty.transport_input from data] ✓ VERIFIED
 
 ## AAA Configuration
 [Use aaa from structured data]
@@ -428,9 +436,11 @@ Generate comprehensive Markdown documentation for this network device. Use the S
 - Include total count
 
 ## Physical Interfaces
-[Use interfaces from structured data]
-- MUST include summary statistics: total count, active count, shutdown count
-- List key active interfaces with their configurations
+- **Total Interfaces**: [count of interfaces array] ✓ VERIFIED
+- **Active (no shutdown)**: [count where shutdown=false] ✓ VERIFIED
+- **Shutdown**: [count where shutdown=true] ✓ VERIFIED
+
+Then list key active interfaces with their configurations.
 
 ## Spanning Tree Protocol
 [Use spanning_tree from structured data]
@@ -442,7 +452,12 @@ Generate comprehensive Markdown documentation for this network device. Use the S
 - Include DAI, port security, IP source guard status
 
 ## Network Services
-[Use services from structured data]
+### Logging
+- **Logging Server**: [syslog.servers from data] ✓ VERIFIED
+
+### NTP
+- **NTP Server**: [ntp.servers from data] ✓ VERIFIED
+- **NTP Authentication**: [ntp.authentication status] ✓ VERIFIED
 
 ## Routing Configuration
 [Use routing from structured data]

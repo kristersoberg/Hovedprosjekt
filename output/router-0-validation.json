@@ -1,0 +1,114 @@
+{
+  "total_checks": 13,
+  "passed_checks": 6,
+  "failed_checks": 7,
+  "accuracy_percentage": 46.15,
+  "hallucination_count": 7,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "sentral-router-01",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'sentral-router-01' not found in documentation"
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.1",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '15.1' not found in documentation"
+    },
+    {
+      "field": "Domain Name",
+      "expected": "krister.local",
+      "found": "Domain Name:** krister.local",
+      "passed": true,
+      "location": "Line with: Domain Name:** krister.local...",
+      "error": null
+    },
+    {
+      "field": "SSH Version",
+      "expected": "2",
+      "found": "ssh version 2",
+      "passed": true,
+      "location": "Line with: ssh version 2...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh",
+      "found": "Transport input SSH",
+      "passed": true,
+      "location": "Line with: Transport input SSH...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "9",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 9 not found in documentation"
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "8",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 8 not found in documentation"
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "1",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 1 not found in documentation"
+    },
+    {
+      "field": "Interface GigabitEthernet0/0",
+      "expected": "GigabitEthernet0/0",
+      "found": "GigabitEthernet0/0",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/0...",
+      "error": null
+    },
+    {
+      "field": "Interface GigabitEthernet0/1",
+      "expected": "GigabitEthernet0/1",
+      "found": "GigabitEthernet0/1",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface GigabitEthernet0/1.11",
+      "expected": "GigabitEthernet0/1.11",
+      "found": "GigabitEthernet0/1.11",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/1.11...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "enabled",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'enabled' not found in documentation"
+    },
+    {
+      "field": "Syslog Server 10.91.0.10",
+      "expected": "10.91.0.10",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '10.91.0.10' not found in documentation"
+    }
+  ]
+}

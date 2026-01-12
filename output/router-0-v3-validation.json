@@ -1,0 +1,114 @@
+{
+  "total_checks": 13,
+  "passed_checks": 7,
+  "failed_checks": 6,
+  "accuracy_percentage": 53.85,
+  "hallucination_count": 6,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "sentral-router-01",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'sentral-router-01' not found in documentation"
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.1",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '15.1' not found in documentation"
+    },
+    {
+      "field": "Domain Name",
+      "expected": "krister.local",
+      "found": "Domain and DNS Settings\n- **Domain Lookup Disabled:** `no ip domain-lookup`\n- **Domain Name:** `krister.local",
+      "passed": true,
+      "location": "Line with: Domain and DNS Settings\n- **Domain Lookup Disabled...",
+      "error": null
+    },
+    {
+      "field": "SSH Version",
+      "expected": "2",
+      "found": "SSH Configuration\n- **SSH Version:** 2 (`ip ssh version 2`)\n- **Timeout:** 60 seconds (`ip ssh time-out 60`)\n\n## Authentication and Authorization\n### AAA Configuration\n- **AAA New Model Enabled:** `aaa new-model`\n- **Authentication:**\n  - Console login authenticated locally: `aaa authentication login console local`\n  - Default login authenticated via TACACS+ or locally if TACACS+ fails: `aaa authentication login default group tacacs+ local`\n- **Authorization:**\n  - Exec authorization via TACACS+: `aaa authorization exec default group tacacs+ local`\n- **Accounting:**\n  - Start-stop accounting for exec sessions via TACACS+: `aaa accounting exec default start-stop group tacacs+`\n\n### TACACS+ Configuration\n- **TACACS+ Server:** \n  - Host IP: `10.91.0.10`\n  - Key: `KompleksNoekkel` (configured with `tacacs-server host 10.91.0.10 key KompleksNoekkel`)\n\n## VLAN and Interface Configuration\n### Interfaces\n- **GigabitEthernet0/0:** \n  - No IP address, shutdown (`interface GigabitEthernet0/0 no ip address shutdown`)\n- **GigabitEthernet0/1:**\n  - Description: `dis-venstre-sw01 GIG0/2`\n  - No IP address (`no ip address`), auto duplex and speed\n- **GigabitEthernet0/1.11 (VLAN 11):**\n  - Description: `Usergroup 1-1`\n  - Encapsulation dot1Q, VLAN ID 11\n  - IP Address: `192.168.11.254/24`\n  - Access-list applied inbound: `USERS_TO_SERV21` (`ip access-group USERS_TO_SERV21 in`)\n- **GigabitEthernet0/1.12 (VLAN 12):**\n  - Description: `Usergroup 1-2`\n  - Encapsulation dot1Q, VLAN ID 12\n  - IP Address: `192.168.12.254/24`\n  - Access-list applied inbound: `USERS_TO_SERV22` (`ip access-group USERS_TO_SERV22 in`)\n- **GigabitEthernet0/1.90 (VLAN 90):**\n  - Description: `Management LEFT SIDE`\n  - Encapsulation dot1Q, VLAN ID 90\n  - IP Address: `10.90.0.254/24`\n  - Access-list applied inbound: `MGMT-LEFT` (`ip access-group MGMT-LEFT in`)\n- **GigabitEthernet0/2:**\n  - Description: `dis-hoyre-sw01 GIG0/2`\n  - No IP address, auto duplex and speed\n- **GigabitEthernet0/2.21 (VLAN 21):**\n  - Description: `Usergroup 2-1`\n  - Encapsulation dot1Q, VLAN ID 21\n  - IP Address: `192.168.21.254/24`\n- **GigabitEthernet0/2.22 (VLAN 22):**\n  - Description: `Usergroup 2-2`\n  - Encapsulation dot1Q, VLAN ID 22\n  - IP Address: `192.168.22.254/24`\n- **GigabitEthernet0/2.91 (VLAN 91):**\n  - Description: `Management RIGHT-SIDE`\n  - Encapsulation dot1Q, VLAN ID 91\n  - IP Address: `10.91.0.254/24`\n  - Access-list applied inbound: `MGMT-RIGHT` (`ip access-group MGMT-RIGHT in`)\n- **VLAN1 (SVI):**\n  - No IP address, shutdown\n\n## Access Control Lists\n### Standard ACLs\n- **MGMT-MGMT:** \n  - Permits traffic from `10.90.0.0/24` and `10.91.0.0/24`, denies all other traffic (`ip access-list standard MGMT-MGMT permit 10.90.0.0 0.0.0.255 permit 10.91.0.0 0.0.0.255 deny any`)\n\n### Extended ACLs\n- **USERS_TO_SERV21:**\n  - Permits DHCP traffic and specific IP ranges to hosts `192.168.21.211`, `192.168.21.212`, and DNS server `10.91.0.123` (`ip access-list extended USERS_TO_SERV21`)\n- **USERS_TO_SERV22:**\n  - Similar to `USERS_TO_SERV2",
+      "passed": true,
+      "location": "Line with: SSH Configuration\n- **SSH Version:** 2 (`ip ssh ve...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh",
+      "found": "Transport Input:**\n  - SSH only (`transport input ssh",
+      "passed": true,
+      "location": "Line with: Transport Input:**\n  - SSH only (`transport input ...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "9",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 9 not found in documentation"
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "8",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 8 not found in documentation"
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "1",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Numeric value 1 not found in documentation"
+    },
+    {
+      "field": "Interface GigabitEthernet0/0",
+      "expected": "GigabitEthernet0/0",
+      "found": "GigabitEthernet0/0",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/0...",
+      "error": null
+    },
+    {
+      "field": "Interface GigabitEthernet0/1",
+      "expected": "GigabitEthernet0/1",
+      "found": "GigabitEthernet0/1",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface GigabitEthernet0/1.11",
+      "expected": "GigabitEthernet0/1.11",
+      "found": "GigabitEthernet0/1.11",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/1.11...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "enabled",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'enabled' not found in documentation"
+    },
+    {
+      "field": "Syslog Server 10.91.0.10",
+      "expected": "10.91.0.10",
+      "found": "Logging and NTP Configuration\n### Logging\n- **Logging Server:** \n  - Host IP: `10.91.0.10` (`logging 10.91.0.10",
+      "passed": true,
+      "location": "Line with: Logging and NTP Configuration\n### Logging\n- **Logg...",
+      "error": null
+    }
+  ]
+}

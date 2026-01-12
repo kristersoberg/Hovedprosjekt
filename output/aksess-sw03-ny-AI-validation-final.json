@@ -1,8 +1,8 @@
 {
-  "total_checks": 24,
-  "passed_checks": 23,
+  "total_checks": 25,
+  "passed_checks": 24,
   "failed_checks": 1,
-  "accuracy_percentage": 95.83,
+  "accuracy_percentage": 96.0,
   "hallucination_count": 1,
   "warnings": [],
   "results": [
@@ -161,9 +161,9 @@
     {
       "field": "DHCP Snooping Status",
       "expected": "enabled",
-      "found": "DHCP snooping ✓",
+      "found": "DHCP Snooping\n- **Enabled on VLANs**: 11-12 ✓",
       "passed": true,
-      "location": "Line with: DHCP snooping ✓...",
+      "location": "Line with: DHCP Snooping\n- **Enabled on VLANs**: 11-12 ✓...",
       "error": null
     },
     {
@@ -189,6 +189,14 @@
       "passed": false,
       "location": null,
       "error": "Value 'disabled' not found in documentation"
+    },
+    {
+      "field": "NTP Server 10.91.0.123",
+      "expected": "10.91.0.123",
+      "found": "NTP Server: 10.91.0.123",
+      "passed": true,
+      "location": "Line with: NTP Server: 10.91.0.123...",
+      "error": null
     },
     {
       "field": "Syslog Server 10.91.0.10",
