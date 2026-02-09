@@ -1,0 +1,225 @@
+Building configuration...
+
+Current configuration : 3654 bytes
+!
+version 15.0(2)SE4
+service timestamps log datetime msec
+service timestamps debug datetime msec
+service password-encryption
+!
+hostname switch-03
+!
+enable secret 5 $1$Xk9p$VmnY7F0G5bHqZhRxU82fL1
+!
+username admin privilege 15 secret 5 $1$aB3d$R7nMpLkJ2hGfE9xT4wQs0/
+!
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+no ip domain-lookup
+ip domain-name intern.bedrift.no
+!
+ip arp inspection vlan 10,20,30
+!
+ip dhcp snooping vlan 10,20,30
+no ip dhcp snooping information option
+ip dhcp snooping
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10,20,30,99 priority 32768
+!
+vlan 10
+ name Ansatte
+!
+vlan 20
+ name Gjest
+!
+vlan 30
+ name Skrivere
+!
+vlan 99
+ name Mgmt
+!
+interface FastEthernet0/1
+ description Ansatt-PC kontor A101
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ description Ansatt-PC kontor A102
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ description Ansatt-PC kontor A103
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 2
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ description Gjestenettverk moeterom B1
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 5
+ switchport port-security violation protect
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/5
+ description Gjestenettverk moeterom B2
+ switchport access vlan 20
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 5
+ switchport port-security violation protect
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/6
+ description Nettverksskriver 3. etasje
+ switchport access vlan 30
+ switchport mode access
+ switchport port-security
+ switchport port-security mac-address sticky
+ switchport port-security violation shutdown
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/7
+ shutdown
+!
+interface FastEthernet0/8
+ shutdown
+!
+interface FastEthernet0/9
+ shutdown
+!
+interface FastEthernet0/10
+ shutdown
+!
+interface FastEthernet0/11
+ shutdown
+!
+interface FastEthernet0/12
+ shutdown
+!
+interface FastEthernet0/13
+ shutdown
+!
+interface FastEthernet0/14
+ shutdown
+!
+interface FastEthernet0/15
+ shutdown
+!
+interface FastEthernet0/16
+ shutdown
+!
+interface FastEthernet0/17
+ shutdown
+!
+interface FastEthernet0/18
+ shutdown
+!
+interface FastEthernet0/19
+ shutdown
+!
+interface FastEthernet0/20
+ shutdown
+!
+interface FastEthernet0/21
+ shutdown
+!
+interface FastEthernet0/22
+ shutdown
+!
+interface FastEthernet0/23
+ description Uplink-1 dis-sw01 fa0/3
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface FastEthernet0/24
+ description Uplink-2 dis-sw02 fa0/3
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet0/1
+ shutdown
+!
+interface GigabitEthernet0/2
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan99
+ description Management SVI
+ ip address 10.99.1.3 255.255.255.0
+ ip access-group MGMT-ACCESS in
+!
+ip default-gateway 10.99.1.1
+ip classless
+!
+ip access-list standard MGMT-ACCESS
+ permit 10.99.0.0 0.0.0.255
+ permit 10.99.1.0 0.0.0.255
+ deny any
+!
+no cdp run
+!
+banner login ^CUautorisert tilgang er forbudt. All aktivitet logges.^C
+!
+logging 10.99.0.50
+logging trap warnings
+!
+ntp server 10.99.0.1
+!
+line con 0
+ logging synchronous
+!
+line aux 0
+!
+line vty 0 4
+ access-class MGMT-ACCESS in
+ transport input ssh
+!
+end

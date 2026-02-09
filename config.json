@@ -15,9 +15,9 @@
   },
   "git": {
     "enabled": true,
-    "auto_push": false,
+    "auto_push": true,
     "remote": "origin",
-    "branch": "main"
+    "branch": "master"
   },
   "processing": {
     "auto_start_on_file_change": true,
