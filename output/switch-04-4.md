@@ -33,8 +33,9 @@
 ## VLANs
 - **Total VLANs Referenced**: 6 ✓ VERIFIED  
 - **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  
+- **VLAN Interfaces (SVIs)**: 6 configured ✓ VERIFIED  
 
-**VLAN Interfaces (SVIs):** 6 configured ✓ VERIFIED  
+### VLAN Details
 - **VLAN 1**:
   - Status: Shutdown ✓ VERIFIED  
 - **VLAN 10**:
@@ -63,7 +64,7 @@
   - Status: Active ✓ VERIFIED  
   - ACL In: `MGMT-ACCESS` ✓ VERIFIED  
 
-**VTP Configuration**: Not explicitly configured ✓ VERIFIED  
+- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  
 
 ---
 
@@ -72,23 +73,33 @@
 - **Active (no shutdown)**: 4 ✓ VERIFIED  
 - **Shutdown**: 2 ✓ VERIFIED  
 
-**Key Active Interfaces**:
+### Key Interface Configurations
 - **GigabitEthernet0/1**:
   - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  
   - Mode: trunk ✓ VERIFIED  
   - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  
+  - Native VLAN: 666 ✓ VERIFIED  
+  - DHCP Snooping Trust: Enabled ✓ VERIFIED  
 - **GigabitEthernet0/2**:
   - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED  
   - Mode: trunk ✓ VERIFIED  
   - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  
+  - Native VLAN: 666 ✓ VERIFIED  
+  - DHCP Snooping Trust: Enabled ✓ VERIFIED  
 - **GigabitEthernet0/3**:
   - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED  
   - Mode: trunk ✓ VERIFIED  
   - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  
+  - Native VLAN: 666 ✓ VERIFIED  
 - **GigabitEthernet0/4**:
   - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED  
   - Mode: trunk ✓ VERIFIED  
   - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  
+  - Native VLAN: 666 ✓ VERIFIED  
+- **GigabitEthernet0/5**:
+  - Status: Shutdown ✓ VERIFIED  
+- **GigabitEthernet0/6**:
+  - Status: Shutdown ✓ VERIFIED  
 
 ---
 
@@ -143,9 +154,8 @@
 ## Routing Configuration
 - **IP Routing**: Enabled ✓ VERIFIED  
 - **Default Gateway**: 10.99.1.1 ✓ VERIFIED  
-
-**Static Routes**:
-- `0.0.0.0 0.0.0.0 via 10.99.1.1` ✓ VERIFIED  
+- **Static Routes**:
+  - `0.0.0.0 0.0.0.0 via 10.99.1.1` ✓ VERIFIED  
 
 ---
 
@@ -156,34 +166,37 @@
 #### ✓ Strengths
 - SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.  
 - AAA is enabled with local authentication for console and VTY lines.  
-- DHCP snooping is enabled globally, which helps prevent rogue DHCP servers.  
-- CDP is explicitly disabled, reducing the risk of lateral discovery.  
-- Access control lists (`MGMT-ACCESS`, `BLOCK-GUEST-INTERNAL`) are configured to restrict traffic.  
+- DHCP snooping is enabled globally, reducing the risk of rogue DHCP servers.  
+- CDP is explicitly disabled, reducing potential attack vectors.  
+- Management access is restricted using the `MGMT-ACCESS` ACL.  
+- Guest VLAN traffic is restricted using the `BLOCK-GUEST-INTERNAL` extended ACL.  
 - A banner is configured to warn unauthorized users.  
 
 #### ⚠ Areas for Improvement
-- DHCP snooping is enabled but not scoped to specific VLANs, which could reduce its effectiveness.  
 - Dynamic ARP Inspection (DAI) is not enabled, which could leave the network vulnerable to ARP spoofing.  
 - Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.  
-- IP Source Guard is not enabled, which could allow spoofed IP addresses.  
-- SNMP is not configured, which may impact monitoring and management capabilities.  
-- No routing protocols are configured, which may limit scalability and redundancy in the routing domain.  
+- IP Source Guard is not enabled, which could allow spoofed IP addresses to be used.  
+- 802.1X is not configured, which could allow unauthenticated devices to access the network.  
+- VLAN 666 is used as the native VLAN on trunk ports, which is a security risk if not properly secured.  
+- No routing protocols are configured, which may limit scalability and redundancy.  
+- SNMP is not configured, which could limit monitoring and management capabilities.  
 
 #### Recommendations
-- Enable DAI on VLANs where it is needed to prevent ARP spoofing.  
-- Enable IP Source Guard on VLANs to prevent IP spoofing.  
+- Enable Dynamic ARP Inspection (DAI) on VLANs where it is needed.  
 - Enable port security on access ports to prevent unauthorized device access.  
-- Scope DHCP snooping to specific VLANs to improve security.  
-- Consider enabling SNMP with secure authentication and access control.  
-- Evaluate the need for routing protocols (e.g., EIGRP, OSPF) to improve routing scalability and redundancy.  
+- Enable IP Source Guard to prevent IP address spoofing.  
+- Consider implementing 802.1X for secure user and device authentication.  
+- Change the native VLAN on trunk ports to a non-routed VLAN (e.g., VLAN 999) to reduce security risks.  
+- Consider implementing routing protocols (e.g., EIGRP or OSPF) for better scalability and redundancy.  
+- Configure SNMP with appropriate community strings and access controls for monitoring.  
 
 ---
 
 ## Summary
 
-The device `dis-sw01` is a **Distribution Layer switch** based on its configuration, which includes multiple VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. It is configured with a strong baseline of security features, including SSH, AAA, and access control lists. However, there are several areas for improvement, particularly in the areas of dynamic ARP inspection, port security, and routing protocol implementation. The configuration is well-structured and follows best practices for a distribution switch in a multi-VLAN environment.
+The device `dis-sw01` is a **Distribution Layer switch** based on its configuration, which includes multiple VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. It is configured with a strong baseline of security features, including SSH, AAA, and ACLs, but lacks some advanced security features such as DAI and port security. The configuration is well-structured and includes essential services like NTP, syslog, and DHCP snooping. The device appears to be in good operational condition and is well-suited for its role in the network.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-10T21:19:42.614499
+**Generated**: 2026-02-11T02:14:06.247332
