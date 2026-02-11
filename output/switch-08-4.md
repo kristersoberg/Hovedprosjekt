@@ -72,11 +72,11 @@
 ## Security Features
 - **DHCP Snooping**: Not enabled ✓ VERIFIED
 - **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED
+- **CDP**: Enabled✓ VERIFIED
+- **LLDP**: Not enabled✓ VERIFIED
+- **802.1X**: Not configured✓ VERIFIED
+- **IP Source Guard**: Not configured✓ VERIFIED
 - **Port Security**: Not enabled on any interface ✓ VERIFIED
-- **CDP**: Enabled ✓ VERIFIED
-- **LLDP**: Not enabled ✓ VERIFIED
-- **802.1X**: Not configured ✓ VERIFIED
-- **IP Source Guard**: Not configured ✓ VERIFIED
 
 ## Network Services
 
@@ -104,44 +104,40 @@
 
 ### Device Role
 - **Device Role**: ~ INFERRED - **Access Layer Switch**
-  - Justification: The device has many access ports (10), no routing enabled, and is connected to end-user devices (PCs and servers). It also has a trunk port to a likely distribution switch (`FastEthernet0/24`), which is typical for an access layer device.
+  - Justification: The device has many access ports (10), no routing enabled, and is connected to end-user devices (PCs and servers). It also has a trunk port to a likely distribution switch (`FastEthernet0/24`), which is typical for an access layer switch.
 
 ### Security Posture
 
 #### ✓ Strengths
-- **Syslog logging is enabled** ✓ VERIFIED (logs sent to 10.99.0.50)
-- **NTP is configured** ✓ VERIFIED (synchronized with 10.99.0.1)
-- **PortFast is enabled on access ports** ✓ VERIFIED (prevents STP delays)
-- **No password encryption is disabled** ✓ VERIFIED (though this is a security risk, it is explicitly configured with `no service password-encryption`)
-- **Banner is configured** ✓ VERIFIED (motd banner: `Lab-miljoe. Ingen produksjonsdata tillatt.`)
+- **Syslog logging is enabled** and configured to send logs to 10.99.0.50 ✓ VERIFIED
+- **NTP is enabled** with a configured server (10.99.0.1) ✓ VERIFIED
+- **PortFast is enabled** on all access ports, reducing STP convergence time ✓ VERIFIED
+- **No password encryption** is used, which is a known security risk, but this is a lab environment and may be intentional ? UNCERTAIN
+- **Banner is configured** to warn users this is a lab environment: `banner motd ^CLab-miljoe. Ingen produksjonsdata tillatt.^C` ✓ VERIFIED
 
 #### ⚠ Areas for Improvement
-- **SSH is not configured** ⚠ (Telnet is still allowed on VTY lines)
-- **VTY lines allow both SSH and Telnet** ⚠ (Telnet is insecure and should be disabled)
-- **No authentication is configured for VTY or console access** ⚠ (no AAA or local user accounts)
-- **No ACLs are applied to VTY lines** ⚠ (open to any source)
-- **DHCP Snooping is not enabled** ⚠ (increases risk of rogue DHCP servers)
-- **Dynamic ARP Inspection is not enabled** ⚠ (increases risk of ARP spoofing)
-- **Port Security is not enabled** ⚠ (no MAC address filtering on access ports)
-- **802.1X is not configured** ⚠ (no port-based authentication)
-- **No SNMP is configured** ⚠ (limits monitoring and management capabilities)
+- **SSH is not configured**, and VTY lines allow both SSH and Telnet. Telnet is insecure and should be disabled. ? UNCERTAIN
+- **VTY lines have no authentication** and no access control (no ACL). This is a significant security gap. ✓ VERIFIED
+- **AAA is not enabled**, so there is no centralized authentication, authorization, or accounting. ✓ VERIFIED
+- **DHCP Snooping and Dynamic ARP Inspection are not enabled**, leaving the network vulnerable to spoofing and man-in-the-middle attacks. ✓ VERIFIED
+- **Port security is not enabled** on any interface, which could allow unauthorized devices to connect. ✓ VERIFIED
+- **No SNMP configuration** is present, which may be intentional for a lab device, but it limits monitoring capabilities. ✓ VERIFIED
 
 #### Recommendations
-- **Enable SSH and disable Telnet** on VTY lines to secure remote access.
-- **Configure AAA** for authentication, authorization, and accounting.
-- **Enable DHCP Snooping** on VLANs 110 and 120 to prevent rogue DHCP servers.
-- **Enable Dynamic ARP Inspection (DAI)** on VLANs 110 and 120 to prevent ARP spoofing.
-- **Enable Port Security** on access ports to limit unauthorized device access.
-- **Enable 802.1X authentication** for secure port-based access control.
-- **Configure SNMP** for monitoring and management.
+- **Enable SSH** and disable Telnet on VTY lines to secure remote access.
+- **Implement AAA** for centralized authentication and authorization.
+- **Enable DHCP Snooping** and **Dynamic ARP Inspection** on VLANs 110 and 120 to improve security.
+- **Enable port security** on access ports to prevent unauthorized device access.
+- **Apply access control lists (ACLs)** to VTY lines to restrict access to trusted IP addresses.
+- **Enable IP Source Guard** to prevent IP spoofing.
+- **Consider enabling SNMP** if monitoring is required, and configure it securely.
 - **Enable password encryption** using `service password-encryption` to protect clear-text passwords.
-- **Apply ACLs to VTY lines** to restrict access to trusted sources.
 
 ## Summary
 
-lab-sw01 is an **Access Layer Switch** configured to provide connectivity to lab PCs and servers in VLANs 110 and 120. It has a trunk port to a distribution switch and a management VLAN (VLAN 99) with an assigned IP address. The device is running Cisco IOS 15.0(2)SE4 and is part of the domain `lab.bedrift.no`. While it has some basic operational features like NTP and logging, it lacks critical security features such as SSH, AAA, DHCP Snooping, and port security. The configuration is functional but requires significant hardening to meet enterprise security standards.
+lab-sw01 is an **Access Layer Switch** in a lab environment, providing connectivity to PCs and servers in VLANs 110 and 120. It has a management VLAN (VLAN 99) with an assigned IP address and is connected to a distribution switch via a trunk port. The configuration is minimal and lacks several security features that would be expected in a production environment. While it is suitable for a lab setting, it would require significant hardening before deployment in a production network.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-11T01:14:24.071858
+**Generated**: 2026-02-11T06:08:09.268206
