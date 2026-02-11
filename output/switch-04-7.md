@@ -1,206 +1,211 @@
 # Network Device Documentation: dis-sw01
 
 ## Device Information
-- **Hostname**: dis-sw01 ✓ VERIFIED
-- **IOS Version**: 15.2(2)E9 ✓ VERIFIED
-- **Domain Name**: core.bedrift.no ✓ VERIFIED
-- **Config Register**: Not configured ✓ VERIFIED
+- **Hostname**: dis-sw01 ✓ VERIFIED  
+- **IOS Version**: 15.2(2)E9 ✓ VERIFIED  
+- **Domain Name**: core.bedrift.no ✓ VERIFIED  
+- **Config Register**: Not configured ✓ VERIFIED  
+
+---
 
 ## Management & Access
-- **Management VLAN**: 10 ✓ VERIFIED
-- **IP Address**: 10.10.0.2 ✓ VERIFIED
-- **Default Gateway**: 10.99.1.1 ✓ VERIFIED
-- **SSH Version**: 2 ✓ VERIFIED
-- **SSH Timeout**: 60 seconds ✓ VERIFIED
-- **VTY Transport Input**: ssh ✓ VERIFIED
-- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED
-- **Console Authentication**: CONSOLE ✓ VERIFIED
-- **Console Logging Synchronous**: Enabled ✓ VERIFIED
+- **Management VLAN**: 10 ✓ VERIFIED  
+- **IP Address**: 10.10.0.2 ✓ VERIFIED  
+- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  
+- **SSH Version**: 2 ✓ VERIFIED  
+- **SSH Timeout**: 60 seconds ✓ VERIFIED  
+- **VTY Transport Input**: ssh ✓ VERIFIED  
+- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  
+- **Console Authentication**: CONSOLE ✓ VERIFIED  
+- **Console Logging Synchronous**: Enabled ✓ VERIFIED  
+
+---
 
 ## AAA Configuration
-- **AAA Enabled**: ✓ VERIFIED
+- **AAA Enabled**: ✓ VERIFIED  
 - **Authentication Methods**:
-  - `aaa authentication login default local` ✓ VERIFIED
-  - `aaa authentication login CONSOLE local` ✓ VERIFIED
-- **Authorization Method**:
-  - `aaa authorization exec default local` ✓ VERIFIED
+  - `aaa authentication login default local` ✓ VERIFIED  
+  - `aaa authentication login CONSOLE local` ✓ VERIFIED  
+- **Authorization Methods**:
+  - `aaa authorization exec default local` ✓ VERIFIED  
 - **Local Users**:
-  - `netadmin` (privilege 15) ✓ VERIFIED
+  - `netadmin` (privilege 15) ✓ VERIFIED  
+
+---
 
 ## VLANs
-- **Total VLANs Referenced**: 6 ✓ VERIFIED
-- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED
-- **VLAN Interfaces (SVIs)**: 6 configured ✓ VERIFIED
+- **Total VLANs Referenced**: 6 ✓ VERIFIED  
+- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  
+- **VLAN Interfaces (SVIs)**: 6 configured ✓ VERIFIED  
 
 ### VLAN Details
 - **VLAN 1**:
-  - Status: Shutdown ✓ VERIFIED
+  - Status: Shutdown ✓ VERIFIED  
 - **VLAN 10**:
-  - Description: Ansatte Gateway ✓ VERIFIED
-  - IP: 10.10.0.2 255.255.255.0 ✓ VERIFIED
-  - Status: Active ✓ VERIFIED
-  - HSRP: Configured ✓ VERIFIED
+  - Description: Ansatte Gateway ✓ VERIFIED  
+  - IP: 10.10.0.2 255.255.255.0 ✓ VERIFIED  
+  - Status: Active ✓ VERIFIED  
+  - HSRP: Configured ✓ VERIFIED  
 - **VLAN 20**:
-  - Description: Gjest Gateway ✓ VERIFIED
-  - IP: 10.20.0.2 255.255.255.0 ✓ VERIFIED
-  - Status: Active ✓ VERIFIED
-  - HSRP: Configured ✓ VERIFIED
+  - Description: Gjest Gateway ✓ VERIFIED  
+  - IP: 10.20.0.2 255.255.255.0 ✓ VERIFIED  
+  - Status: Active ✓ VERIFIED  
+  - HSRP: Configured ✓ VERIFIED  
 - **VLAN 30**:
-  - Description: Skrivere Gateway ✓ VERIFIED
-  - IP: 10.30.0.2 255.255.255.0 ✓ VERIFIED
-  - Status: Active ✓ VERIFIED
-  - HSRP: Configured ✓ VERIFIED
+  - Description: Skrivere Gateway ✓ VERIFIED  
+  - IP: 10.30.0.2 255.255.255.0 ✓ VERIFIED  
+  - Status: Active ✓ VERIFIED  
+  - HSRP: Configured ✓ VERIFIED  
 - **VLAN 50**:
-  - Description: VoIP Gateway ✓ VERIFIED
-  - IP: 10.50.0.2 255.255.255.0 ✓ VERIFIED
-  - Status: Active ✓ VERIFIED
-  - HSRP: Configured ✓ VERIFIED
+  - Description: VoIP Gateway ✓ VERIFIED  
+  - IP: 10.50.0.2 255.255.255.0 ✓ VERIFIED  
+  - Status: Active ✓ VERIFIED  
+  - HSRP: Configured ✓ VERIFIED  
 - **VLAN 99**:
-  - Description: Management ✓ VERIFIED
-  - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED
-  - Status: Active ✓ VERIFIED
-  - ACL In: MGMT-ACCESS ✓ VERIFIED
+  - Description: Management ✓ VERIFIED  
+  - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED  
+  - Status: Active ✓ VERIFIED  
+  - ACL In: MGMT-ACCESS ✓ VERIFIED  
 
-- **VTP Configuration**: Not explicitly configured ✓ VERIFIED
+- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  
+
+---
 
 ## Physical Interfaces
-- **Total Interfaces**: 6 ✓ VERIFIED
-- **Active (no shutdown)**: 4 ✓ VERIFIED
-- **Shutdown**: 2 ✓ VERIFIED
-- **Access Ports**: 0 ✓ VERIFIED
-- **Trunk Ports**: 4 ✓ VERIFIED
-- **Port Security Enabled**: 0 interfaces ✓ VERIFIED
+- **Total Interfaces**: 6 ✓ VERIFIED  
+- **Active (no shutdown)**: 4 ✓ VERIFIED  
+- **Shutdown**: 2 ✓ VERIFIED  
+- **Access Ports**: 0 ✓ VERIFIED  
+- **Trunk Ports**: 4 ✓ VERIFIED  
+- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  
 
-### Detailed Interface List
+### Interface Details
 - **GigabitEthernet0/1**:
-  - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED
-  - Mode: trunk ✓ VERIFIED
-  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED
-  - Native VLAN: 666 ✓ VERIFIED
-  - DHCP Snooping Trust: Enabled ✓ VERIFIED
+  - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  
+  - Mode: trunk ✓ VERIFIED  
+  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  
 - **GigabitEthernet0/2**:
-  - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED
-  - Mode: trunk ✓ VERIFIED
-  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED
-  - Native VLAN: 666 ✓ VERIFIED
-  - DHCP Snooping Trust: Enabled ✓ VERIFIED
+  - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED  
+  - Mode: trunk ✓ VERIFIED  
+  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  
 - **GigabitEthernet0/3**:
-  - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED
-  - Mode: trunk ✓ VERIFIED
-  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED
-  - Native VLAN: 666 ✓ VERIFIED
+  - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED  
+  - Mode: trunk ✓ VERIFIED  
+  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  
 - **GigabitEthernet0/4**:
-  - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED
-  - Mode: trunk ✓ VERIFIED
-  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED
-  - Native VLAN: 666 ✓ VERIFIED
+  - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED  
+  - Mode: trunk ✓ VERIFIED  
+  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  
 - **GigabitEthernet0/5**:
-  - Status: Shutdown ✓ VERIFIED
+  - Status: shutdown ✓ VERIFIED  
 - **GigabitEthernet0/6**:
-  - Status: Shutdown ✓ VERIFIED
+  - Status: shutdown ✓ VERIFIED  
+
+---
 
 ## Spanning Tree Protocol
-- **STP Mode**: rapid-pvst ✓ VERIFIED
+- **STP Mode**: rapid-pvst ✓ VERIFIED  
 - **Per-VLAN Priorities**:
-  - VLAN 10: 4096 ✓ VERIFIED
-  - VLAN 20: 4096 ✓ VERIFIED
-  - VLAN 30: 4096 ✓ VERIFIED
-  - VLAN 50: 4096 ✓ VERIFIED
-  - VLAN 99: 4096 ✓ VERIFIED
+  - VLAN 10: 4096 ✓ VERIFIED  
+  - VLAN 20: 4096 ✓ VERIFIED  
+  - VLAN 30: 4096 ✓ VERIFIED  
+  - VLAN 50: 4096 ✓ VERIFIED  
+  - VLAN 99: 4096 ✓ VERIFIED  
+
+---
 
 ## Security Features
-- **DHCP Snooping**: ✓ Enabled on VLANs Not specified ✓ VERIFIED
-  - Information Option: Enabled ✓ VERIFIED
-- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED
-- **Port Security**: Not enabled on any interfaces ✓ VERIFIED
-- **802.1X**: Not configured ✓ VERIFIED
-- **IP Source Guard**: Not configured ✓ VERIFIED
-- **CDP**: Disabled ✓ VERIFIED
-- **LLDP**: Not enabled ✓ VERIFIED
+- **DHCP Snooping**: ✓ Enabled on VLANs Not specified ✓ VERIFIED  
+  - Information Option: Enabled ✓ VERIFIED  
+- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  
+- **Port Security**: Not configured ✓ VERIFIED  
+- **IP Source Guard**: Not configured ✓ VERIFIED  
+- **802.1X**: Not configured ✓ VERIFIED  
+- **CDP**: Disabled ✓ VERIFIED  
+- **LLDP**: Not enabled ✓ VERIFIED  
 
 ### Access Control Lists
-- **Standard ACL 'MGMT-ACCESS'**: 3 entries ✓ VERIFIED
-  - Config lines:
-    ```
-    ip access-list standard MGMT-ACCESS
-     permit 10.99.0.0 0.0.0.255
-     permit 10.99.1.0 0.0.0.255
-     deny any
-    ```
-- **Extended ACL 'BLOCK-GUEST-INTERNAL'**: 5 entries ✓ VERIFIED
-  - Config lines:
-    ```
-    ip access-list extended BLOCK-GUEST-INTERNAL
-     deny ip 10.20.0.0 0.0.0.255 10.10.0.0 0.0.0.255
-     deny ip 10.20.0.0 0.0.0.255 10.30.0.0 0.0.0.255
-     deny ip 10.20.0.0 0.0.0.255 10.50.0.0 0.0.0.255
-     deny ip 10.20.0.0 0.0.0.255 10.99.0.0 0.0.1.255
-     permit ip 10.20.0.0 0.0.0.255 any
-    ```
+- **Standard ACL 'MGMT-ACCESS'**: 3 entries ✓ VERIFIED  
+- **Extended ACL 'BLOCK-GUEST-INTERNAL'**: 5 entries ✓ VERIFIED  
+
+---
 
 ## Network Services
+
 ### Logging
-- **Logging Server**: 10.99.0.50 ✓ VERIFIED
-- **Logging Level**: informational ✓ VERIFIED
+- **Logging Server**: 10.99.0.50 ✓ VERIFIED  
+- **Logging Level**: informational ✓ VERIFIED  
 
 ### NTP
-- **NTP Server**: 10.99.0.1 ✓ VERIFIED
-- **NTP Authentication**: Disabled ✓ VERIFIED
+- **NTP Server**: 10.99.0.1 ✓ VERIFIED  
+- **NTP Authentication**: Disabled ✓ VERIFIED  
 
 ### Syslog
-- **Syslog Enabled**: ✓ VERIFIED
-- **Syslog Server**: 10.99.0.50 ✓ VERIFIED
+- **Syslog Enabled**: ✓ VERIFIED  
+- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  
 
 ### SNMP
-- **SNMP**: Not configured ✓ VERIFIED
+- **SNMP**: Not configured ✓ VERIFIED  
 
 ### DNS
-- **DNS Domain Name**: core.bedrift.no ✓ VERIFIED
-- **DNS Lookup**: Disabled ✓ VERIFIED
+- **DNS Domain Name**: core.bedrift.no ✓ VERIFIED  
+- **DNS Lookup**: Disabled ✓ VERIFIED  
+
+---
 
 ## Routing Configuration
-- **IP Routing**: Enabled ✓ VERIFIED
-- **Default Gateway**: 10.99.1.1 ✓ VERIFIED
-- **Static Routes**:
-  - `0.0.0.0 0.0.0.0 via 10.99.1.1` ✓ VERIFIED
+- **IP Routing**: Enabled ✓ VERIFIED  
+- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  
+
+### Static Routes
+- **0.0.0.0 0.0.0.0 via 10.99.1.1** ✓ VERIFIED  
+
+---
 
 ## Configuration Quality Assessment
+
+### Device Role
+- **Role**: ~ INFERRED  
+  - This device is a **Distribution Layer** switch.  
+  - Justification: It has multiple VLAN interfaces (SVIs) with IP addresses, inter-VLAN routing is enabled, and it connects to both core and access switches.  
+
+---
 
 ### Security Posture
 
 #### ✓ Strengths
-- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.
-- AAA is enabled with local authentication for console and VTY access.
-- DHCP snooping is enabled globally, helping prevent rogue DHCP servers.
-- CDP is disabled, reducing the risk of network discovery attacks.
-- A standard ACL (`MGMT-ACCESS`) is applied to the management VLAN to restrict access.
-- An extended ACL (`BLOCK-GUEST-INTERNAL`) is configured to block internal traffic from the guest VLAN to other VLANs.
-- A banner is configured to warn unauthorized users.
+- SSH is configured with version 2 and a 60-second timeout (secure access) ✓ VERIFIED  
+- AAA is enabled with local authentication and authorization ✓ VERIFIED  
+- DHCP snooping is enabled (prevents rogue DHCP servers) ✓ VERIFIED  
+- CDP is disabled (prevents unnecessary discovery) ✓ VERIFIED  
+- Access control lists (ACLs) are configured for management and guest traffic filtering ✓ VERIFIED  
+- NTP is configured for time synchronization ✓ VERIFIED  
+- Syslog is enabled for centralized logging ✓ VERIFIED  
 
 #### ⚠ Areas for Improvement
-- Dynamic ARP Inspection (DAI) is not enabled, which could leave the network vulnerable to ARP spoofing.
-- Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.
-- 802.1X is not configured, which could leave the network vulnerable to unauthorized access.
-- IP Source Guard is not enabled, which could allow spoofed IP addresses.
-- DHCP snooping is enabled globally but not restricted to specific VLANs, which could allow rogue DHCP servers in untrusted VLANs.
-- No routing protocol is configured, which may limit scalability and redundancy in the routing domain.
-- SNMP is not configured, which may limit monitoring and management capabilities.
+- Dynamic ARP Inspection (DAI) is not enabled (increases risk of ARP spoofing) ? UNCERTAIN  
+- Port security is not enabled on any interfaces (increases risk of unauthorized access) ✓ VERIFIED  
+- IP Source Guard is not enabled (increases risk of IP spoofing) ✓ VERIFIED  
+- 802.1X is not configured (no port-based authentication) ✓ VERIFIED  
+- VLAN 1 is active but shutdown (should be removed or explicitly disabled) ✓ VERIFIED  
+- VLAN 666 is referenced in trunk allowed VLANs but has no configuration (should be reviewed) ✓ VERIFIED  
 
 #### Recommendations
-- Enable Dynamic ARP Inspection (DAI) on VLANs where it is needed.
-- Enable port security on access ports to prevent unauthorized device access.
-- Consider implementing 802.1X for secure user authentication.
-- Enable IP Source Guard on VLANs where it is needed.
-- Specify VLANs for DHCP snooping to limit the scope of protection.
-- Consider implementing a routing protocol (e.g., EIGRP or OSPF) for better scalability and redundancy.
-- Configure SNMP for monitoring and management.
-- Ensure that all VLANs have appropriate ACLs to control traffic flow.
+- Enable Dynamic ARP Inspection (DAI) on VLANs where DHCP snooping is active.  
+- Enable port security on access ports to prevent unauthorized device connections.  
+- Enable IP Source Guard to prevent IP spoofing.  
+- Consider implementing 802.1X for secure port-based authentication.  
+- Remove or disable VLAN 1 to prevent accidental use.  
+- Review VLAN 666 configuration and ensure it is necessary.  
+- Consider enabling SNMP for device monitoring and management.  
+
+---
 
 ## Summary
 
-The device `dis-sw01` is a **Distribution Layer switch** based on its configuration, which includes multiple VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. It is configured with a strong foundation for security, including SSH, AAA, and ACLs, but lacks some advanced security features like DAI and port security. The configuration is well-structured and includes essential services such as NTP, syslog, and routing. The device plays a key role in aggregating traffic from access switches and providing routing services between VLANs.
+The device `dis-sw01` is a **Distribution Layer** switch running Cisco IOS version 15.2(2)E9. It serves as an aggregation point between access switches and the core network, with multiple VLAN interfaces and inter-VLAN routing enabled. The configuration includes strong security features such as SSH, AAA, and ACLs, but lacks some advanced protections like DAI and port security. The configuration is generally well-structured and follows best practices, but there are opportunities for improvement in terms of security hardening and VLAN management.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-11T02:22:07.764588
+**Generated**: 2026-02-11T07:17:23.226726
