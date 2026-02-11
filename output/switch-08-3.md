@@ -16,7 +16,8 @@
 - **VTY Transport Input**: ssh, telnet ✓ VERIFIED
 - **VTY Authentication**: None ✓ VERIFIED
 - **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED
-- **Console Access**: Line `line con 0` with logging synchronous enabled ✓ VERIFIED
+- **Console Authentication**: None ✓ VERIFIED
+- **Console Logging Synchronous**: Enabled ✓ VERIFIED
 
 ## AAA Configuration
 - **AAA**: Not enabled ✓ VERIFIED
@@ -24,13 +25,24 @@
 ## VLANs
 - **Total VLANs Referenced**: 4 ✓ VERIFIED
 - **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED
-- **VLAN Interfaces (SVIs)**:
-  - **VLAN 1**:
-    - Status: Shutdown ✓ VERIFIED
-  - **VLAN 99**:
-    - Description: Management ✓ VERIFIED
-    - IP: 10.99.1.8 255.255.255.0 ✓ VERIFIED
-    - Status: Active ✓ VERIFIED
+- **VLAN Interfaces (SVIs)**: 2 configured ✓ VERIFIED
+
+### VLAN Details
+- **VLAN 1**
+  - **Status**: Shutdown ✓ VERIFIED
+- **VLAN 99**
+  - **Description**: Management ✓ VERIFIED
+  - **IP Address**: 10.99.1.8 ✓ VERIFIED
+  - **Subnet Mask**: 255.255.255.0 ✓ VERIFIED
+  - **Status**: Active ✓ VERIFIED
+
+- **VLAN 110**
+  - **Description**: Lab-Klienter ✓ VERIFIED (from `vlan 110 name Lab-Klienter`)
+- **VLAN 120**
+  - **Description**: Lab-Servere ✓ VERIFIED (from `vlan 120 name Lab-Servere`)
+- **VLAN 666**
+  - **Description**: Not configured ✓ VERIFIED
+
 - **VTP Configuration**: Not explicitly configured ✓ VERIFIED
 
 ## Physical Interfaces
@@ -60,11 +72,11 @@
 ## Security Features
 - **DHCP Snooping**: Not enabled ✓ VERIFIED
 - **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED
-- **Port Security**: Not enabled on any interfaces ✓ VERIFIED
-- **IP Source Guard**: Not configured ✓ VERIFIED
-- **802.1X**: Not configured ✓ VERIFIED
-- **CDP**: Enabled ✓ VERIFIED
-- **LLDP**: Not enabled ✓ VERIFIED
+- **CDP**: Enabled✓ VERIFIED
+- **LLDP**: Not enabled✓ VERIFIED
+- **802.1X**: Not configured✓ VERIFIED
+- **IP Source Guard**: Not configured✓ VERIFIED
+- **Port Security**: Not enabled on any interface ✓ VERIFIED
 
 ## Network Services
 
@@ -79,7 +91,7 @@
 
 ### DNS
 - **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED
-- **DNS Lookup**: Disabled ✓ VERIFIED
+- **DNS Lookup**: Disabled ✓ VERIFIED (from `no ip domain-lookup`)
 
 ### SNMP
 - **SNMP**: Not configured ✓ VERIFIED
@@ -92,42 +104,41 @@
 
 ### Device Role
 - **Device Role**: ~ INFERRED - **Access Layer Switch**
-  - Justification: The device has many access ports (10), no routing enabled, and is connected to end-user devices (PCs and servers). It also has a trunk port to a likely distribution switch (`FastEthernet0/24`).
+  - Justification: The device has many access ports (10), no routing enabled, and is likely connecting end-user devices (PCs and servers) to the network. The presence of a trunk port suggests it connects to a distribution layer switch.
 
 ### Security Posture
 
 #### ✓ Strengths
-- **Syslog logging is enabled** with a remote server at 10.99.0.50 ✓ VERIFIED
-- **NTP is configured** with a remote server at 10.99.0.1 ✓ VERIFIED
-- **PortFast is enabled** on all access ports to prevent STP loops ✓ VERIFIED
-- **No password encryption** is used, which is a known security risk, but this is a lab environment and may be intentional ✓ VERIFIED
+- **Syslog logging is enabled** ✓ VERIFIED (logs sent to 10.99.0.50)
+- **NTP is configured** ✓ VERIFIED (synchronizing with 10.99.0.1)
+- **PortFast is enabled on access ports** ✓ VERIFIED (prevents STP delays)
+- **Banner is configured** ✓ VERIFIED (motd banner: `Lab-miljoe. Ingen produksjonsdata tillatt.`)
 
 #### ⚠ Areas for Improvement
-- **SSH is not configured**, leaving the device vulnerable to Telnet traffic (plaintext) ✓ VERIFIED
-- **VTY lines allow both SSH and Telnet**, which is insecure. Telnet should be disabled. ✓ VERIFIED
-- **No authentication is configured** for VTY or console access, allowing unrestricted access. ✓ VERIFIED
-- **No ACLs are applied** to VTY lines, leaving them open to unauthorized access. ✓ VERIFIED
-- **DHCP Snooping is not enabled**, which could allow rogue DHCP servers to operate on the network. ✓ VERIFIED
-- **Dynamic ARP Inspection (DAI) is not enabled**, which could allow ARP spoofing attacks. ✓ VERIFIED
-- **Port security is not enabled**, which could allow unauthorized devices to connect to the network. ✓ VERIFIED
-- **802.1X is not configured**, which could allow unauthorized devices to access the network. ✓ VERIFIED
-- **LLDP is not enabled**, which could limit visibility into connected devices. ✓ VERIFIED
+- **SSH is not configured** ⚠ INFERRED - Telnet is still allowed on VTY lines, which is insecure.
+- **VTY lines lack authentication** ⚠ INFERRED - No AAA or local authentication is configured.
+- **No ACLs are applied to VTY lines** ⚠ INFERRED - No access control for remote access.
+- **No port security is enabled** ⚠ INFERRED - No MAC address filtering on access ports.
+- **DHCP Snooping is not enabled** ⚠ INFERRED - No protection against rogue DHCP servers.
+- **Dynamic ARP Inspection is not enabled** ⚠ INFERRED - No protection against ARP spoofing.
+- **No SNMP is configured** ⚠ INFERRED - No network monitoring or management via SNMP.
 
 #### Recommendations
-- **Enable SSH** and disable Telnet on VTY lines to secure remote access.
-- **Configure AAA authentication** for console and VTY access to enforce user authentication.
-- **Apply ACLs to VTY lines** to restrict access to trusted IP addresses.
+- **Enable SSH and disable Telnet** on VTY lines to secure remote access.
+- **Implement AAA authentication** for console and VTY access.
+- **Apply access control lists (ACLs)** to VTY lines to restrict remote access to trusted IPs.
+- **Enable port security** on access ports to prevent unauthorized device connections.
 - **Enable DHCP Snooping** on VLANs 110 and 120 to prevent rogue DHCP servers.
 - **Enable Dynamic ARP Inspection (DAI)** on VLANs 110 and 120 to prevent ARP spoofing.
-- **Enable port security** on access ports to prevent unauthorized device access.
-- **Enable 802.1X authentication** to enforce device and user authentication.
-- **Enable LLDP** to improve network visibility and device discovery.
-- **Enable password encryption** using `service password-encryption` to protect stored credentials.
+- **Configure SNMP** for network monitoring and management.
+- **Enable IP Source Guard** on access ports to prevent IP spoofing.
+- **Consider enabling 802.1X authentication** for secure user access to the network.
 
 ## Summary
-The device **lab-sw01** is an **Access Layer Switch** in a lab environment, providing connectivity to PCs and servers in VLANs 110 and 120. It is connected to a distribution switch via a trunk port. The configuration is minimal and lacks several key security features, which is expected in a lab setting but would not be acceptable in a production environment. The device is configured with basic network services such as NTP and syslog, but lacks advanced security controls like SSH, AAA, and port security.
+
+lab-sw01 is an **Access Layer switch** configured to connect end-user devices (PCs and servers) to VLANs 110 and 120, with a management VLAN (VLAN 99) for administrative access. The switch is running Cisco IOS 15.0(2)SE4 and is part of the `lab.bedrift.no` domain. While it has some basic security features like logging and NTP, it lacks critical security controls such as SSH, port security, and DHCP Snooping. The configuration is functional but requires significant hardening to meet enterprise security standards.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-11T01:12:13.026383
+**Generated**: 2026-02-11T06:05:52.109139
