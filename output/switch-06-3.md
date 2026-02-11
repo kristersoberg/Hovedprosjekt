@@ -29,7 +29,9 @@
   - `aaa authorization network default group radius` ✓ VERIFIED
 - **Accounting Methods**:
   - `aaa accounting dot1x default start-stop group radius` ✓ VERIFIED
-- **RADIUS Servers**: 10.99.0.30, 10.99.0.31 ✓ VERIFIED
+- **RADIUS Servers**:
+  - 10.99.0.30 ✓ VERIFIED
+  - 10.99.0.31 ✓ VERIFIED
 - **Local Users**:
   - `emergency-admin` (privilege 15) ✓ VERIFIED
 
@@ -60,35 +62,29 @@
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
-  - Config Line: `interface FastEthernet0/1` ✓ VERIFIED
 - **FastEthernet0/2**:
   - Description: 802.1X-port kontor C302
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
-  - Config Line: `interface FastEthernet0/2` ✓ VERIFIED
 - **FastEthernet0/3**:
   - Description: 802.1X-port kontor C303
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
-  - Config Line: `interface FastEthernet0/3` ✓ VERIFIED
 - **FastEthernet0/4**:
   - Description: 802.1X-port kontor C304
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
-  - Config Line: `interface FastEthernet0/4` ✓ VERIFIED
 - **FastEthernet0/23**:
   - Description: Uplink-1 dis-sw01 gig0/5
   - Mode: trunk
   - Allowed VLANs: 10, 20, 99, 999
-  - Config Line: `interface FastEthernet0/23` ✓ VERIFIED
 - **FastEthernet0/24**:
   - Description: Uplink-2 dis-sw02 gig0/5
   - Mode: trunk
   - Allowed VLANs: 10, 20, 99, 999
-  - Config Line: `interface FastEthernet0/24` ✓ VERIFIED
 
 ## Spanning Tree Protocol
 - **STP Mode**: rapid-pvst ✓ VERIFIED
@@ -103,79 +99,83 @@
 - **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20 ✓ VERIFIED
 - **Port Security**: ✓ Enabled on 4 interfaces ✓ VERIFIED
 - **802.1X**: ✓ Enabled ✓ VERIFIED
-- **IP Source Guard**: Not configured ✓ VERIFIED
-- **CDP**: Disabled ✓ VERIFIED
-- **LLDP**: Not enabled ✓ VERIFIED
-- **Access Control Lists (ACLs)**:
-  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED
-    - `permit 10.99.0.0 0.0.0.255`
-    - `permit 10.99.1.0 0.0.0.255`
-    - `deny any`
-    - Config Line: `ip access-list standard MGMT-ACCESS` ✓ VERIFIED
+- **CDP**: ✓ Disabled ✓ VERIFIED
+- **LLDP**: ? UNCERTAIN (Not enabled)
+- **IP Source Guard**: ? UNCERTAIN (Not configured)
 
 ## Network Services
 ### Logging
 - **Syslog Enabled**: ✓ VERIFIED
 - **Logging Server**: 10.99.0.50 ✓ VERIFIED
-- **Logging Level**: informational ✓ VERIFIED
-- **Config Line**: `logging 10.99.0.50` ✓ VERIFIED
+- **Logging Trap Level**: informational ✓ VERIFIED
 
 ### NTP
-- **NTP Server**: Not configured ✓ VERIFIED
-- **NTP Authentication**: Not configured ✓ VERIFIED
+- **NTP Server**: ? UNCERTAIN (Not configured)
+- **NTP Authentication**: ? UNCERTAIN (Not configured)
 
 ### SNMP
-- **SNMP**: Not configured ✓ VERIFIED
+- **SNMP**: ? UNCERTAIN (Not configured)
 
 ### DNS
 - **DNS Domain Name**: secure.bedrift.no ✓ VERIFIED
 - **DNS Lookup**: Disabled ✓ VERIFIED
-- **Config Line**: `no ip domain-lookup` ✓ VERIFIED
 
 ## Routing Configuration
 - **IP Routing**: Disabled ✓ VERIFIED
 - **Default Gateway**: 10.99.1.1 ✓ VERIFIED
-- **Config Line**: `ip default-gateway 10.99.1.1` ✓ VERIFIED
+
+## Access Control Lists
+- **Standard ACL 'MGMT-ACCESS'**:
+  - 3 entries ✓ VERIFIED
+  - `permit 10.99.0.0 0.0.0.255`
+  - `permit 10.99.1.0 0.0.0.255`
+  - `deny any`
 
 ## Configuration Quality Assessment
+
+### Device Role
+- **Device Role**: ~ INFERRED
+  - This is an **Access Layer** switch.
+  - Justification: It has multiple access ports with port security, 802.1X authentication, and no routing enabled. It connects end-user devices and uplinks to a distribution switch.
 
 ### Security Posture
 
 #### ✓ Strengths
 - SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.
-- AAA is enabled with RADIUS authentication for login and 802.1X, and local fallback for console access.
+- 802.1X authentication is enabled, providing secure user and device authentication.
 - DHCP snooping is enabled on VLANs 10 and 20, preventing rogue DHCP servers.
 - Dynamic ARP Inspection (DAI) is enabled on VLANs 10 and 20, mitigating ARP spoofing.
 - Port security is enabled on 4 access ports, limiting unauthorized device access.
 - CDP is disabled, reducing potential attack surface.
-- A standard ACL (`MGMT-ACCESS`) is applied to the management VLAN (VLAN 99) to restrict access.
+- AAA is enabled with RADIUS authentication and local fallback, ensuring strong access control.
+- A standard ACL (`MGMT-ACCESS`) is applied to the management interface, restricting access to trusted subnets.
 - A banner is configured to warn unauthorized users.
-- Syslog is enabled with a remote server, ensuring centralized logging.
 
 #### ⚠ Areas for Improvement
-- NTP is not configured, which could impact time-based security and logging.
-- SNMP is not configured, which may hinder network monitoring and management.
-- IP Source Guard is not enabled, which could leave the network vulnerable to IP spoofing.
-- LLDP is not enabled, which could limit visibility into connected devices.
-- No VLANs are configured for voice or other specialized traffic, which may be a consideration for future expansion.
-- No VLANs are configured for guest or untrusted traffic beyond VLAN 20 and 999.
-- No VLANs are configured for wireless or IoT traffic, which may be a consideration for future expansion.
+- **NTP is not configured**, which can lead to time synchronization issues and affect log correlation.
+- **SNMP is not configured**, which is essential for monitoring and management.
+- **LLDP is not enabled**, which could be useful for network discovery and troubleshooting.
+- **IP Source Guard is not configured**, which could help prevent IP spoofing.
+- **VLAN 1 is not used and is shutdown**, which is good, but it's still referenced in the configuration.
+- **VTP is not configured**, which is acceptable for an access layer switch but should be documented.
+- **No password complexity policy is enforced**, which could be a concern for local user accounts.
+- **No rate limiting or throttling is configured for SSH**, which could be a vulnerability in case of brute-force attacks.
 
 #### Recommendations
-- Enable and configure NTP with a trusted time source to ensure accurate timestamps for logs and security events.
-- Consider enabling SNMP for network monitoring and management.
-- Enable IP Source Guard on VLANs 10 and 20 to prevent IP spoofing.
-- Consider enabling LLDP for better visibility into connected devices.
-- Review and expand VLAN configuration to include voice, wireless, and IoT traffic if needed.
-- Ensure that all VLANs have appropriate security features (e.g., DAI, DHCP snooping) enabled.
-- Consider enabling VLAN access control lists (VACLs) for additional security between VLANs.
-- Ensure that all unused ports are shut down and configured with port security to prevent unauthorized access.
+- **Enable NTP** with at least one NTP server to ensure accurate timekeeping.
+- **Enable SNMP** with appropriate community strings and access control.
+- **Enable LLDP** to assist with network discovery and documentation.
+- **Enable IP Source Guard** on VLANs 10 and 20 to prevent IP spoofing.
+- **Remove unused VLANs** (e.g., VLAN 1) from the configuration to reduce complexity.
+- **Enforce password complexity** for local user accounts.
+- **Consider implementing SSH rate limiting** to prevent brute-force attacks.
+- **Document all VLANs and their purposes** to improve clarity and maintainability.
+- **Ensure all RADIUS keys are securely stored and rotated periodically**.
 
 ## Summary
-
-This device, **switch-06**, is an **Access Layer** switch based on its configuration, which includes multiple access ports with port security, 802.1X authentication, and no routing enabled. It is configured with VLANs for management, employee access, guest access, and quarantine, and it connects to a distribution layer via trunk ports. The configuration includes strong security features such as AAA, SSH, DHCP snooping, and DAI, but lacks some critical services like NTP and SNMP. The device is well-suited for a secure, controlled access layer in a business network.
+The device `switch-06` is an **Access Layer switch** configured with 802.1X authentication, port security, and security features such as DHCP snooping and DAI. It connects end-user devices in VLANs 10 and 20 and uplinks to a distribution switch. The configuration is well-structured and includes strong security practices, but there are opportunities to improve with additional services like NTP and SNMP. The device is in good operational condition and follows best practices for access layer security.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-10T22:11:55.341694
+**Generated**: 2026-02-11T03:05:54.423838
