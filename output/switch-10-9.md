@@ -19,39 +19,31 @@
 
 ## AAA Configuration
 - **AAA Enabled**: ✓ VERIFIED
-
-**Authentication Lists:**
+- **Authentication Lists**:
   - `aaa authentication login default group tacacs+ local` ✓ VERIFIED
   - `aaa authentication login CONSOLE local` ✓ VERIFIED
   - `aaa authentication enable default group tacacs+ enable` ✓ VERIFIED
-
-**Authorization Lists:**
+- **Authorization Lists**:
   - `aaa authorization exec default group tacacs+ local` ✓ VERIFIED
   - `aaa authorization commands 15 default group tacacs+ local` ✓ VERIFIED
-
-**Accounting:**
+- **Accounting**:
   - `aaa accounting exec default start-stop group tacacs+` ✓ VERIFIED
   - `aaa accounting commands 15 default start-stop group tacacs+` ✓ VERIFIED
-
-**TACACS+ Servers**: 10.99.0.40, 10.99.0.41 ✓ VERIFIED
-
-**Local Users**:
+- **TACACS+ Servers**: 10.99.0.40, 10.99.0.41 ✓ VERIFIED
+- **Local Users**:
   - `emergency-admin` (privilege 15) ✓ VERIFIED
 
 ## VLANs
 - **Total VLANs Referenced**: 7 ✓ VERIFIED
 - **VLAN IDs**: 10, 20, 30, 40, 50, 99, 666 ✓ VERIFIED
-
-**VLAN Interfaces (SVIs):**
-- **VLAN 1**:
-  - Status: Shutdown ✓ VERIFIED
-- **VLAN 99**:
-  - Description: Management SVI ✓ VERIFIED
-  - IP: 10.99.1.10 255.255.255.0 ✓ VERIFIED
-  - Status: Active ✓ VERIFIED
-  - ACL In: MGMT-ACCESS ✓ VERIFIED
-
-**VTP Configuration**: Not explicitly configured ✓ VERIFIED
+- **VLAN Interfaces (SVIs)**:
+  - **VLAN 1**: Status: Shutdown ✓ VERIFIED
+  - **VLAN 99**:
+    - Description: Management SVI ✓ VERIFIED
+    - IP: 10.99.1.10 255.255.255.0 ✓ VERIFIED
+    - Status: Active ✓ VERIFIED
+    - ACL In: MGMT-ACCESS ✓ VERIFIED
+- **VTP Configuration**: Not explicitly configured ✓ VERIFIED
 
 ## Physical Interfaces
 - **Total Interfaces**: 27 ✓ VERIFIED
@@ -61,7 +53,7 @@
 - **Trunk Ports**: 3 ✓ VERIFIED
 - **Port Security Enabled**: 8 interfaces ✓ VERIFIED
 
-**Key Active Interfaces:**
+### Key Active Interfaces
 - **FastEthernet0/1** - Kontor 101 - 1. etasje | Mode: access | VLAN: 10 | Port-Sec: ✓
 - **FastEthernet0/2** - Kontor 102 - 1. etasje | Mode: access | VLAN: 10 | Port-Sec: ✓
 - **FastEthernet0/3** - Kontor 103 - 1. etasje | Mode: access | VLAN: 10 | Port-Sec: ✓
@@ -76,8 +68,7 @@
 
 ## Spanning Tree Protocol
 - **STP Mode**: rapid-pvst ✓ VERIFIED
-
-**Per-VLAN Priorities:**
+- **Per-VLAN Priorities**:
   - VLAN 10: 32768 ✓ VERIFIED
   - VLAN 20: 32768 ✓ VERIFIED
   - VLAN 30: 32768 ✓ VERIFIED
@@ -90,7 +81,7 @@
   - Information Option: Disabled ✓ VERIFIED
 - **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30, 40, 50 ✓ VERIFIED
 - **Port Security**: ✓ Enabled on 8 interfaces ✓ VERIFIED
-- **Access Control Lists (ACLs)**: 1 configured
+- **Access Control Lists (ACLs)**:
   - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED
 - **CDP**: Disabled ✓ VERIFIED
 - **LLDP**: Not enabled ✓ VERIFIED
@@ -100,8 +91,8 @@
 ## Network Services
 ### Logging
 - **Logging Server**: 10.99.0.50, 10.99.0.51 ✓ VERIFIED
+- **Logging Trap Level**: informational ✓ VERIFIED
 - **Logging Source Interface**: Vlan99 ✓ VERIFIED
-- **Logging Level**: informational ✓ VERIFIED
 
 ### NTP
 - **NTP Server**: 10.99.0.1 ✓ VERIFIED
@@ -128,38 +119,39 @@
 ### Security Posture
 
 #### ✓ Strengths
-- SSH-only access with version 2 and timeout of 60 seconds ✓ VERIFIED
-- AAA authentication, authorization, and accounting with TACACS+ integration ✓ VERIFIED
-- DHCP snooping and dynamic ARP inspection enabled on VLANs 10, 20, 30, 40, 50 ✓ VERIFIED
-- Port security configured on 8 access ports with sticky MAC addresses and violation handling ✓ VERIFIED
-- CDP is disabled, reducing potential attack surface ✓ VERIFIED
-- Access control list (MGMT-ACCESS) restricts VTY access to specific subnets ✓ VERIFIED
-- Logging is enabled with remote syslog servers and source interface specified ✓ VERIFIED
-- NTP is configured with authentication and trusted key ✓ VERIFIED
+- **SSH-only VTY access** with timeout and authentication ✓ VERIFIED
+- **AAA with TACACS+ integration** for authentication, authorization, and accounting ✓ VERIFIED
+- **Port security** enabled on 8 access ports ✓ VERIFIED
+- **DHCP snooping** and **Dynamic ARP Inspection (DAI)** enabled on VLANs 10, 20, 30, 40, 50 ✓ VERIFIED
+- **CDP is disabled**, reducing potential attack surface ✓ VERIFIED
+- **Management access restricted** via ACL `MGMT-ACCESS` ✓ VERIFIED
+- **Syslog logging** to two servers with source interface specified ✓ VERIFIED
+- **NTP authentication** is enabled ✓ VERIFIED
 
 #### ⚠ Areas for Improvement
-- **802.1X** is not configured, which could enhance port-based authentication for wired devices ? UNCERTAIN
-- **IP Source Guard** is not enabled, which could prevent IP spoofing on untrusted ports ? UNCERTAIN
+- **802.1X** is not configured, leaving wired access vulnerable to unauthorized device access ? UNCERTAIN
+- **IP Source Guard** is not configured, which could help prevent IP spoofing ? UNCERTAIN
 - **LLDP** is not enabled, which could be used for network discovery and monitoring ? UNCERTAIN
-- **SNMP community string** is redacted, but it's unclear if it's a strong, unique string ? UNCERTAIN
-- **TACACS+ key** is redacted, but it's unclear if it's a strong, unique key ? UNCERTAIN
-- **Banner message** is configured, but it's unclear if it meets legal or compliance requirements ? UNCERTAIN
+- **No password complexity policy** is enforced for local users ? UNCERTAIN
+- **No rate limiting** on SSH or login attempts is configured ? UNCERTAIN
+- **No secure erase** of old configurations or logs is mentioned ? UNCERTAIN
 
 #### Recommendations
-- Enable **802.1X** on access ports to enforce port-based authentication for wired devices ~ INFERRED
-- Enable **IP Source Guard** on untrusted ports to prevent IP spoofing ~ INFERRED
-- Consider enabling **LLDP** for network discovery and monitoring ~ INFERRED
-- Ensure **SNMP community strings** are strong and unique ~ INFERRED
-- Ensure **TACACS+ keys** are strong and unique ~ INFERRED
-- Review **banner message** to ensure it meets legal and compliance requirements ~ INFERRED
-- Consider enabling **portfast bpduguard** on all access ports to prevent STP loops ~ INFERRED
-- Consider enabling **storm control** on all access ports to prevent broadcast/multicast storms ~ INFERRED
+- Enable **802.1X** for wired access control to enforce device authentication.
+- Consider enabling **IP Source Guard** to prevent IP spoofing.
+- Enable **LLDP** for network discovery and monitoring.
+- Implement **password complexity policies** for local users.
+- Add **rate limiting** on SSH and login attempts to prevent brute-force attacks.
+- Ensure **secure erase** of old configurations and logs is part of the maintenance process.
+- Consider enabling **portfast bpduguard** on all access ports to prevent STP loops.
 
 ## Summary
 
-The device `aksess-sw10` is an **Access Layer switch** ~ INFERRED, as it has many access ports with port security, no routing enabled, and is connected to end-user devices. It is configured with strong security features such as AAA with TACACS+, SSH-only access, DHCP snooping, and dynamic ARP inspection. The switch is part of a VLAN-based network with VLANs 10, 20, 30, 40, 50, 99, and 666. The configuration is well-structured and includes logging, NTP, and SNMP for monitoring and management. The configuration quality is high, but there are a few areas for improvement, particularly in access control and additional security features. ~ INFERRED
+This device, **aksess-sw10**, is an **Access Layer switch** based on its configuration. It provides wired access to multiple VLANs (10, 20, 30, 40, 50) and connects to a distribution switch via a trunk EtherChannel. It has strong security features including AAA with TACACS+, port security, DHCP snooping, and DAI. The configuration is well-structured and includes logging, NTP, and SNMP for monitoring and management. The device is configured to support VoIP and has a clear separation between management and user VLANs.
 
----
+~ INFERRED: The device appears to be part of a larger campus network, likely in a multi-story office building, with VLANs per floor and a centralized management VLAN.
 
-**Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-11T02:11:06.263439
+## Data Source
+
+Structured configuration analysis  
+Generated: 2026-02-11T07:06:13.452953
