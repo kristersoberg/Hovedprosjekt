@@ -15,43 +15,30 @@
 - **SSH Timeout**: 60 seconds ✓ VERIFIED
 - **VTY Transport Input**: ssh ✓ VERIFIED
 - **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED
-- **Console Access**: line con 0, authentication: CONSOLE, logging synchronous: True ✓ VERIFIED
+- **Console Access**: line con 0, authentication CONSOLE, logging synchronous ✓ VERIFIED
 
 ## AAA Configuration
 - **AAA Enabled**: ✓ VERIFIED
-
-**Authentication Lists:**
+- **Authentication Lists**:
   - `aaa authentication login default group tacacs+ local` ✓ VERIFIED
   - `aaa authentication login CONSOLE local` ✓ VERIFIED
   - `aaa authentication enable default group tacacs+ enable` ✓ VERIFIED
-
-**Authorization Lists:**
+- **Authorization Lists**:
   - `aaa authorization exec default group tacacs+ local` ✓ VERIFIED
   - `aaa authorization commands 15 default group tacacs+ local` ✓ VERIFIED
-
-**Accounting:**
+- **Accounting**:
   - `aaa accounting exec default start-stop group tacacs+` ✓ VERIFIED
   - `aaa accounting commands 15 default start-stop group tacacs+` ✓ VERIFIED
-
-**TACACS+ Servers**: 10.99.0.40, 10.99.0.41 ✓ VERIFIED
-
-**Local Users**:
-  - `emergency-admin` (privilege 15) ✓ VERIFIED
+- **TACACS+ Servers**: 10.99.0.40, 10.99.0.41 ✓ VERIFIED
+- **Local Users**: emergency-admin (privilege 15) ✓ VERIFIED
 
 ## VLANs
 - **Total VLANs Referenced**: 7 ✓ VERIFIED
 - **VLAN IDs**: 10, 20, 30, 40, 50, 99, 666 ✓ VERIFIED
-
-**VLAN Interfaces (SVIs):**
-- **VLAN 1**:
-  - Status: Shutdown ✓ VERIFIED
-- **VLAN 99**:
-  - Description: Management SVI ✓ VERIFIED
-  - IP: 10.99.1.10 255.255.255.0 ✓ VERIFIED
-  - Status: Active ✓ VERIFIED
-  - ACL In: MGMT-ACCESS ✓ VERIFIED
-
-**VTP Configuration**: Not explicitly configured ✓ VERIFIED
+- **VLAN Interfaces (SVIs)**:
+  - **VLAN 1**: Status: Shutdown ✓ VERIFIED
+  - **VLAN 99**: Description: Management SVI, IP: 10.99.1.10 255.255.255.0, Status: Active, ACL In: MGMT-ACCESS ✓ VERIFIED
+- **VTP Configuration**: Not explicitly configured ✓ VERIFIED
 
 ## Physical Interfaces
 - **Total Interfaces**: 27 ✓ VERIFIED
@@ -61,7 +48,7 @@
 - **Trunk Ports**: 3 ✓ VERIFIED
 - **Port Security Enabled**: 8 interfaces ✓ VERIFIED
 
-**Detailed Interface List (Selected):**
+### Key Active Interfaces
 - **FastEthernet0/1** - Kontor 101 - 1. etasje | Mode: access | VLAN: 10 | Port-Sec: ✓
 - **FastEthernet0/2** - Kontor 102 - 1. etasje | Mode: access | VLAN: 10 | Port-Sec: ✓
 - **FastEthernet0/3** - Kontor 103 - 1. etasje | Mode: access | VLAN: 10 | Port-Sec: ✓
@@ -70,14 +57,13 @@
 - **FastEthernet0/6** - Kontor 301 - 3. etasje | Mode: access | VLAN: 30 | Port-Sec: ✓
 - **FastEthernet0/7** - Fellesareal kantine | Mode: access | VLAN: 40 | Port-Sec: ✓
 - **FastEthernet0/8** - Fellesareal resepsjon | Mode: access | VLAN: 40 | Port-Sec: ✓
-- **FastEthernet0/23** - Uplink-1 dis-sw01 - Po3 member | Mode: trunk | VLANs: 10,20,30,40,50,99
-- **FastEthernet0/24** - Uplink-2 dis-sw01 - Po3 member | Mode: trunk | VLANs: 10,20,30,40,50,99
-- **Port-channel3** - EtherChannel til dis-sw01 | Mode: trunk | VLANs: 10,20,30,40,50,99
+- **FastEthernet0/23** - Uplink-1 dis-sw01 - Po3 member | Mode: trunk | VLANs: 10,20,30,40,50,99 | Trunk Native VLAN: 666 ✓
+- **FastEthernet0/24** - Uplink-2 dis-sw01 - Po3 member | Mode: trunk | VLANs: 10,20,30,40,50,99 | Trunk Native VLAN: 666 ✓
+- **Port-channel3** - EtherChannel til dis-sw01 | Mode: trunk | VLANs: 10,20,30,40,50,99 | Trunk Native VLAN: 666 ✓
 
 ## Spanning Tree Protocol
 - **STP Mode**: rapid-pvst ✓ VERIFIED
-
-**Per-VLAN Priorities:**
+- **Per-VLAN Priorities**:
   - VLAN 10: 32768 ✓ VERIFIED
   - VLAN 20: 32768 ✓ VERIFIED
   - VLAN 30: 32768 ✓ VERIFIED
@@ -100,11 +86,11 @@
 ## Network Services
 ### Logging
 - **Logging Server**: 10.99.0.50, 10.99.0.51 ✓ VERIFIED
-- **Logging Trap Level**: informational ✓ VERIFIED
 - **Logging Source Interface**: Vlan99 ✓ VERIFIED
+- **Logging Level**: informational ✓ VERIFIED
 
 ### NTP
-- **NTP Server**: 10.99.0.1 ✓ VERIFIED
+- **NTP Server**: 10.99.0.1 ✓ VERIFIED (from raw config)
 - **NTP Authentication**: Enabled ✓ VERIFIED
 - **NTP Authentication Key**: 15 ✓ VERIFIED
 
@@ -126,42 +112,44 @@
 ## Configuration Quality Assessment
 
 ### Device Role
-- **Device Role**: Access Layer Switch ~ INFERRED
-  - Justification: The switch has many access ports (8), port security is enabled, and IP routing is disabled. It connects end-user devices and uplinks to a distribution switch via a trunk port.
+- **Device Role**: ~ INFERRED - **Access Layer Switch**
+  - Justification: High number of access ports, port security enabled, no routing enabled, and presence of VLANs for end-user access (10, 20, 30, 40, 50).
 
 ### Security Posture
 
 #### ✓ Strengths
-- SSH-only VTY access with version 2 and timeout of 60 seconds ✓ VERIFIED
-- AAA authentication, authorization, and accounting with TACACS+ integration ✓ VERIFIED
-- DHCP snooping and dynamic ARP inspection enabled on VLANs 10, 20, 30, 40, 50 ✓ VERIFIED
+- SSH-only VTY access with version 2 and timeout ✓ VERIFIED
+- AAA with TACACS+ integration for authentication, authorization, and accounting ✓ VERIFIED
+- DHCP snooping and DAI enabled on VLANs 10, 20, 30, 40, 50 ✓ VERIFIED
 - Port security configured on 8 access ports ✓ VERIFIED
 - CDP is disabled, reducing potential attack surface ✓ VERIFIED
-- Management access is restricted via ACL `MGMT-ACCESS` ✓ VERIFIED
-- Logging is enabled to two syslog servers with source interface Vlan99 ✓ VERIFIED
-- NTP is configured with authentication ✓ VERIFIED
+- Logging to two syslog servers with source interface specified ✓ VERIFIED
+- NTP with authentication enabled ✓ VERIFIED
+- Banner configured for login access ✓ VERIFIED
 
 #### ⚠ Areas for Improvement
-- **802.1X** is not configured, which could provide stronger user authentication for wired access ~ INFERRED
-- **IP Source Guard** is not enabled, which could prevent IP spoofing ~ INFERRED
-- **LLDP** is not enabled, which could be used for network discovery and monitoring ~ INFERRED
-- **SNMPv3** is not used, which could provide stronger security for SNMP traffic ~ INFERRED
-- **Storm control** is configured but limited to broadcast and multicast; unicast storm control could also be considered ~ INFERRED
-- **Banner login** is configured, but it could be enhanced to include more specific legal or compliance language ~ INFERRED
+- **802.1X** is not configured, which could enhance port-based authentication for wired devices ? UNCERTAIN
+- **IP Source Guard** is not enabled, which could provide additional protection against IP spoofing ? UNCERTAIN
+- **LLDP** is not enabled, which could be useful for network discovery and troubleshooting ? UNCERTAIN
+- **SNMPv3** is not used, which could improve SNMP security ? UNCERTAIN
+- **VLAN 1** is not used and is shutdown, but it is still referenced in STP configuration. Consider removing or renaming it for clarity ? UNCERTAIN
+- **VLAN 666** is used as a native VLAN on trunk ports. Native VLAN 1 is typically recommended for security reasons. Consider changing to VLAN 1 if not in use ? UNCERTAIN
 
 #### Recommendations
-- Enable **802.1X** for stronger user authentication on access ports ~ INFERRED
-- Enable **IP Source Guard** on VLANs with DHCP snooping to prevent IP spoofing ~ INFERRED
-- Consider enabling **LLDP** for network discovery and monitoring ~ INFERRED
-- Upgrade **SNMP** to version 3 for stronger security ~ INFERRED
-- Add **unicast storm control** to interfaces to prevent broadcast/multicast/unicast storms ~ INFERRED
-- Review and enhance the **banner login** message to include more specific legal or compliance language ~ INFERRED
-- Consider enabling **portfast bpduguard** on all access ports to prevent STP loops ~ INFERRED
+- Enable **802.1X** on access ports for stronger user authentication.
+- Consider enabling **IP Source Guard** on VLANs with DHCP snooping to prevent IP spoofing.
+- Enable **LLDP** for network discovery and troubleshooting.
+- Upgrade **SNMP** to version 3 for stronger security.
+- Remove or rename **VLAN 1** if it is not in use.
+- Change **native VLAN** on trunk ports to VLAN 1 if not in use for better security.
+- Consider enabling **portfast bpduguard** on all access ports to prevent STP loops.
+- Ensure **TACACS+** servers are highly available and monitored for uptime.
 
 ## Summary
-The device `aksess-sw10` is an **Access Layer Switch** serving end-user devices across multiple floors. It is configured with strong security features including AAA, SSH, DHCP snooping, and port security. The switch connects to a distribution switch via a trunk port and is managed via VLAN 99. The configuration is well-structured and follows best practices for access layer security and management. ~ INFERRED
+
+The device **aksess-sw10** is an **Access Layer Switch** serving end-user devices across multiple floors. It is configured with multiple VLANs for user access, port security, and security features such as DHCP snooping and DAI. The switch is managed via SSH with AAA and TACACS+ integration, and logging is configured to two syslog servers. The configuration is well-structured and includes strong security practices, though there are opportunities to enhance security further with additional features like 802.1X and IP Source Guard.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-11T01:50:34.423395
+**Generated**: 2026-02-11T06:45:33.368495
