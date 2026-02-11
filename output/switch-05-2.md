@@ -17,7 +17,7 @@
 - **SSH Timeout**: 60 seconds ✓ VERIFIED  
 - **VTY Transport Input**: ssh ✓ VERIFIED  
 - **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  
-- **Console Authentication**: CONSOLE (local user) ✓ VERIFIED  
+- **Console Authentication**: CONSOLE ✓ VERIFIED  
 - **Console Logging Synchronous**: Enabled ✓ VERIFIED  
 
 ---
@@ -44,27 +44,27 @@
   - Status: Shutdown ✓ VERIFIED  
 - **VLAN 10**:
   - Description: Ansatte Gateway ✓ VERIFIED  
-  - IP: 10.10.0.3 /24 ✓ VERIFIED  
+  - IP: 10.10.0.3 255.255.255.0 ✓ VERIFIED  
   - Status: Active ✓ VERIFIED  
   - HSRP: Configured ✓ VERIFIED  
 - **VLAN 20**:
   - Description: Gjest Gateway ✓ VERIFIED  
-  - IP: 10.20.0.3 /24 ✓ VERIFIED  
+  - IP: 10.20.0.3 255.255.255.0 ✓ VERIFIED  
   - Status: Active ✓ VERIFIED  
   - HSRP: Configured ✓ VERIFIED  
 - **VLAN 30**:
   - Description: Skrivere Gateway ✓ VERIFIED  
-  - IP: 10.30.0.3 /24 ✓ VERIFIED  
+  - IP: 10.30.0.3 255.255.255.0 ✓ VERIFIED  
   - Status: Active ✓ VERIFIED  
   - HSRP: Configured ✓ VERIFIED  
 - **VLAN 50**:
   - Description: VoIP Gateway ✓ VERIFIED  
-  - IP: 10.50.0.3 /24 ✓ VERIFIED  
+  - IP: 10.50.0.3 255.255.255.0 ✓ VERIFIED  
   - Status: Active ✓ VERIFIED  
   - HSRP: Configured ✓ VERIFIED  
 - **VLAN 99**:
   - Description: Management ✓ VERIFIED  
-  - IP: 10.99.1.3 /24 ✓ VERIFIED  
+  - IP: 10.99.1.3 255.255.255.0 ✓ VERIFIED  
   - Status: Active ✓ VERIFIED  
   - ACL In: MGMT-ACCESS ✓ VERIFIED  
 
@@ -80,7 +80,7 @@
 - **Trunk Ports**: 4 ✓ VERIFIED  
 - **Port Security Enabled**: 0 interfaces ✓ VERIFIED  
 
-### Key Interface Configurations
+### Detailed Interface List
 - **GigabitEthernet0/1**:
   - Description: Uplink til core-sw01 gig0/3 ✓ VERIFIED  
   - Mode: trunk ✓ VERIFIED  
@@ -103,6 +103,10 @@
   - Mode: trunk ✓ VERIFIED  
   - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  
   - Native VLAN: 666 ✓ VERIFIED  
+- **GigabitEthernet0/5**:
+  - Status: Shutdown ✓ VERIFIED  
+- **GigabitEthernet0/6**:
+  - Status: Shutdown ✓ VERIFIED  
 
 ---
 
@@ -137,7 +141,7 @@
 
 ### Logging
 - **Syslog Enabled**: ✓ VERIFIED  
-- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  
+- **Logging Server**: 10.99.0.50 ✓ VERIFIED  
 - **Logging Level**: informational ✓ VERIFIED  
 
 ### NTP
@@ -168,36 +172,35 @@
 
 #### ✓ Strengths
 - SSH is enabled with version 2 and a 60-second timeout, providing secure remote access.  
-- AAA is enabled with local authentication and authorization, ensuring user accountability.  
-- DHCP snooping is enabled globally, reducing the risk of rogue DHCP servers.  
-- CDP is disabled, reducing the risk of network discovery attacks.  
-- Access control lists (ACLs) are configured for management and internal traffic filtering.  
-- A banner is configured to warn unauthorized users.  
+- AAA is enabled with local authentication for console and VTY access.  
+- DHCP snooping is enabled globally, helping prevent rogue DHCP servers.  
+- CDP is disabled, reducing potential attack vectors.  
+- A standard ACL (`MGMT-ACCESS`) is applied to VTY lines, restricting access to trusted subnets.  
+- An extended ACL (`BLOCK-GUEST-INTERNAL`) is configured to block internal traffic from the guest VLAN.  
 
 #### ⚠ Areas for Improvement
 - Dynamic ARP Inspection (DAI) is not enabled, which could leave the network vulnerable to ARP spoofing.  
 - Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.  
-- IP Source Guard is not enabled, which could allow spoofed IP addresses to bypass ACLs.  
-- 802.1X is not configured, which could allow unauthenticated devices to access the network.  
-- VLAN 666 is used as the native VLAN on trunk ports, which is a security risk if not properly secured.  
+- 802.1X is not configured, which could leave the network vulnerable to unauthorized access.  
+- IP Source Guard is not enabled, which could allow spoofed IP addresses.  
 - DHCP snooping is enabled but not scoped to specific VLANs, which could reduce its effectiveness.  
+- SNMP is not configured, which could limit monitoring and management capabilities.  
 
 #### Recommendations
 - Enable Dynamic ARP Inspection (DAI) on VLANs 10, 20, 30, 50, and 99 to prevent ARP spoofing.  
-- Enable port security on access ports to limit the number of MAC addresses per port.  
-- Enable IP Source Guard on VLANs with DHCP snooping to prevent IP spoofing.  
-- Consider implementing 802.1X authentication for secure user and device access.  
-- Change the native VLAN on trunk ports to a non-routed VLAN (e.g., VLAN 999) to reduce security risks.  
-- Scope DHCP snooping to specific VLANs to improve its effectiveness.  
-- Consider enabling SNMP for network monitoring and management.  
+- Enable port security on access ports to prevent unauthorized device connections.  
+- Implement 802.1X authentication for secure user and device access.  
+- Enable IP Source Guard on VLANs to prevent IP address spoofing.  
+- Scope DHCP snooping to specific VLANs (e.g., VLANs 10, 20, 30, 50, 99) to improve security.  
+- Configure SNMP with appropriate community strings and access controls for monitoring.  
 
 ---
 
 ## Summary
 
-dis-sw02 is a **Distribution Layer** switch, as evidenced by the presence of multiple VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. The device is configured with strong foundational security practices such as SSH, AAA, and DHCP snooping, but lacks advanced security features like DAI, port security, and 802.1X. The configuration is well-structured and includes essential network services such as NTP, syslog, and routing. Overall, the configuration is functional and secure, but could benefit from additional hardening measures to fully protect the network.
+dis-sw02 is a **Distribution Layer** switch, as evidenced by the presence of multiple VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. The device is configured with a robust set of VLANs and routing capabilities, and it supports secure remote access via SSH. While the configuration includes several strong security features such as AAA, SSH, and DHCP snooping, there are opportunities to improve security by enabling DAI, port security, and 802.1X. The configuration is generally well-structured and follows best practices for a distribution switch in a multi-VLAN environment.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-10T21:41:40.239328
+**Generated**: 2026-02-11T02:36:15.499009
