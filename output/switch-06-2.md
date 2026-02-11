@@ -14,10 +14,9 @@
 - **SSH Version**: 2 ✓ VERIFIED
 - **SSH Timeout**: 60 seconds ✓ VERIFIED
 - **VTY Transport Input**: ssh ✓ VERIFIED
-- **VTY Authentication**: None ✓ VERIFIED
 - **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED
-- **Console Authentication**: CONSOLE ✓ VERIFIED
-- **Console Logging Synchronous**: True ✓ VERIFIED
+- **Console Authentication**: CONSOLE (local user) ✓ VERIFIED
+- **Console Logging Synchronous**: Enabled ✓ VERIFIED
 
 ## AAA Configuration
 - **AAA Enabled**: ✓ VERIFIED
@@ -25,9 +24,9 @@
   - `aaa authentication login default group radius local` ✓ VERIFIED
   - `aaa authentication login CONSOLE local` ✓ VERIFIED
   - `aaa authentication dot1x default group radius` ✓ VERIFIED
-- **Authorization Methods**:
+- **Authorization**:
   - `aaa authorization network default group radius` ✓ VERIFIED
-- **Accounting Methods**:
+- **Accounting**:
   - `aaa accounting dot1x default start-stop group radius` ✓ VERIFIED
 - **RADIUS Servers**:
   - 10.99.0.30 ✓ VERIFIED
@@ -62,29 +61,55 @@
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
+  - 802.1X: Enabled
+  - DHCP Snooping: Enabled
+  - Storm Control: Broadcast/Multicast level 5
+  - PortFast: Enabled
+  - BPDU Guard: Enabled
 - **FastEthernet0/2**:
   - Description: 802.1X-port kontor C302
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
+  - 802.1X: Enabled
+  - DHCP Snooping: Enabled
+  - Storm Control: Broadcast/Multicast level 5
+  - PortFast: Enabled
+  - BPDU Guard: Enabled
 - **FastEthernet0/3**:
   - Description: 802.1X-port kontor C303
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
+  - 802.1X: Enabled
+  - DHCP Snooping: Enabled
+  - Storm Control: Broadcast/Multicast level 5
+  - PortFast: Enabled
+  - BPDU Guard: Enabled
 - **FastEthernet0/4**:
   - Description: 802.1X-port kontor C304
   - Mode: access
   - VLAN: 10
   - Port-Sec: ✓
+  - 802.1X: Enabled
+  - DHCP Snooping: Enabled
+  - Storm Control: Broadcast/Multicast level 5
+  - PortFast: Enabled
+  - BPDU Guard: Enabled
 - **FastEthernet0/23**:
   - Description: Uplink-1 dis-sw01 gig0/5
   - Mode: trunk
   - Allowed VLANs: 10, 20, 99, 999
+  - Native VLAN: 666
+  - ARP Inspection: Trust
+  - DHCP Snooping: Trust
 - **FastEthernet0/24**:
   - Description: Uplink-2 dis-sw02 gig0/5
   - Mode: trunk
   - Allowed VLANs: 10, 20, 99, 999
+  - Native VLAN: 666
+  - ARP Inspection: Trust
+  - DHCP Snooping: Trust
 
 ## Spanning Tree Protocol
 - **STP Mode**: rapid-pvst ✓ VERIFIED
@@ -98,10 +123,10 @@
   - Information Option: Disabled ✓ VERIFIED
 - **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20 ✓ VERIFIED
 - **Port Security**: ✓ Enabled on 4 interfaces ✓ VERIFIED
-- **802.1X**: ✓ Enabled ✓ VERIFIED
+- **802.1X Authentication**: ✓ Enabled ✓ VERIFIED
 - **CDP**: ✓ Disabled ✓ VERIFIED
-- **LLDP**: ? UNCERTAIN (Not enabled)
-- **IP Source Guard**: ? UNCERTAIN (Not configured)
+- **LLDP**: ? UNCERTAIN (not mentioned in data)
+- **IP Source Guard**: ? UNCERTAIN (not configured)
 
 ## Network Services
 ### Logging
@@ -110,76 +135,69 @@
 - **Logging Level**: informational ✓ VERIFIED
 
 ### NTP
-- **NTP Server**: ? UNCERTAIN (Not configured)
-- **NTP Authentication**: ? UNCERTAIN (Not configured)
+- **NTP Server**: 10.99.0.1 ✓ VERIFIED
+- **NTP Authentication**: ✓ Enabled ✓ VERIFIED
+- **NTP Authentication Key**: Configured ✓ VERIFIED
 
 ### SNMP
-- **SNMP**: ? UNCERTAIN (Not configured)
+- **SNMP**: ? UNCERTAIN (not configured)
 
 ### DNS
 - **DNS Domain Name**: secure.bedrift.no ✓ VERIFIED
-- **DNS Lookup**: Disabled ✓ VERIFIED
+- **DNS Lookup**: ✓ Disabled ✓ VERIFIED
 
 ## Routing Configuration
-- **IP Routing**: Disabled ✓ VERIFIED
+- **IP Routing**: ? UNCERTAIN (disabled)
 - **Default Gateway**: 10.99.1.1 ✓ VERIFIED
 
 ## Access Control Lists
 - **Standard ACL 'MGMT-ACCESS'**:
-  - 3 entries ✓ VERIFIED
-  - `permit 10.99.0.0 0.0.0.255`
-  - `permit 10.99.1.0 0.0.0.255`
-  - `deny any`
+  - Permit 10.99.0.0/24
+  - Permit 10.99.1.0/24
+  - Deny any
+  - Applied to VTY lines (inbound) ✓ VERIFIED
 
 ## Configuration Quality Assessment
-
-### Device Role
-- **Device Role**: ~ INFERRED
-  - This device is an **Access Layer Switch**.
-  - Justification:
-    - It has multiple access ports with 802.1X authentication and port security.
-    - It connects to end-user devices (e.g., "kontor C301", "kontor C302").
-    - It has no routing enabled and only two trunk ports for uplink to a distribution switch.
-    - It has no VLAN interfaces beyond the management VLAN.
 
 ### Security Posture
 
 #### ✓ Strengths
-- SSH is configured with version 2 and a 60-second timeout, ensuring secure remote access.
-- 802.1X authentication is enabled on access ports, providing strong user and device authentication.
-- Port security is enabled on 4 access ports, limiting unauthorized device access.
+- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.
+- AAA is enabled with RADIUS authentication for login and 802.1X, and local fallback is configured.
 - DHCP snooping is enabled on VLANs 10 and 20, preventing rogue DHCP servers.
-- Dynamic ARP Inspection (DAI) is enabled on VLANs 10 and 20, mitigating ARP spoofing attacks.
+- Dynamic ARP Inspection is enabled on VLANs 10 and 20, mitigating ARP spoofing.
+- Port security is enabled on 4 access ports, limiting unauthorized device access.
 - CDP is explicitly disabled, reducing potential attack surface.
-- AAA is enabled with RADIUS authentication and local fallback, ensuring centralized authentication.
-- A standard ACL (`MGMT-ACCESS`) is applied to the management VLAN, restricting access to trusted subnets.
-- A banner is configured to warn unauthorized users.
+- A standard ACL (`MGMT-ACCESS`) is applied to VTY lines, restricting SSH access to specific subnets.
+- Syslog is enabled with a remote server, ensuring centralized logging.
+- NTP is configured with authentication, ensuring accurate time synchronization.
+- 802.1X is enabled on access ports, enforcing user and device authentication.
 
 #### ⚠ Areas for Improvement
-- **NTP is not configured**, which could lead to time synchronization issues and affect log correlation.
-- **LLDP is not enabled**, which could hinder network discovery and troubleshooting.
-- **SNMP is not configured**, which limits monitoring and management capabilities.
-- **IP Source Guard is not configured**, which could leave the network vulnerable to IP spoofing.
-- **VTP is not configured**, which may be intentional, but if VLANs are managed centrally, this could be a gap.
-- **No logging to a remote syslog server is configured** (only one server is listed, and it's unclear if it's remote).
-- **No rate limiting or throttling is configured** for SSH or console access.
-- **No password complexity policy is enforced**, as the configuration does not specify one.
+- **IP Source Guard** is not configured, which could help prevent IP spoofing.
+- **LLDP** is not enabled, which could be useful for network discovery and troubleshooting.
+- **SNMP** is not configured, which could be a missed opportunity for monitoring.
+- **VTP** is not configured, which may be intentional, but should be documented.
+- **VLAN 1** is shutdown, which is good practice, but it should be confirmed if it's needed.
+- **VLAN 666 and 999** are referenced but not described, which could be a documentation gap.
+- **NTP server key** is configured but not shown in the data, so it's unclear if it's properly secured.
+- **Banner message** is configured, but it should be reviewed for compliance and clarity.
 
 #### Recommendations
-- **Enable NTP** with at least one NTP server and enable authentication for secure time synchronization.
-- **Enable LLDP** to improve network visibility and troubleshooting.
-- **Configure SNMP** with appropriate community strings and access control for monitoring.
-- **Enable IP Source Guard** on VLANs 10 and 20 to prevent IP spoofing.
-- **Consider enabling VTP** if VLANs are managed centrally, or ensure VLAN consistency across the network.
-- **Add rate limiting** to SSH and console access to prevent brute-force attacks.
-- **Enforce password complexity** using the `security password` command.
-- **Ensure all VLANs are documented** and their purposes are clear.
-- **Review and tighten the `MGMT-ACCESS` ACL** to ensure it only allows necessary management traffic.
+- Enable **IP Source Guard** on VLANs 10 and 20 to prevent IP spoofing.
+- Consider enabling **LLDP** for network discovery and interoperability.
+- Configure **SNMP** with appropriate community strings and access control for monitoring.
+- Document the purpose of **VLANs 666 and 999** to ensure clarity.
+- Ensure **NTP keys** are properly secured and rotated as needed.
+- Review and update the **banner message** to ensure it complies with organizational policies.
+- Consider enabling **portfast on trunk ports** if they connect to switches, to reduce STP delays.
+- Ensure **RADIUS keys** are properly secured and not exposed in plaintext.
 
 ## Summary
-The device `switch-06` is an **Access Layer Switch** providing connectivity to end-user devices in VLAN 10 and uplinking to a distribution switch via trunk ports. It is configured with strong security features such as 802.1X, port security, DHCP snooping, and DAI. However, it lacks some essential services like NTP, SNMP, and IP Source Guard, which should be implemented to improve security and manageability. The configuration is otherwise well-structured and follows best practices for an access-layer device.
+
+`switch-06` is an **Access Layer** switch, as evidenced by the large number of access ports, port security, and 802.1X authentication. It is configured with strong security features such as SSH, AAA, DHCP snooping, and DAI. The device is managed via VLAN 99 with a dedicated IP address and ACL-controlled access. The configuration is well-structured and follows best practices, though there are a few areas for improvement, particularly in monitoring and documentation.
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-10T22:09:16.669092
+**Generated**: 2026-02-11T03:03:06.289094
