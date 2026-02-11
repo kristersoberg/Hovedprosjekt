@@ -1,0 +1,62 @@
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator | 
+============================================================
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |  Processing: switch-08-8.txt
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator | ============================================================
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   Started at: 01:23:05
+2026-02-11 01:23:05 | WARNING  | cisco_doc_generator | ▶ Validating input file
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   Config validation passed (4/4 markers found)
+2026-02-11 01:23:05 | WARNING  | cisco_doc_generator | ▶ Parsing configuration into structured data
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   Secrets sanitization is enabled
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   Parsing completed in 0.05 seconds
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   Detected device: lab-sw01
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   IOS version: 15.0(2)SE4
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   VLANs found: 4
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   Interfaces found: 26
+2026-02-11 01:23:05 | DEBUG    | cisco_doc_generator | Device info: {
+  "hostname": "lab-sw01",
+  "ios_version": "15.0(2)SE4",
+  "domain_name": "lab.bedrift.no",
+  "config_register": null
+}
+2026-02-11 01:23:05 | WARNING  | cisco_doc_generator | ▶ Building structured prompt
+2026-02-11 01:23:05 | INFO     | cisco_doc_generator |   Prompt size: 11098 characters
+2026-02-11 01:23:05 | DEBUG    | cisco_doc_generator | First 500 chars of prompt: You are an expert Cisco network engineer creating professional documentation.
+
+You are provided with STRUCTURED, PRE-PARSED configuration data. This data has been extracted deterministically from a Cisco IOS configuration file, so all values are FACTUALLY CORRECT.
+
+## CRITICAL RULES:
+
+1. **USE THE PROVIDED DATA EXACTLY** - The structured data below contains factual information extracted from the configuration. Do NOT change these values.
+2. **Example**: If structured_data shows `"hostname": "aks
+2026-02-11 01:23:05 | WARNING  | cisco_doc_generator | ▶ Sending to LLM for analysis
+2026-02-11 01:25:32 | DEBUG    | cisco_doc_generator | Token usage information not available in LLM response
+2026-02-11 01:25:32 | INFO     | cisco_doc_generator |   LLM analysis completed in 147.14 seconds
+2026-02-11 01:25:32 | INFO     | cisco_doc_generator |   LLM response length: 7228 characters
+2026-02-11 01:25:32 | DEBUG    | cisco_doc_generator | First 500 chars of response: # Network Device Documentation: lab-sw01
+
+## Device Information
+- **Hostname**: lab-sw01 ✓ VERIFIED
+- **IOS Version**: 15.0(2)SE4 ✓ VERIFIED
+- **Domain Name**: lab.bedrift.no ✓ VERIFIED
+- **Config Register**: Not configured ✓ VERIFIED
+
+## Management & Access
+- **Management VLAN**: 99 ✓ VERIFIED
+- **IP Address**: 10.99.1.8 ✓ VERIFIED
+- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED
+- **Default Gateway**: 10.99.1.1 ✓ VERIFIED
+- **SSH Version**: Not configured ✓ VERIFIED
+- **SSH Timeout**: Not configure
+2026-02-11 01:25:32 | WARNING  | cisco_doc_generator | ▶ Saving documentation
+2026-02-11 01:25:32 | INFO     | cisco_doc_generator |   Saved to: G:\git\Hovedprosjekt\output\switch-08-8.md
+2026-02-11 01:25:32 | WARNING  | cisco_doc_generator | ▶ Validating documentation
+2026-02-11 01:25:32 | INFO     | cisco_doc_generator |   Accuracy: 100.0%
+2026-02-11 01:25:32 | INFO     | cisco_doc_generator |   Passed: 21/21 checks
+2026-02-11 01:25:32 | WARNING  | cisco_doc_generator | ▶ Committing to Git
+2026-02-11 01:25:33 | DEBUG    | cisco_doc_generator | Metrics recorded successfully
+2026-02-11 01:25:33 | WARNING  | cisco_doc_generator | ✓ Documentation generated: G:\git\Hovedprosjekt\output\switch-08-8.md
+2026-02-11 01:25:33 | INFO     | cisco_doc_generator |   Total processing time: 148.32 seconds
+2026-02-11 01:25:33 | INFO     | cisco_doc_generator |     - Parsing: 0.05s
+2026-02-11 01:25:33 | INFO     | cisco_doc_generator |     - LLM analysis: 147.14s
+2026-02-11 01:25:33 | INFO     | cisco_doc_generator | 
+Log file saved to: G:\git\Hovedprosjekt\logs\documentation_20260211_012305.log

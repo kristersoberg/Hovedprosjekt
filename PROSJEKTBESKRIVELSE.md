@@ -276,21 +276,25 @@ Systemet konfigureres via en sentral JSON-fil:
 ```json
 {
   "llm": {
-    "endpoint": "http://localhost:11434/api/generate",
-    "model": "llama3.1:8b",
+    "endpoint": "http://192.168.1.174:11434/api/generate",
+    "model": "qwen3:32b",
+    "max_tokens": 16000,
     "temperature": 0.1,
-    "max_tokens": 8000,
-    "timeout": 300000
+    "top_p": 0.9,
+    "num_ctx": 32768
   },
   "validation": {
-    "enabled": true
+    "enabled": true,
+    "save_reports": true
   },
   "security": {
     "sanitize_secrets": true
   },
   "git": {
     "enabled": true,
-    "auto_push": false
+    "auto_push": true,
+    "remote": "origin",
+    "branch": "master"
   },
   "logging": {
     "enabled": true,
@@ -302,7 +306,7 @@ Systemet konfigureres via en sentral JSON-fil:
 **Viktige konfigurasjonsparametre**:
 
 - **llm.endpoint**: URL til lokal LLM (Ollama eller LM Studio)
-- **llm.model**: Modellnavn (f.eks. `llama3.1:8b`, `mistral`, `qwen2.5`)
+- **llm.model**: Modellnavn (f.eks. `qwen3:32b`, `llama3.1:8b`, `mistral`)
 - **llm.temperature**: Kreativitet (0.1 = deterministisk, 1.0 = kreativ)
 - **validation.enabled**: Aktiver/deaktiver automatisk validering
 - **security.sanitize_secrets**: Rediger passord før LLM-prosessering
@@ -389,6 +393,14 @@ def _call_llm(self, prompt: str, max_retries: int = 3) -> str:
 - Ollama native API (`/api/generate`)
 - OpenAI-compatible API (`/v1/chat/completions`)
 - Automatisk deteksjon av response-format
+
+**Håndtering av Qwen3 Thinking Mode**:
+
+Qwen3-modeller har en innebygd "thinking mode" som wrapper intern resonnering i `<think>...</think>`-tags. For dokumentasjonsgenerering er dette unødvendig og kan forurense output. Systemet deaktiverer dette eksplisitt via `"think": False` i API-forespørselen, slik at kun den endelige dokumentasjonen returneres.
+
+**File Watcher Deduplication**:
+
+Når en fil kopieres inn i `configs/`-mappen, genererer operativsystemet typisk to hendelser: en `created`-hendelse og en `modified`-hendelse. For å eliminere duplikat-prosessering lytter watcheren kun på `on_created`-hendelser og ignorerer `on_modified` helt. En cooldown-mekanisme i `_process_file()` fungerer som ekstra sikkerhetsnett.
 
 ### Validering (validator.py)
 
@@ -781,7 +793,7 @@ Dette prosjektet demonstrerer:
 - Validering sikrer kvalitet
 
 **2. Lokal AI er Praktisk Gjennomførbart**
-- Moderne LLMs (Llama, Mistral) kjører effektivt lokalt
+- Moderne LLMs (Qwen3, Llama, Mistral) kjører effektivt lokalt
 - Privacy og kostnadsbesparelser motiverer lokal inference
 - Ytelse er akseptabel for praktisk bruk
 
@@ -837,7 +849,7 @@ Resultatet er et system som ikke bare automatiserer en tidkrevende oppgave, men 
 **Prosjektinformasjon**:
 - **Kodebase**: 1,317 linjer (parser) + 725 linjer (processor) + støttekode
 - **Test coverage**: 29 tester, 100% success rate
-- **Teknologi**: Python 3.8+, Ollama/LM Studio, SQLite, Git
+- **Teknologi**: Python 3.8+, Qwen3:32B via Ollama, SQLite, Git
 - **Lisens**: Educational/Professional use
 - **Utviklingsperiode**: Design Science Research Methodology (DSRM) approach
 

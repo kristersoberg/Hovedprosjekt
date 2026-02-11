@@ -9,7 +9,8 @@ import json
 import sys
 
 OLLAMA_BASE_URL = "http://192.168.1.174:11434"
-MODEL_NAME = "qwen2.5:32b-instruct-q5_K_M"
+MODEL_NAME = "qwen3:32b"
+#MODEL_NAME = "qwen2.5:32b-instruct-q5_K_M"
 
 def test_ollama_connection():
     """Test basic connection to Ollama server."""

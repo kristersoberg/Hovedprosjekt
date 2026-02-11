@@ -1,0 +1,234 @@
+{
+  "total_checks": 28,
+  "passed_checks": 28,
+  "failed_checks": 0,
+  "accuracy_percentage": 100.0,
+  "hallucination_count": 0,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "dis-sw01",
+      "found": "# Network Device Documentation: dis-sw01\n\n## Device Information\n- **Hostname**: dis-sw01 ✓ VERIFIED  \n- **IOS Version**: 15.2(2)E9 ✓ VERIFIED  \n- **Domain Name**: core.bedrift.no ✓ VERIFIED  \n- **Config Register**: Not configured ✓ VERIFIED  \n\n---\n\n## Management & Access\n- **Management VLAN**: 10 ✓ VERIFIED  \n- **IP Address**: 10.10.0.2 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA**: Enabled ✓ VERIFIED  \n  - **Authentication Lists**:\n    - `aaa authentication login default local` ✓ VERIFIED  \n    - `aaa authentication login CONSOLE local` ✓ VERIFIED  \n  - **Authorization Lists**:\n    - `aaa authorization exec default local` ✓ VERIFIED  \n  - **Local Users**:\n    - `netadmin` (privilege 15) ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 6 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  \n\n**VLAN Interfaces (SVIs):** 6 configured ✓ VERIFIED  \n- **VLAN 1**:\n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 10**:\n  - Description: Ansatte Gateway ✓ VERIFIED  \n  - IP: 10.10.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 20**:\n  - Description: Gjest Gateway ✓ VERIFIED  \n  - IP: 10.20.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 30**:\n  - Description: Skrivere Gateway ✓ VERIFIED  \n  - IP: 10.30.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 50**:\n  - Description: VoIP Gateway ✓ VERIFIED  \n  - IP: 10.50.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 99**:\n  - Description: Management ✓ VERIFIED  \n  - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: `MGMT-ACCESS` ✓ VERIFIED  \n\n**VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 6 ✓ VERIFIED  \n- **Active (no shutdown)**: 4 ✓ VERIFIED  \n- **Shutdown**: 2 ✓ VERIFIED  \n\n**Key Active Interfaces**:\n- **GigabitEthernet0/1**:\n  - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/2**:\n  - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/3**:\n  - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n- **GigabitEthernet0/4**:\n  - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:\n  - VLAN 10: 4096 ✓ VERIFIED  \n  - VLAN 20: 4096 ✓ VERIFIED  \n  - VLAN 30: 4096 ✓ VERIFIED  \n  - VLAN 50: 4096 ✓ VERIFIED  \n  - VLAN 99: 4096 ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Enabled on VLANs Not specified ✓ VERIFIED  \n  - Information Option: Enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n- **Access Control Lists (ACLs)**:\n  - Standard ACL `MGMT-ACCESS`: 3 entries ✓ VERIFIED  \n  - Extended ACL `BLOCK-GUEST-INTERNAL`: 5 entries ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: informational ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: Yes ✓ VERIFIED  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: core.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Enabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **Static Routes**:\n  - `0.0.0.0 0.0.0.0 via 10.99.1.1` ✓ VERIFIED  \n\n---\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.  \n- AAA is enabled with local authentication for both console and VTY lines.  \n- DHCP snooping is enabled globally, which helps prevent rogue DHCP servers.  \n- CDP is disabled, reducing the risk of lateral discovery.  \n- Access control lists (`MGMT-ACCESS` and `BLOCK-GUEST-INTERNAL`) are configured to restrict access and prevent internal guest traffic from reaching other VLANs.  \n- A banner is configured to warn unauthorized users.  \n\n#### ⚠ Areas for Improvement\n- Dynamic ARP Inspection (DAI) is not enabled, which could leave the network vulnerable to ARP spoofing.  \n- Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.  \n- IP Source Guard is not enabled, which could allow spoofed IP addresses to bypass ACLs.  \n- 802.1X is not configured, which could allow unauthenticated devices to access the network.  \n- VLAN 666 is referenced in trunk configurations but is not defined in the VLAN configuration section. This may be a misconfiguration or an oversight.  \n- No routing protocols are configured, which may limit scalability and redundancy in the routing domain.  \n\n#### Recommendations\n- Enable Dynamic ARP Inspection (DAI) on VLANs where it is needed.  \n- Enable port security on access ports to prevent unauthorized device access.  \n- Enable IP Source Guard to prevent IP spoofing.  \n- Consider implementing 802.1X for secure device authentication.  \n- Define VLAN 666 if it is intended to be used, or remove it from trunk configurations if it is not.  \n- Consider implementing routing protocols (e.g., EIGRP or OSPF) to improve routing scalability and redundancy.  \n- Ensure that all VLANs with SVIs have appropriate ACLs and security policies applied.  \n\n---\n\n## Summary\n\nThe device `dis-sw01",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: dis-sw01\n\n## Devic...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.2(2)E9",
+      "found": "IOS Version**: 15.2(2)E9",
+      "passed": true,
+      "location": "Line with: IOS Version**: 15.2(2)E9...",
+      "error": null
+    },
+    {
+      "field": "Domain Name",
+      "expected": "core.bedrift.no",
+      "found": "Domain Name**: core.bedrift.no ✓ VERIFIED  \n- **Config Register**: Not configured ✓ VERIFIED  \n\n---\n\n## Management & Access\n- **Management VLAN**: 10 ✓ VERIFIED  \n- **IP Address**: 10.10.0.2 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA**: Enabled ✓ VERIFIED  \n  - **Authentication Lists**:\n    - `aaa authentication login default local` ✓ VERIFIED  \n    - `aaa authentication login CONSOLE local` ✓ VERIFIED  \n  - **Authorization Lists**:\n    - `aaa authorization exec default local` ✓ VERIFIED  \n  - **Local Users**:\n    - `netadmin` (privilege 15) ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 6 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  \n\n**VLAN Interfaces (SVIs):** 6 configured ✓ VERIFIED  \n- **VLAN 1**:\n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 10**:\n  - Description: Ansatte Gateway ✓ VERIFIED  \n  - IP: 10.10.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 20**:\n  - Description: Gjest Gateway ✓ VERIFIED  \n  - IP: 10.20.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 30**:\n  - Description: Skrivere Gateway ✓ VERIFIED  \n  - IP: 10.30.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 50**:\n  - Description: VoIP Gateway ✓ VERIFIED  \n  - IP: 10.50.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 99**:\n  - Description: Management ✓ VERIFIED  \n  - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: `MGMT-ACCESS` ✓ VERIFIED  \n\n**VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 6 ✓ VERIFIED  \n- **Active (no shutdown)**: 4 ✓ VERIFIED  \n- **Shutdown**: 2 ✓ VERIFIED  \n\n**Key Active Interfaces**:\n- **GigabitEthernet0/1**:\n  - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/2**:\n  - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/3**:\n  - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n- **GigabitEthernet0/4**:\n  - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:\n  - VLAN 10: 4096 ✓ VERIFIED  \n  - VLAN 20: 4096 ✓ VERIFIED  \n  - VLAN 30: 4096 ✓ VERIFIED  \n  - VLAN 50: 4096 ✓ VERIFIED  \n  - VLAN 99: 4096 ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Enabled on VLANs Not specified ✓ VERIFIED  \n  - Information Option: Enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n- **Access Control Lists (ACLs)**:\n  - Standard ACL `MGMT-ACCESS`: 3 entries ✓ VERIFIED  \n  - Extended ACL `BLOCK-GUEST-INTERNAL`: 5 entries ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: informational ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: Yes ✓ VERIFIED  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: core.bedrift.no",
+      "passed": true,
+      "location": "Line with: Domain Name**: core.bedrift.no ✓ VERIFIED  \n- **Co...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.10.0.2",
+      "found": "IP Address**: 10.10.0.2 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA**: Enabled ✓ VERIFIED  \n  - **Authentication Lists**:\n    - `aaa authentication login default local` ✓ VERIFIED  \n    - `aaa authentication login CONSOLE local` ✓ VERIFIED  \n  - **Authorization Lists**:\n    - `aaa authorization exec default local` ✓ VERIFIED  \n  - **Local Users**:\n    - `netadmin` (privilege 15) ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 6 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  \n\n**VLAN Interfaces (SVIs):** 6 configured ✓ VERIFIED  \n- **VLAN 1**:\n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 10**:\n  - Description: Ansatte Gateway ✓ VERIFIED  \n  - IP: 10.10.0.2",
+      "passed": true,
+      "location": "Line with: IP Address**: 10.10.0.2 ✓ VERIFIED  \n- **Default G...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.99.1.1",
+      "found": "Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA**: Enabled ✓ VERIFIED  \n  - **Authentication Lists**:\n    - `aaa authentication login default local` ✓ VERIFIED  \n    - `aaa authentication login CONSOLE local` ✓ VERIFIED  \n  - **Authorization Lists**:\n    - `aaa authorization exec default local` ✓ VERIFIED  \n  - **Local Users**:\n    - `netadmin` (privilege 15) ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 6 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  \n\n**VLAN Interfaces (SVIs):** 6 configured ✓ VERIFIED  \n- **VLAN 1**:\n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 10**:\n  - Description: Ansatte Gateway ✓ VERIFIED  \n  - IP: 10.10.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 20**:\n  - Description: Gjest Gateway ✓ VERIFIED  \n  - IP: 10.20.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 30**:\n  - Description: Skrivere Gateway ✓ VERIFIED  \n  - IP: 10.30.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 50**:\n  - Description: VoIP Gateway ✓ VERIFIED  \n  - IP: 10.50.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 99**:\n  - Description: Management ✓ VERIFIED  \n  - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: `MGMT-ACCESS` ✓ VERIFIED  \n\n**VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 6 ✓ VERIFIED  \n- **Active (no shutdown)**: 4 ✓ VERIFIED  \n- **Shutdown**: 2 ✓ VERIFIED  \n\n**Key Active Interfaces**:\n- **GigabitEthernet0/1**:\n  - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/2**:\n  - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/3**:\n  - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n- **GigabitEthernet0/4**:\n  - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:\n  - VLAN 10: 4096 ✓ VERIFIED  \n  - VLAN 20: 4096 ✓ VERIFIED  \n  - VLAN 30: 4096 ✓ VERIFIED  \n  - VLAN 50: 4096 ✓ VERIFIED  \n  - VLAN 99: 4096 ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Enabled on VLANs Not specified ✓ VERIFIED  \n  - Information Option: Enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n- **Access Control Lists (ACLs)**:\n  - Standard ACL `MGMT-ACCESS`: 3 entries ✓ VERIFIED  \n  - Extended ACL `BLOCK-GUEST-INTERNAL`: 5 entries ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: informational ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: Yes ✓ VERIFIED  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: core.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Enabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **Static Routes**:\n  - `0.0.0.0 0.0.0.0 via 10.99.1.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version*...",
+      "error": null
+    },
+    {
+      "field": "SSH Version",
+      "expected": "2",
+      "found": "SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA**: Enabled ✓ VERIFIED  \n  - **Authentication Lists**:\n    - `aaa authentication login default local` ✓ VERIFIED  \n    - `aaa authentication login CONSOLE local` ✓ VERIFIED  \n  - **Authorization Lists**:\n    - `aaa authorization exec default local` ✓ VERIFIED  \n  - **Local Users**:\n    - `netadmin` (privilege 15) ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 6 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  \n\n**VLAN Interfaces (SVIs):** 6 configured ✓ VERIFIED  \n- **VLAN 1**:\n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 10**:\n  - Description: Ansatte Gateway ✓ VERIFIED  \n  - IP: 10.10.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 20**:\n  - Description: Gjest Gateway ✓ VERIFIED  \n  - IP: 10.20.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 30**:\n  - Description: Skrivere Gateway ✓ VERIFIED  \n  - IP: 10.30.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 50**:\n  - Description: VoIP Gateway ✓ VERIFIED  \n  - IP: 10.50.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 99**:\n  - Description: Management ✓ VERIFIED  \n  - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: `MGMT-ACCESS` ✓ VERIFIED  \n\n**VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 6 ✓ VERIFIED  \n- **Active (no shutdown)**: 4 ✓ VERIFIED  \n- **Shutdown**: 2 ✓ VERIFIED  \n\n**Key Active Interfaces**:\n- **GigabitEthernet0/1**:\n  - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/2**:\n  - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/3**:\n  - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n- **GigabitEthernet0/4**:\n  - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:\n  - VLAN 10: 4096 ✓ VERIFIED  \n  - VLAN 20: 4096 ✓ VERIFIED  \n  - VLAN 30: 4096 ✓ VERIFIED  \n  - VLAN 50: 4096 ✓ VERIFIED  \n  - VLAN 99: 4096 ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Enabled on VLANs Not specified ✓ VERIFIED  \n  - Information Option: Enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n- **Access Control Lists (ACLs)**:\n  - Standard ACL `MGMT-ACCESS`: 3 entries ✓ VERIFIED  \n  - Extended ACL `BLOCK-GUEST-INTERNAL`: 5 entries ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: informational ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: Yes ✓ VERIFIED  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: core.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Enabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **Static Routes**:\n  - `0.0.0.0 0.0.0.0 via 10.99.1.1` ✓ VERIFIED  \n\n---\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2",
+      "passed": true,
+      "location": "Line with: SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 6...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh",
+      "found": "Transport Input**: ssh ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA**: Enabled ✓ VERIFIED  \n  - **Authentication Lists**:\n    - `aaa authentication login default local` ✓ VERIFIED  \n    - `aaa authentication login CONSOLE local` ✓ VERIFIED  \n  - **Authorization Lists**:\n    - `aaa authorization exec default local` ✓ VERIFIED  \n  - **Local Users**:\n    - `netadmin` (privilege 15) ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 6 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  \n\n**VLAN Interfaces (SVIs):** 6 configured ✓ VERIFIED  \n- **VLAN 1**:\n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 10**:\n  - Description: Ansatte Gateway ✓ VERIFIED  \n  - IP: 10.10.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 20**:\n  - Description: Gjest Gateway ✓ VERIFIED  \n  - IP: 10.20.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 30**:\n  - Description: Skrivere Gateway ✓ VERIFIED  \n  - IP: 10.30.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 50**:\n  - Description: VoIP Gateway ✓ VERIFIED  \n  - IP: 10.50.0.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - HSRP: Configured ✓ VERIFIED  \n- **VLAN 99**:\n  - Description: Management ✓ VERIFIED  \n  - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: `MGMT-ACCESS` ✓ VERIFIED  \n\n**VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 6 ✓ VERIFIED  \n- **Active (no shutdown)**: 4 ✓ VERIFIED  \n- **Shutdown**: 2 ✓ VERIFIED  \n\n**Key Active Interfaces**:\n- **GigabitEthernet0/1**:\n  - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/2**:\n  - Description: Uplink til core-sw01 gig0/2 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 50, 99 ✓ VERIFIED  \n- **GigabitEthernet0/3**:\n  - Description: Downlink aksess-sw03 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n- **GigabitEthernet0/4**:\n  - Description: Downlink aksess-sw04 fa0/23 ✓ VERIFIED  \n  - Mode: trunk ✓ VERIFIED  \n  - Allowed VLANs: 10, 20, 30, 99 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:\n  - VLAN 10: 4096 ✓ VERIFIED  \n  - VLAN 20: 4096 ✓ VERIFIED  \n  - VLAN 30: 4096 ✓ VERIFIED  \n  - VLAN 50: 4096 ✓ VERIFIED  \n  - VLAN 99: 4096 ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Enabled on VLANs Not specified ✓ VERIFIED  \n  - Information Option: Enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n- **Access Control Lists (ACLs)**:\n  - Standard ACL `MGMT-ACCESS`: 3 entries ✓ VERIFIED  \n  - Extended ACL `BLOCK-GUEST-INTERNAL`: 5 entries ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: informational ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: Yes ✓ VERIFIED  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: core.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Enabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **Static Routes**:\n  - `0.0.0.0 0.0.0.0 via 10.99.1.1` ✓ VERIFIED  \n\n---\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.  \n- AAA is enabled with local authentication for both console and VTY lines.  \n- DHCP snooping is enabled globally, which helps prevent rogue DHCP servers.  \n- CDP is disabled, reducing the risk of lateral discovery.  \n- Access control lists (`MGMT-ACCESS` and `BLOCK-GUEST-INTERNAL`) are configured to restrict access and prevent internal guest traffic from reaching other VLANs.  \n- A banner is configured to warn unauthorized users.  \n\n#### ⚠ Areas for Improvement\n- Dynamic ARP Inspection (DAI) is not enabled, which could leave the network vulnerable to ARP spoofing.  \n- Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.  \n- IP Source Guard is not enabled, which could allow spoofed IP addresses to bypass ACLs.  \n- 802.1X is not configured, which could allow unauthenticated devices to access the network.  \n- VLAN 666 is referenced in trunk configurations but is not defined in the VLAN configuration section. This may be a misconfiguration or an oversight.  \n- No routing protocols are configured, which may limit scalability and redundancy in the routing domain.  \n\n#### Recommendations\n- Enable Dynamic ARP Inspection (DAI) on VLANs where it is needed.  \n- Enable port security on access ports to prevent unauthorized device access.  \n- Enable IP Source Guard to prevent IP spoofing.  \n- Consider implementing 802.1X for secure device authentication.  \n- Define VLAN 666 if it is intended to be used, or remove it from trunk configurations if it is not.  \n- Consider implementing routing protocols (e.g., EIGRP or OSPF) to improve routing scalability and redundancy.  \n- Ensure that all VLANs with SVIs have appropriate ACLs and security policies applied.  \n\n---\n\n## Summary\n\nThe device `dis-sw01` is a **Distribution Layer switch** based on its configuration, which includes multiple VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. It is configured with a strong baseline of security features, including SSH",
+      "passed": true,
+      "location": "Line with: Transport Input**: ssh ✓ VERIFIED  \n\n---\n\n## AAA C...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "6",
+      "found": "6",
+      "passed": true,
+      "location": "Line with: **Total VLANs Referenced**: 6...",
+      "error": null
+    },
+    {
+      "field": "VLAN 10",
+      "expected": "10",
+      "found": "VLAN 10",
+      "passed": true,
+      "location": "Line with: VLAN 10...",
+      "error": null
+    },
+    {
+      "field": "VLAN 20",
+      "expected": "20",
+      "found": "VLAN 20",
+      "passed": true,
+      "location": "Line with: VLAN 20...",
+      "error": null
+    },
+    {
+      "field": "VLAN 30",
+      "expected": "30",
+      "found": "VLAN 30",
+      "passed": true,
+      "location": "Line with: VLAN 30...",
+      "error": null
+    },
+    {
+      "field": "VLAN 50",
+      "expected": "50",
+      "found": "VLAN 50",
+      "passed": true,
+      "location": "Line with: VLAN 50...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99",
+      "expected": "99",
+      "found": "VLAN 99",
+      "passed": true,
+      "location": "Line with: VLAN 99...",
+      "error": null
+    },
+    {
+      "field": "VLAN 10 IP",
+      "expected": "10.10.0.2",
+      "found": "10.10.0.2",
+      "passed": true,
+      "location": "Line with: 10.10.0.2...",
+      "error": null
+    },
+    {
+      "field": "VLAN 20 IP",
+      "expected": "10.20.0.2",
+      "found": "10.20.0.2",
+      "passed": true,
+      "location": "Line with: 10.20.0.2...",
+      "error": null
+    },
+    {
+      "field": "VLAN 30 IP",
+      "expected": "10.30.0.2",
+      "found": "10.30.0.2",
+      "passed": true,
+      "location": "Line with: 10.30.0.2...",
+      "error": null
+    },
+    {
+      "field": "VLAN 50 IP",
+      "expected": "10.50.0.2",
+      "found": "10.50.0.2",
+      "passed": true,
+      "location": "Line with: 10.50.0.2...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99 IP",
+      "expected": "10.99.1.2",
+      "found": "10.99.1.2",
+      "passed": true,
+      "location": "Line with: 10.99.1.2...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "6",
+      "found": "6",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 6...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "4",
+      "found": "4",
+      "passed": true,
+      "location": "Line with: **Active (no shutdown)**: 4...",
+      "error": null
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "2",
+      "found": "2",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 2...",
+      "error": null
+    },
+    {
+      "field": "Interface GigabitEthernet0/1",
+      "expected": "GigabitEthernet0/1",
+      "found": "GigabitEthernet0/1",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface GigabitEthernet0/2",
+      "expected": "GigabitEthernet0/2",
+      "found": "GigabitEthernet0/2",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface GigabitEthernet0/3",
+      "expected": "GigabitEthernet0/3",
+      "found": "GigabitEthernet0/3",
+      "passed": true,
+      "location": "Line with: GigabitEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "DHCP Snooping Status",
+      "expected": "enabled",
+      "found": "DHCP snooping is enabled globally, which helps prevent rogue DHCP servers.  \n- CDP is disabled, reducing the risk of lateral discovery.  \n- Access control lists (`MGMT-ACCESS` and `BLOCK-GUEST-INTERNAL`) are configured to restrict access and prevent internal guest traffic from reaching other VLANs.  \n- A banner is configured to warn unauthorized users.  \n\n#### ⚠ Areas for Improvement\n- Dynamic ARP Inspection (DAI) is not enabled, which could leave the network vulnerable to ARP spoofing.  \n- Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.  \n- IP Source Guard is not enabled",
+      "passed": true,
+      "location": "Line with: DHCP snooping is enabled globally, which helps pre...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "disabled",
+      "found": "CDP is disabled",
+      "passed": true,
+      "location": "Line with: CDP is disabled...",
+      "error": null
+    },
+    {
+      "field": "NTP Server 10.99.0.1",
+      "expected": "10.99.0.1",
+      "found": "NTP\n- **NTP Server**: 10.99.0.1",
+      "passed": true,
+      "location": "Line with: NTP\n- **NTP Server**: 10.99.0.1...",
+      "error": null
+    },
+    {
+      "field": "Syslog Server 10.99.0.50",
+      "expected": "10.99.0.50",
+      "found": "Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: informational ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: Yes ✓ VERIFIED  \n- **Syslog Server**: 10.99.0.50",
+      "passed": true,
+      "location": "Line with: Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIE...",
+      "error": null
+    }
+  ]
+}

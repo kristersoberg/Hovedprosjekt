@@ -1,7 +1,7 @@
 {
   "llm": {
-    "endpoint": "http://192.168.1.174:11434/v1/chat/completions",
-    "model": "qwen2.5:32b-instruct-q5_K_M",
+    "endpoint": "http://192.168.1.174:11434/api/generate",
+    "model": "qwen3:32b",
     "max_tokens": 16000,
     "temperature": 0.1,
     "top_p": 0.9,
@@ -10,8 +10,8 @@
   "logging": {
     "enabled": true,
     "log_dir": "./logs",
-    "verbose": false,
-    "debug": false
+    "verbose": true,
+    "debug": true
   },
   "git": {
     "enabled": true,

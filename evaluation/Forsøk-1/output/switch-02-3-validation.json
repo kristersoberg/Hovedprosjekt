@@ -1,0 +1,186 @@
+{
+  "total_checks": 22,
+  "passed_checks": 22,
+  "failed_checks": 0,
+  "accuracy_percentage": 100.0,
+  "hallucination_count": 0,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "switch-02",
+      "found": "# Network Device Documentation: switch-02\n\n## Device Information\n- **Hostname**: switch-02 ✓ VERIFIED\n- **IOS Version**: 15.0(2)SE4 ✓ VERIFIED\n- **Domain Name**: firma.local ✓ VERIFIED\n- **Config Register**: Not configured ✓ VERIFIED\n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED\n- **IP Address**: 10.99.0.12 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n- **SSH Version**: 2 ✓ VERIFIED\n- **SSH Timeout**: 60 seconds ✓ VERIFIED\n- **VTY Transport Input**: ssh ✓ VERIFIED\n- **VTY Access Class**: Not configured (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` configured with no authentication and logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED\n- **VLAN IDs**: 10, 20, 50, 99, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.0.12 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 6 ✓ VERIFIED\n- **Shutdown**: 20 ✓ VERIFIED\n- **Access Ports**: 5 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Bruker-PC kontor 201 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/2** - Bruker-PC kontor 202 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/3** - Bruker-PC kontor 203 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/4** - Bruker-PC kontor 204 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/5** - Printer 2. etasje | Mode: access | VLAN: 10 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 10, 20, 50, 99 | Encapsulation: dot1q | Nonegotiate enabled ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n- **Global Features**: portfast-default ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: firma.local ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a timeout of 60 seconds, which is a good practice for secure remote access.\n- PortFast and BPDU Guard are enabled on access ports, reducing the risk of STP loops.\n- A banner is configured on login, which is a good legal and security practice.\n- Syslog is enabled and configured to send logs to a remote server at 10.99.0.50.\n\n#### ⚠ Areas for Improvement\n- AAA is not enabled, which means there is no centralized authentication, authorization, or accounting.\n- No ACL is applied to VTY lines, leaving SSH access potentially open to unauthorized users.\n- DHCP Snooping, Dynamic ARP Inspection, and IP Source Guard are not enabled, which could leave the network vulnerable to spoofing and other Layer 2 attacks.\n- Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.\n- NTP is not configured, which could lead to time synchronization issues and affect log correlation.\n- SNMP is not configured, which limits the ability to monitor and manage the device remotely.\n- 802.1X is not configured, which means there is no port-based authentication for wired devices.\n\n#### Recommendations\n- Enable AAA with local or remote authentication to improve access control.\n- Apply an ACL to VTY lines to restrict SSH access to trusted IP addresses.\n- Enable DHCP Snooping on VLANs 10, 20, 50, and 99 to prevent rogue DHCP servers.\n- Enable Dynamic ARP Inspection on the same VLANs to prevent ARP spoofing.\n- Enable IP Source Guard on access ports to prevent IP spoofing.\n- Enable port security on access ports to limit the number of MAC addresses allowed per port.\n- Configure NTP with a trusted time source to ensure accurate timekeeping.\n- Enable SNMP with appropriate community strings and access controls for remote monitoring.\n- Consider enabling 802.1X for port-based authentication of wired devices.\n\n## Summary\n\nThis device, **switch-02",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: switch-02\n\n## Devi...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.0(2)SE4",
+      "found": "IOS Version**: 15.0(2)SE4",
+      "passed": true,
+      "location": "Line with: IOS Version**: 15.0(2)SE4...",
+      "error": null
+    },
+    {
+      "field": "Domain Name",
+      "expected": "firma.local",
+      "found": "Domain Name**: firma.local ✓ VERIFIED\n- **Config Register**: Not configured ✓ VERIFIED\n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED\n- **IP Address**: 10.99.0.12 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n- **SSH Version**: 2 ✓ VERIFIED\n- **SSH Timeout**: 60 seconds ✓ VERIFIED\n- **VTY Transport Input**: ssh ✓ VERIFIED\n- **VTY Access Class**: Not configured (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` configured with no authentication and logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED\n- **VLAN IDs**: 10, 20, 50, 99, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.0.12 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 6 ✓ VERIFIED\n- **Shutdown**: 20 ✓ VERIFIED\n- **Access Ports**: 5 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Bruker-PC kontor 201 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/2** - Bruker-PC kontor 202 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/3** - Bruker-PC kontor 203 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/4** - Bruker-PC kontor 204 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/5** - Printer 2. etasje | Mode: access | VLAN: 10 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 10, 20, 50, 99 | Encapsulation: dot1q | Nonegotiate enabled ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n- **Global Features**: portfast-default ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: firma.local",
+      "passed": true,
+      "location": "Line with: Domain Name**: firma.local ✓ VERIFIED\n- **Config R...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.99.0.12",
+      "found": "IP Address**: 10.99.0.12 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n- **SSH Version**: 2 ✓ VERIFIED\n- **SSH Timeout**: 60 seconds ✓ VERIFIED\n- **VTY Transport Input**: ssh ✓ VERIFIED\n- **VTY Access Class**: Not configured (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` configured with no authentication and logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED\n- **VLAN IDs**: 10, 20, 50, 99, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.0.12",
+      "passed": true,
+      "location": "Line with: IP Address**: 10.99.0.12 ✓ VERIFIED\n- **Subnet Mas...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.99.0.1",
+      "found": "Gateway**: 10.99.0.1 ✓ VERIFIED\n- **SSH Version**: 2 ✓ VERIFIED\n- **SSH Timeout**: 60 seconds ✓ VERIFIED\n- **VTY Transport Input**: ssh ✓ VERIFIED\n- **VTY Access Class**: Not configured (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` configured with no authentication and logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED\n- **VLAN IDs**: 10, 20, 50, 99, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.0.12 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 6 ✓ VERIFIED\n- **Shutdown**: 20 ✓ VERIFIED\n- **Access Ports**: 5 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Bruker-PC kontor 201 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/2** - Bruker-PC kontor 202 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/3** - Bruker-PC kontor 203 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/4** - Bruker-PC kontor 204 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/5** - Printer 2. etasje | Mode: access | VLAN: 10 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 10, 20, 50, 99 | Encapsulation: dot1q | Nonegotiate enabled ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n- **Global Features**: portfast-default ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: firma.local ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 10.99.0.1 ✓ VERIFIED\n- **SSH Version**:...",
+      "error": null
+    },
+    {
+      "field": "SSH Version",
+      "expected": "2",
+      "found": "SSH Version**: 2 ✓ VERIFIED\n- **SSH Timeout**: 60 seconds ✓ VERIFIED\n- **VTY Transport Input**: ssh ✓ VERIFIED\n- **VTY Access Class**: Not configured (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` configured with no authentication and logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED\n- **VLAN IDs**: 10, 20, 50, 99, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.0.12 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 6 ✓ VERIFIED\n- **Shutdown**: 20 ✓ VERIFIED\n- **Access Ports**: 5 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Bruker-PC kontor 201 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/2** - Bruker-PC kontor 202 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/3** - Bruker-PC kontor 203 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/4** - Bruker-PC kontor 204 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/5** - Printer 2. etasje | Mode: access | VLAN: 10 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 10, 20, 50, 99 | Encapsulation: dot1q | Nonegotiate enabled ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n- **Global Features**: portfast-default ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: firma.local ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2",
+      "passed": true,
+      "location": "Line with: SSH Version**: 2 ✓ VERIFIED\n- **SSH Timeout**: 60 ...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh",
+      "found": "Transport Input**: ssh ✓ VERIFIED\n- **VTY Access Class**: Not configured (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` configured with no authentication and logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED\n- **VLAN IDs**: 10, 20, 50, 99, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.0.12 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 6 ✓ VERIFIED\n- **Shutdown**: 20 ✓ VERIFIED\n- **Access Ports**: 5 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Bruker-PC kontor 201 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/2** - Bruker-PC kontor 202 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/3** - Bruker-PC kontor 203 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/4** - Bruker-PC kontor 204 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/5** - Printer 2. etasje | Mode: access | VLAN: 10 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 10, 20, 50, 99 | Encapsulation: dot1q | Nonegotiate enabled ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n- **Global Features**: portfast-default ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: firma.local ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a timeout of 60 seconds, which is a good practice for secure remote access.\n- PortFast and BPDU Guard are enabled on access ports, reducing the risk of STP loops.\n- A banner is configured on login, which is a good legal and security practice.\n- Syslog is enabled and configured to send logs to a remote server at 10.99.0.50.\n\n#### ⚠ Areas for Improvement\n- AAA is not enabled, which means there is no centralized authentication, authorization, or accounting.\n- No ACL is applied to VTY lines, leaving SSH access potentially open to unauthorized users.\n- DHCP Snooping, Dynamic ARP Inspection, and IP Source Guard are not enabled, which could leave the network vulnerable to spoofing and other Layer 2 attacks.\n- Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.\n- NTP is not configured, which could lead to time synchronization issues and affect log correlation.\n- SNMP is not configured, which limits the ability to monitor and manage the device remotely.\n- 802.1X is not configured, which means there is no port-based authentication for wired devices.\n\n#### Recommendations\n- Enable AAA with local or remote authentication to improve access control.\n- Apply an ACL to VTY lines to restrict SSH access to trusted IP addresses.\n- Enable DHCP Snooping on VLANs 10, 20, 50, and 99 to prevent rogue DHCP servers.\n- Enable Dynamic ARP Inspection on the same VLANs to prevent ARP spoofing.\n- Enable IP Source Guard on access ports to prevent IP spoofing.\n- Enable port security on access ports to limit the number of MAC addresses allowed per port.\n- Configure NTP with a trusted time source to ensure accurate timekeeping.\n- Enable SNMP with appropriate community strings and access controls for remote monitoring.\n- Consider enabling 802.1X for port-based authentication of wired devices.\n\n## Summary\n\nThis device, **switch-02**, is an **Access Layer switch** based on its configuration, which includes multiple access ports, VLAN assignments, and no routing capabilities. It is configured with basic security features such as SSH",
+      "passed": true,
+      "location": "Line with: Transport Input**: ssh ✓ VERIFIED\n- **VTY Access C...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "5",
+      "found": "5",
+      "passed": true,
+      "location": "Line with: **Total VLANs Referenced**: 5...",
+      "error": null
+    },
+    {
+      "field": "VLAN 10",
+      "expected": "10",
+      "found": "VLAN: 10",
+      "passed": true,
+      "location": "Line with: VLAN: 10...",
+      "error": null
+    },
+    {
+      "field": "VLAN 20",
+      "expected": "20",
+      "found": "20,",
+      "passed": true,
+      "location": "Line with: 20,...",
+      "error": null
+    },
+    {
+      "field": "VLAN 50",
+      "expected": "50",
+      "found": "VLAN: 50",
+      "passed": true,
+      "location": "Line with: VLAN: 50...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99",
+      "expected": "99",
+      "found": "VLAN 99",
+      "passed": true,
+      "location": "Line with: VLAN 99...",
+      "error": null
+    },
+    {
+      "field": "VLAN 666",
+      "expected": "666",
+      "found": "VLAN: 666",
+      "passed": true,
+      "location": "Line with: VLAN: 666...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99 IP",
+      "expected": "10.99.0.12",
+      "found": "10.99.0.12",
+      "passed": true,
+      "location": "Line with: 10.99.0.12...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "6",
+      "found": "6",
+      "passed": true,
+      "location": "Line with: **Active (no shutdown)**: 6...",
+      "error": null
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "20",
+      "found": "20",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 20...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": "Line with: FastEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": "Line with: FastEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "enabled",
+      "found": "**CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: firma.local ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a timeout of 60 seconds, which is a good practice for secure remote access.\n- PortFast and BPDU Guard are enabled on access ports, reducing the risk of STP loops.\n- A banner is configured on login, which is a good legal and security practice.\n- Syslog is enabled and configured to send logs to a remote server at 10.99.0.50.\n\n#### ⚠ Areas for Improvement\n- AAA is not enabled, which means there is no centralized authentication, authorization, or accounting.\n- No ACL is applied to VTY lines, leaving SSH access potentially open to unauthorized users.\n- DHCP Snooping, Dynamic ARP Inspection, and IP Source Guard are not enabled, which could leave the network vulnerable to spoofing and other Layer 2 attacks.\n- Port security is not enabled",
+      "passed": true,
+      "location": "Line with: **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enable...",
+      "error": null
+    },
+    {
+      "field": "Syslog Server 10.99.0.50",
+      "expected": "10.99.0.50",
+      "found": "logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED\n- **VLAN IDs**: 10, 20, 50, 99, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.0.12 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 6 ✓ VERIFIED\n- **Shutdown**: 20 ✓ VERIFIED\n- **Access Ports**: 5 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Bruker-PC kontor 201 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/2** - Bruker-PC kontor 202 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/3** - Bruker-PC kontor 203 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/4** - Bruker-PC kontor 204 | Mode: access | VLAN: 10 | Voice VLAN: 50 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/5** - Printer 2. etasje | Mode: access | VLAN: 10 | PortFast and BPDU Guard enabled ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 10, 20, 50, 99 | Encapsulation: dot1q | Nonegotiate enabled ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n- **Global Features**: portfast-default ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: firma.local ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a timeout of 60 seconds, which is a good practice for secure remote access.\n- PortFast and BPDU Guard are enabled on access ports, reducing the risk of STP loops.\n- A banner is configured on login, which is a good legal and security practice.\n- Syslog is enabled and configured to send logs to a remote server at 10.99.0.50",
+      "passed": true,
+      "location": "Line with: logging synchronous enabled ✓ VERIFIED\n\n## AAA Con...",
+      "error": null
+    }
+  ]
+}

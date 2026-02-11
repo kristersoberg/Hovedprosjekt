@@ -1,0 +1,118 @@
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator | 
+============================================================
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |  Processing: switch-07-6.txt
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator | ============================================================
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   Started at: 23:47:42
+2026-02-10 23:47:42 | WARNING  | cisco_doc_generator | ▶ Validating input file
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   Config validation passed (4/4 markers found)
+2026-02-10 23:47:42 | WARNING  | cisco_doc_generator | ▶ Parsing configuration into structured data
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   Secrets sanitization is enabled
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   Parsing completed in 0.06 seconds
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   Detected device: core-sw01
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   IOS version: 15.2(4)E10
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   VLANs found: 4094
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   Interfaces found: 10
+2026-02-10 23:47:42 | DEBUG    | cisco_doc_generator | Device info: {
+  "hostname": "core-sw01",
+  "ios_version": "15.2(4)E10",
+  "domain_name": "backbone.bedrift.no",
+  "config_register": null
+}
+2026-02-10 23:47:42 | WARNING  | cisco_doc_generator | ▶ Building structured prompt
+2026-02-10 23:47:42 | INFO     | cisco_doc_generator |   Prompt size: 106188 characters
+2026-02-10 23:47:42 | DEBUG    | cisco_doc_generator | First 500 chars of prompt: You are an expert Cisco network engineer creating professional documentation.
+
+You are provided with STRUCTURED, PRE-PARSED configuration data. This data has been extracted deterministically from a Cisco IOS configuration file, so all values are FACTUALLY CORRECT.
+
+## CRITICAL RULES:
+
+1. **USE THE PROVIDED DATA EXACTLY** - The structured data below contains factual information extracted from the configuration. Do NOT change these values.
+2. **Example**: If structured_data shows `"hostname": "aks
+2026-02-10 23:47:42 | WARNING  | cisco_doc_generator | ▶ Sending to LLM for analysis
+2026-02-10 23:52:42 | WARNING  | cisco_doc_generator | LLM request timed out, retrying in 1s... (attempt 1/3)
+2026-02-10 23:57:43 | WARNING  | cisco_doc_generator | LLM request timed out, retrying in 2s... (attempt 2/3)
+2026-02-11 00:02:45 | ERROR    | cisco_doc_generator | LLM request timed out after 3 attempts
+2026-02-11 00:02:45 | ERROR    | cisco_doc_generator | Processing failed: LLM request timed out after 3 attempts
+2026-02-11 00:02:45 | DEBUG    | cisco_doc_generator | Exception details:
+Traceback (most recent call last):
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connection.py", line 571, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\socket.py", line 725, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 644, in send
+    resp = conn.urlopen(
+        method=request.method,
+    ...<9 lines>...
+        chunked=chunked,
+    )
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+        method, url, error=new_e, _pool=self, _stacktrace=sys.exc_info()[2]
+    )
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\util\util.py", line 39, in reraise
+    raise value
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+        conn,
+    ...<10 lines>...
+        **response_kw,
+    )
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\urllib3\connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+        self, url, f"Read timed out. (read timeout={timeout_value})"
+    ) from err
+urllib3.exceptions.ReadTimeoutError: HTTPConnectionPool(host='192.168.1.174', port=11434): Read timed out. (read timeout=300.0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "G:\git\Hovedprosjekt\automation\processor.py", line 526, in _call_llm
+    response = requests.post(
+        endpoint,
+    ...<5 lines>...
+        timeout=llm_config.get("timeout", 300000) / 1000  # Convert ms to seconds
+    )
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 115, in post
+    return request("post", url, data=data, json=json, **kwargs)
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "C:\Users\Krister\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\requests\adapters.py", line 690, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPConnectionPool(host='192.168.1.174', port=11434): Read timed out. (read timeout=300.0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "G:\git\Hovedprosjekt\automation\processor.py", line 209, in process
+    documentation = self._call_llm(prompt)
+  File "G:\git\Hovedprosjekt\automation\processor.py", line 594, in _call_llm
+    raise Exception(error_msg)
+Exception: LLM request timed out after 3 attempts

@@ -485,6 +485,7 @@ Evaluate against Cisco best practices and provide recommendations.
                         "model": llm_config["model"],
                         "prompt": full_prompt,
                         "stream": False,
+                        "think": False,
                         "options": {
                             "temperature": llm_config.get("temperature", 0.7),
                             "num_predict": llm_config.get("max_tokens", 8000)
@@ -517,7 +518,8 @@ Evaluate against Cisco best practices and provide recommendations.
                         "temperature": llm_config.get("temperature", 0.7),
                         "max_tokens": llm_config.get("max_tokens", 8000),
                         "options": {
-                            "num_ctx": llm_config.get("num_ctx", 4096)
+                            "num_ctx": llm_config.get("num_ctx", 4096),
+                            "think": False
                         }
                     }
 

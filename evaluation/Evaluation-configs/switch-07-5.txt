@@ -1,0 +1,227 @@
+Building configuration...
+
+Current configuration : 5234 bytes
+!
+version 15.2(4)E10
+service timestamps log datetime msec
+service timestamps debug datetime msec
+service password-encryption
+!
+hostname core-sw01
+!
+enable secret 5 $1$AbCd$EfGhIjKlMnOpQrStUvWx0/
+!
+username coreAdmin privilege 15 secret 5 $1$YzAb$CdEfGhIjKlMnOpQr5678/
+!
+aaa new-model
+!
+aaa authentication login default local
+aaa authentication login CONSOLE local
+aaa authorization exec default local
+aaa accounting exec default start-stop group tacacs+
+!
+ip routing
+!
+ip ssh version 2
+ip ssh time-out 60
+no ip domain-lookup
+ip domain-name backbone.bedrift.no
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 1-4094 priority 0
+!
+vlan 10
+ name Ansatte
+!
+vlan 20
+ name Gjest
+!
+vlan 30
+ name Skrivere
+!
+vlan 50
+ name VoIP
+!
+vlan 99
+ name Management
+!
+vlan 100
+ name Server-Prod
+!
+vlan 200
+ name Server-Dev
+!
+interface Port-channel1
+ description EtherChannel til dis-sw01
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,50,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface Port-channel2
+ description EtherChannel til dis-sw02
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,50,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet0/1
+ description dis-sw01 gig0/1 - Po1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/2
+ description dis-sw01 gig0/2 - Po1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 1 mode active
+!
+interface GigabitEthernet0/3
+ description dis-sw02 gig0/1 - Po2
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 2 mode active
+!
+interface GigabitEthernet0/4
+ description dis-sw02 gig0/2 - Po2
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 2 mode active
+!
+interface GigabitEthernet0/5
+ description Server-Prod svitsj
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 100,200,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet0/6
+ description WAN-ruter gig0/0
+ no switchport
+ ip address 10.255.0.1 255.255.255.252
+!
+interface GigabitEthernet0/7
+ shutdown
+!
+interface GigabitEthernet0/8
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan10
+ description Ansatte
+ ip address 10.10.0.1 255.255.255.0
+!
+interface Vlan20
+ description Gjest
+ ip address 10.20.0.1 255.255.255.0
+!
+interface Vlan30
+ description Skrivere
+ ip address 10.30.0.1 255.255.255.0
+!
+interface Vlan50
+ description VoIP
+ ip address 10.50.0.1 255.255.255.0
+!
+interface Vlan99
+ description Management
+ ip address 10.99.1.1 255.255.255.0
+ ip access-group MGMT-ACCESS in
+!
+interface Vlan100
+ description Server-Prod
+ ip address 10.100.0.1 255.255.255.0
+!
+interface Vlan200
+ description Server-Dev
+ ip address 10.200.0.1 255.255.255.0
+!
+router ospf 1
+ router-id 10.99.1.1
+ network 10.10.0.0 0.0.0.255 area 0
+ network 10.20.0.0 0.0.0.255 area 0
+ network 10.30.0.0 0.0.0.255 area 0
+ network 10.50.0.0 0.0.0.255 area 0
+ network 10.99.1.0 0.0.0.255 area 0
+ network 10.100.0.0 0.0.0.255 area 0
+ network 10.200.0.0 0.0.0.255 area 0
+ network 10.255.0.0 0.0.0.3 area 0
+ passive-interface Vlan10
+ passive-interface Vlan20
+ passive-interface Vlan30
+ passive-interface Vlan50
+ passive-interface Vlan100
+ passive-interface Vlan200
+ default-information originate
+!
+ip classless
+!
+ip access-list standard MGMT-ACCESS
+ permit 10.99.0.0 0.0.0.255
+ permit 10.99.1.0 0.0.0.255
+ deny any
+!
+ip access-list extended DENY-GUEST-TO-INTERNAL
+ deny ip 10.20.0.0 0.0.0.255 10.10.0.0 0.0.0.255
+ deny ip 10.20.0.0 0.0.0.255 10.30.0.0 0.0.0.255
+ deny ip 10.20.0.0 0.0.0.255 10.50.0.0 0.0.0.255
+ deny ip 10.20.0.0 0.0.0.255 10.99.0.0 0.0.1.255
+ deny ip 10.20.0.0 0.0.0.255 10.100.0.0 0.0.0.255
+ deny ip 10.20.0.0 0.0.0.255 10.200.0.0 0.0.0.255
+ permit ip any any
+!
+no cdp run
+!
+tacacs-server host 10.99.0.40 key 7 094F471A1A0A5E46
+tacacs-server host 10.99.0.41 key 7 094F471A1A0A5E46
+!
+banner login ^CADVARSEL: Kun autorisert tilgang. All aktivitet logges.^C
+!
+logging 10.99.0.50
+logging 10.99.0.51
+logging trap informational
+logging source-interface Vlan99
+!
+ntp authentication-key 1 md5 060506324F41584B57 7
+ntp authenticate
+ntp trusted-key 1
+ntp server 129.240.2.6 key 1
+ntp server 10.99.0.1 key 1 prefer
+!
+line con 0
+ exec-timeout 5 0
+ logging synchronous
+ login authentication CONSOLE
+!
+line aux 0
+!
+line vty 0 4
+ exec-timeout 10 0
+ access-class MGMT-ACCESS in
+ transport input ssh
+!
+line vty 5 15
+ exec-timeout 10 0
+ access-class MGMT-ACCESS in
+ transport input ssh
+!
+end

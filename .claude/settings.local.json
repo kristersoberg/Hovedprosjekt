@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(python -m tests.run_tests:*)"
-    ]
-  }
-}

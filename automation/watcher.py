@@ -31,27 +31,23 @@ class ConfigFileHandler(FileSystemEventHandler):
             print(f"\n New file detected: {Path(event.src_path).name}")
             self._process_file(event.src_path)
 
-    def on_modified(self, event):
-        """Handle file modification."""
-        if not event.is_directory and event.src_path.endswith('.txt'):
-            # Check cooldown to avoid duplicate processing
-            current_time = time.time()
-            last_time = self.cooldown.get(event.src_path, 0)
-
-            if current_time - last_time > 2:  # 2 second cooldown
-                print(f"\n File changed: {Path(event.src_path).name}")
-                self._process_file(event.src_path)
-                self.cooldown[event.src_path] = current_time
-
     def _process_file(self, file_path: str):
         """Process a configuration file."""
         file_path = Path(file_path)
 
-        # Prevent duplicate processing
+        # Cooldown: skip if this file was processed recently (within 30 seconds)
+        current_time = time.time()
+        last_time = self.cooldown.get(str(file_path), 0)
+        if current_time - last_time < 30:
+            print(f"  Skipping {file_path.name} (recently processed, cooldown active)")
+            return
+
+        # Prevent duplicate processing if already running
         if file_path in self.processing_lock:
             print(f"  Skipping {file_path.name} (already processing)")
             return
 
+        self.cooldown[str(file_path)] = current_time
         self.processing_lock.add(file_path)
         print(f"  Processing: {file_path.name}")
         print(f"   Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -76,6 +72,7 @@ class ConfigFileHandler(FileSystemEventHandler):
             print(f" Error processing {file_path.name}: {str(e)}")
 
         finally:
+            self.cooldown[str(file_path)] = time.time()  # Reset cooldown AFTER processing
             self.processing_lock.discard(file_path)
             print("───────────────────────────────────────")
 

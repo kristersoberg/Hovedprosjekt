@@ -1,0 +1,218 @@
+{
+  "total_checks": 26,
+  "passed_checks": 25,
+  "failed_checks": 1,
+  "accuracy_percentage": 96.15,
+  "hallucination_count": 1,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "switch-03",
+      "found": "# Network Device Documentation: switch-03\n\n## Device Information\n- **Hostname**: switch-03 ✓ VERIFIED  \n- **IOS Version**: 15.0(2)SE4 ✓ VERIFIED  \n- **Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **Config Register**: Not configured ✓ VERIFIED  \n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED  \n- **IP Address**: 10.99.1.3 ✓ VERIFIED  \n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  \n- **Console Access**: Line `line con 0` with no authentication and logging synchronous enabled ✓ VERIFIED  \n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 99, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs):** 2 configured ✓ VERIFIED  \n\n### VLAN Interface Details\n- **VLAN 1**  \n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 99**  \n  - Description: Management SVI ✓ VERIFIED  \n  - IP: 10.99.1.3 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: MGMT-ACCESS ✓ VERIFIED  \n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 8 ✓ VERIFIED  \n- **Shutdown**: 18 ✓ VERIFIED  \n- **Access Ports**: 6 ✓ VERIFIED  \n- **Trunk Ports**: 2 ✓ VERIFIED  \n- **Port Security Enabled**: 6 interfaces ✓ VERIFIED  \n\n### Key Interface Configurations\n- **FastEthernet0/1** - Ansatt-PC kontor A101 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/2** - Ansatt-PC kontor A102 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/3** - Ansatt-PC kontor A103 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/4** - Gjestenettverk moeterom B1 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/5** - Gjestenettverk moeterom B2 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/6** - Nettverksskriver 3. etasje | Mode: access | VLAN: 30 | Port-Sec: ✓  \n- **FastEthernet0/23** - Uplink-1 dis-sw01 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n- **FastEthernet0/24** - Uplink-2 dis-sw02 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:  \n  - VLAN 10: 32768 ✓ VERIFIED  \n  - VLAN 20: 32768 ✓ VERIFIED  \n  - VLAN 30: 32768 ✓ VERIFIED  \n  - VLAN 99: 32768 ✓ VERIFIED  \n\n## Security Features\n- **DHCP Snooping**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n  - Information Option: Disabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n- **Port Security**: Enabled on 6 interfaces ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **Access Control Lists (ACLs)**: 1 configured  \n  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED  \n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: Warnings ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: ✓  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.  \n- Port security is enabled on 6 access ports, limiting unauthorized device access.  \n- DHCP snooping is enabled on VLANs 10, 20, and 30, preventing rogue DHCP servers.  \n- Dynamic ARP Inspection (DAI) is enabled on the same VLANs, mitigating ARP spoofing.  \n- CDP is explicitly disabled, reducing potential attack vectors.  \n- A standard ACL (`MGMT-ACCESS`) is applied to the management VLAN to restrict access to trusted subnets.  \n- A banner is configured to warn unauthorized users.  \n\n#### ⚠ Areas for Improvement\n- AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities.  \n- SNMP is not configured, which could be a missed opportunity for monitoring and management.  \n- IP Source Guard is not enabled, which could help prevent IP spoofing.  \n- 802.1X is not configured, which could enhance endpoint authentication.  \n- No password is set for the `line con 0` console, leaving it vulnerable to local unauthorized access.  \n- No password is set for the `line vty 0 4` VTY lines, which could be a risk if local access is possible.  \n\n#### Recommendations\n- Enable AAA with local or TACACS+/RADIUS authentication for centralized access control.  \n- Implement SNMP with secure community strings and access control for monitoring.  \n- Enable IP Source Guard on VLANs 10, 20, and 30 to prevent IP spoofing.  \n- Consider enabling 802.1X for enhanced endpoint authentication.  \n- Set passwords for `line con 0` and `line vty 0 4` to secure console and remote access.  \n- Enable NTP authentication if the NTP server supports it, to prevent time spoofing.  \n- Consider enabling LLDP for network discovery and troubleshooting.  \n\n## Summary\n\nThe device `switch-03",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: switch-03\n\n## Devi...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.0(2)SE4",
+      "found": "IOS Version**: 15.0(2)SE4",
+      "passed": true,
+      "location": "Line with: IOS Version**: 15.0(2)SE4...",
+      "error": null
+    },
+    {
+      "field": "Domain Name",
+      "expected": "intern.bedrift.no",
+      "found": "Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **Config Register**: Not configured ✓ VERIFIED  \n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED  \n- **IP Address**: 10.99.1.3 ✓ VERIFIED  \n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  \n- **Console Access**: Line `line con 0` with no authentication and logging synchronous enabled ✓ VERIFIED  \n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 99, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs):** 2 configured ✓ VERIFIED  \n\n### VLAN Interface Details\n- **VLAN 1**  \n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 99**  \n  - Description: Management SVI ✓ VERIFIED  \n  - IP: 10.99.1.3 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: MGMT-ACCESS ✓ VERIFIED  \n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 8 ✓ VERIFIED  \n- **Shutdown**: 18 ✓ VERIFIED  \n- **Access Ports**: 6 ✓ VERIFIED  \n- **Trunk Ports**: 2 ✓ VERIFIED  \n- **Port Security Enabled**: 6 interfaces ✓ VERIFIED  \n\n### Key Interface Configurations\n- **FastEthernet0/1** - Ansatt-PC kontor A101 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/2** - Ansatt-PC kontor A102 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/3** - Ansatt-PC kontor A103 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/4** - Gjestenettverk moeterom B1 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/5** - Gjestenettverk moeterom B2 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/6** - Nettverksskriver 3. etasje | Mode: access | VLAN: 30 | Port-Sec: ✓  \n- **FastEthernet0/23** - Uplink-1 dis-sw01 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n- **FastEthernet0/24** - Uplink-2 dis-sw02 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:  \n  - VLAN 10: 32768 ✓ VERIFIED  \n  - VLAN 20: 32768 ✓ VERIFIED  \n  - VLAN 30: 32768 ✓ VERIFIED  \n  - VLAN 99: 32768 ✓ VERIFIED  \n\n## Security Features\n- **DHCP Snooping**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n  - Information Option: Disabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n- **Port Security**: Enabled on 6 interfaces ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **Access Control Lists (ACLs)**: 1 configured  \n  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED  \n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: Warnings ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: ✓  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: intern.bedrift.no",
+      "passed": true,
+      "location": "Line with: Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.99.1.3",
+      "found": "IP Address**: 10.99.1.3 ✓ VERIFIED  \n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  \n- **Console Access**: Line `line con 0` with no authentication and logging synchronous enabled ✓ VERIFIED  \n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 99, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs):** 2 configured ✓ VERIFIED  \n\n### VLAN Interface Details\n- **VLAN 1**  \n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 99**  \n  - Description: Management SVI ✓ VERIFIED  \n  - IP: 10.99.1.3",
+      "passed": true,
+      "location": "Line with: IP Address**: 10.99.1.3 ✓ VERIFIED  \n- **Subnet Ma...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.99.1.1",
+      "found": "Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  \n- **Console Access**: Line `line con 0` with no authentication and logging synchronous enabled ✓ VERIFIED  \n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 99, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs):** 2 configured ✓ VERIFIED  \n\n### VLAN Interface Details\n- **VLAN 1**  \n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 99**  \n  - Description: Management SVI ✓ VERIFIED  \n  - IP: 10.99.1.3 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: MGMT-ACCESS ✓ VERIFIED  \n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 8 ✓ VERIFIED  \n- **Shutdown**: 18 ✓ VERIFIED  \n- **Access Ports**: 6 ✓ VERIFIED  \n- **Trunk Ports**: 2 ✓ VERIFIED  \n- **Port Security Enabled**: 6 interfaces ✓ VERIFIED  \n\n### Key Interface Configurations\n- **FastEthernet0/1** - Ansatt-PC kontor A101 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/2** - Ansatt-PC kontor A102 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/3** - Ansatt-PC kontor A103 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/4** - Gjestenettverk moeterom B1 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/5** - Gjestenettverk moeterom B2 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/6** - Nettverksskriver 3. etasje | Mode: access | VLAN: 30 | Port-Sec: ✓  \n- **FastEthernet0/23** - Uplink-1 dis-sw01 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n- **FastEthernet0/24** - Uplink-2 dis-sw02 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:  \n  - VLAN 10: 32768 ✓ VERIFIED  \n  - VLAN 20: 32768 ✓ VERIFIED  \n  - VLAN 30: 32768 ✓ VERIFIED  \n  - VLAN 99: 32768 ✓ VERIFIED  \n\n## Security Features\n- **DHCP Snooping**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n  - Information Option: Disabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n- **Port Security**: Enabled on 6 interfaces ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **Access Control Lists (ACLs)**: 1 configured  \n  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED  \n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: Warnings ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: ✓  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version*...",
+      "error": null
+    },
+    {
+      "field": "SSH Version",
+      "expected": "2",
+      "found": "SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 60 seconds ✓ VERIFIED  \n- **VTY Transport Input**: ssh ✓ VERIFIED  \n- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  \n- **Console Access**: Line `line con 0` with no authentication and logging synchronous enabled ✓ VERIFIED  \n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 99, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs):** 2 configured ✓ VERIFIED  \n\n### VLAN Interface Details\n- **VLAN 1**  \n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 99**  \n  - Description: Management SVI ✓ VERIFIED  \n  - IP: 10.99.1.3 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: MGMT-ACCESS ✓ VERIFIED  \n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 8 ✓ VERIFIED  \n- **Shutdown**: 18 ✓ VERIFIED  \n- **Access Ports**: 6 ✓ VERIFIED  \n- **Trunk Ports**: 2 ✓ VERIFIED  \n- **Port Security Enabled**: 6 interfaces ✓ VERIFIED  \n\n### Key Interface Configurations\n- **FastEthernet0/1** - Ansatt-PC kontor A101 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/2** - Ansatt-PC kontor A102 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/3** - Ansatt-PC kontor A103 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/4** - Gjestenettverk moeterom B1 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/5** - Gjestenettverk moeterom B2 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/6** - Nettverksskriver 3. etasje | Mode: access | VLAN: 30 | Port-Sec: ✓  \n- **FastEthernet0/23** - Uplink-1 dis-sw01 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n- **FastEthernet0/24** - Uplink-2 dis-sw02 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:  \n  - VLAN 10: 32768 ✓ VERIFIED  \n  - VLAN 20: 32768 ✓ VERIFIED  \n  - VLAN 30: 32768 ✓ VERIFIED  \n  - VLAN 99: 32768 ✓ VERIFIED  \n\n## Security Features\n- **DHCP Snooping**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n  - Information Option: Disabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n- **Port Security**: Enabled on 6 interfaces ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **Access Control Lists (ACLs)**: 1 configured  \n  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED  \n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: Warnings ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: ✓  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2",
+      "passed": true,
+      "location": "Line with: SSH Version**: 2 ✓ VERIFIED  \n- **SSH Timeout**: 6...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh",
+      "found": "Transport Input**: ssh ✓ VERIFIED  \n- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  \n- **Console Access**: Line `line con 0` with no authentication and logging synchronous enabled ✓ VERIFIED  \n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 99, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs):** 2 configured ✓ VERIFIED  \n\n### VLAN Interface Details\n- **VLAN 1**  \n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 99**  \n  - Description: Management SVI ✓ VERIFIED  \n  - IP: 10.99.1.3 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: MGMT-ACCESS ✓ VERIFIED  \n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 8 ✓ VERIFIED  \n- **Shutdown**: 18 ✓ VERIFIED  \n- **Access Ports**: 6 ✓ VERIFIED  \n- **Trunk Ports**: 2 ✓ VERIFIED  \n- **Port Security Enabled**: 6 interfaces ✓ VERIFIED  \n\n### Key Interface Configurations\n- **FastEthernet0/1** - Ansatt-PC kontor A101 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/2** - Ansatt-PC kontor A102 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/3** - Ansatt-PC kontor A103 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/4** - Gjestenettverk moeterom B1 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/5** - Gjestenettverk moeterom B2 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/6** - Nettverksskriver 3. etasje | Mode: access | VLAN: 30 | Port-Sec: ✓  \n- **FastEthernet0/23** - Uplink-1 dis-sw01 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n- **FastEthernet0/24** - Uplink-2 dis-sw02 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:  \n  - VLAN 10: 32768 ✓ VERIFIED  \n  - VLAN 20: 32768 ✓ VERIFIED  \n  - VLAN 30: 32768 ✓ VERIFIED  \n  - VLAN 99: 32768 ✓ VERIFIED  \n\n## Security Features\n- **DHCP Snooping**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n  - Information Option: Disabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n- **Port Security**: Enabled on 6 interfaces ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **Access Control Lists (ACLs)**: 1 configured  \n  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED  \n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: Warnings ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: ✓  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.  \n- Port security is enabled on 6 access ports, limiting unauthorized device access.  \n- DHCP snooping is enabled on VLANs 10, 20, and 30, preventing rogue DHCP servers.  \n- Dynamic ARP Inspection (DAI) is enabled on the same VLANs, mitigating ARP spoofing.  \n- CDP is explicitly disabled, reducing potential attack vectors.  \n- A standard ACL (`MGMT-ACCESS`) is applied to the management VLAN to restrict access to trusted subnets.  \n- A banner is configured to warn unauthorized users.  \n\n#### ⚠ Areas for Improvement\n- AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities.  \n- SNMP is not configured, which could be a missed opportunity for monitoring and management.  \n- IP Source Guard is not enabled, which could help prevent IP spoofing.  \n- 802.1X is not configured, which could enhance endpoint authentication.  \n- No password is set for the `line con 0` console, leaving it vulnerable to local unauthorized access.  \n- No password is set for the `line vty 0 4` VTY lines, which could be a risk if local access is possible.  \n\n#### Recommendations\n- Enable AAA with local or TACACS+/RADIUS authentication for centralized access control.  \n- Implement SNMP with secure community strings and access control for monitoring.  \n- Enable IP Source Guard on VLANs 10, 20, and 30 to prevent IP spoofing.  \n- Consider enabling 802.1X for enhanced endpoint authentication.  \n- Set passwords for `line con 0` and `line vty 0 4` to secure console and remote access.  \n- Enable NTP authentication if the NTP server supports it, to prevent time spoofing.  \n- Consider enabling LLDP for network discovery and troubleshooting.  \n\n## Summary\n\nThe device `switch-03` is an **Access Layer** switch, as evidenced by the large number of access ports, port security, and lack of routing. It serves as a local access point for end devices in VLANs 10 (Ansatte), 20 (Gjest), and 30 (Skrivere), with a management VLAN (99) for administrative access. The configuration includes several strong security features such as SSH",
+      "passed": true,
+      "location": "Line with: Transport Input**: ssh ✓ VERIFIED  \n- **VTY Access...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "5",
+      "found": "5",
+      "passed": true,
+      "location": "Line with: **Total VLANs Referenced**: 5...",
+      "error": null
+    },
+    {
+      "field": "VLAN 10",
+      "expected": "10",
+      "found": "VLAN 10",
+      "passed": true,
+      "location": "Line with: VLAN 10...",
+      "error": null
+    },
+    {
+      "field": "VLAN 20",
+      "expected": "20",
+      "found": "VLAN 20",
+      "passed": true,
+      "location": "Line with: VLAN 20...",
+      "error": null
+    },
+    {
+      "field": "VLAN 30",
+      "expected": "30",
+      "found": "VLAN 30",
+      "passed": true,
+      "location": "Line with: VLAN 30...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99",
+      "expected": "99",
+      "found": "VLAN 99",
+      "passed": true,
+      "location": "Line with: VLAN 99...",
+      "error": null
+    },
+    {
+      "field": "VLAN 666",
+      "expected": "666",
+      "found": "VLAN: 666",
+      "passed": true,
+      "location": "Line with: VLAN: 666...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99 IP",
+      "expected": "10.99.1.3",
+      "found": "10.99.1.3",
+      "passed": true,
+      "location": "Line with: 10.99.1.3...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "8",
+      "found": "8",
+      "passed": true,
+      "location": "Line with: **Active (no shutdown)**: 8...",
+      "error": null
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "18",
+      "found": "18",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 18...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": "Line with: FastEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": "Line with: FastEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "DHCP Snooping Status",
+      "expected": "enabled",
+      "found": "DHCP snooping is enabled on VLANs 10, 20, and 30, preventing rogue DHCP servers.  \n- Dynamic ARP Inspection (DAI) is enabled on the same VLANs, mitigating ARP spoofing.  \n- CDP is explicitly disabled, reducing potential attack vectors.  \n- A standard ACL (`MGMT-ACCESS`) is applied to the management VLAN to restrict access to trusted subnets.  \n- A banner is configured to warn unauthorized users.  \n\n#### ⚠ Areas for Improvement\n- AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities.  \n- SNMP is not configured, which could be a missed opportunity for monitoring and management.  \n- IP Source Guard is not enabled",
+      "passed": true,
+      "location": "Line with: DHCP snooping is enabled on VLANs 10, 20, and 30, ...",
+      "error": null
+    },
+    {
+      "field": "DHCP Snooping VLANs",
+      "expected": "10,20,30",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value '10,20,30' not found in documentation"
+    },
+    {
+      "field": "Dynamic ARP Inspection",
+      "expected": "enabled",
+      "found": "ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n- **Port Security**: Enabled on 6 interfaces ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **Access Control Lists (ACLs)**: 1 configured  \n  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED  \n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: Warnings ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: ✓  \n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED  \n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: intern.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.  \n- Port security is enabled on 6 access ports, limiting unauthorized device access.  \n- DHCP snooping is enabled on VLANs 10, 20, and 30, preventing rogue DHCP servers.  \n- Dynamic ARP Inspection (DAI) is enabled on the same VLANs, mitigating ARP spoofing.  \n- CDP is explicitly disabled, reducing potential attack vectors.  \n- A standard ACL (`MGMT-ACCESS`) is applied to the management VLAN to restrict access to trusted subnets.  \n- A banner is configured to warn unauthorized users.  \n\n#### ⚠ Areas for Improvement\n- AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities.  \n- SNMP is not configured, which could be a missed opportunity for monitoring and management.  \n- IP Source Guard is not enabled",
+      "passed": true,
+      "location": "Line with: ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20,...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "disabled",
+      "found": "CDP is explicitly disabled",
+      "passed": true,
+      "location": "Line with: CDP is explicitly disabled...",
+      "error": null
+    },
+    {
+      "field": "NTP Server 10.99.0.1",
+      "expected": "10.99.0.1",
+      "found": "NTP\n- **NTP Server**: 10.99.0.1",
+      "passed": true,
+      "location": "Line with: NTP\n- **NTP Server**: 10.99.0.1...",
+      "error": null
+    },
+    {
+      "field": "Syslog Server 10.99.0.50",
+      "expected": "10.99.0.50",
+      "found": "logging synchronous enabled ✓ VERIFIED  \n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n## VLANs\n- **Total VLANs Referenced**: 5 ✓ VERIFIED  \n- **VLAN IDs**: 10, 20, 30, 99, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs):** 2 configured ✓ VERIFIED  \n\n### VLAN Interface Details\n- **VLAN 1**  \n  - Status: Shutdown ✓ VERIFIED  \n- **VLAN 99**  \n  - Description: Management SVI ✓ VERIFIED  \n  - IP: 10.99.1.3 255.255.255.0 ✓ VERIFIED  \n  - Status: Active ✓ VERIFIED  \n  - ACL In: MGMT-ACCESS ✓ VERIFIED  \n\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 8 ✓ VERIFIED  \n- **Shutdown**: 18 ✓ VERIFIED  \n- **Access Ports**: 6 ✓ VERIFIED  \n- **Trunk Ports**: 2 ✓ VERIFIED  \n- **Port Security Enabled**: 6 interfaces ✓ VERIFIED  \n\n### Key Interface Configurations\n- **FastEthernet0/1** - Ansatt-PC kontor A101 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/2** - Ansatt-PC kontor A102 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/3** - Ansatt-PC kontor A103 | Mode: access | VLAN: 10 | Port-Sec: ✓  \n- **FastEthernet0/4** - Gjestenettverk moeterom B1 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/5** - Gjestenettverk moeterom B2 | Mode: access | VLAN: 20 | Port-Sec: ✓  \n- **FastEthernet0/6** - Nettverksskriver 3. etasje | Mode: access | VLAN: 30 | Port-Sec: ✓  \n- **FastEthernet0/23** - Uplink-1 dis-sw01 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n- **FastEthernet0/24** - Uplink-2 dis-sw02 fa0/3 | Mode: trunk | VLANs: 10, 20, 30, 99 | Native VLAN: 666 | Trust: ARP/DHCP ✓  \n\n## Spanning Tree Protocol\n- **STP Mode**: rapid-pvst ✓ VERIFIED  \n- **Per-VLAN Priorities**:  \n  - VLAN 10: 32768 ✓ VERIFIED  \n  - VLAN 20: 32768 ✓ VERIFIED  \n  - VLAN 30: 32768 ✓ VERIFIED  \n  - VLAN 99: 32768 ✓ VERIFIED  \n\n## Security Features\n- **DHCP Snooping**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n  - Information Option: Disabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: ✓ Enabled on VLANs 10, 20, 30 ✓ VERIFIED  \n- **Port Security**: Enabled on 6 interfaces ✓ VERIFIED  \n- **CDP**: Disabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **Access Control Lists (ACLs)**: 1 configured  \n  - Standard ACL 'MGMT-ACCESS': 3 entries ✓ VERIFIED  \n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n- **Logging Level**: Warnings ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### Syslog\n- **Syslog Enabled**: ✓  \n- **Syslog Server**: 10.99.0.50",
+      "passed": true,
+      "location": "Line with: logging synchronous enabled ✓ VERIFIED  \n\n## AAA C...",
+      "error": null
+    }
+  ]
+}
