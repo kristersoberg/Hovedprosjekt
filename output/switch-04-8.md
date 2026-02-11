@@ -15,21 +15,18 @@
 - **SSH Version**: 2 ✓ VERIFIED  
 - **SSH Timeout**: 60 seconds ✓ VERIFIED  
 - **VTY Transport Input**: ssh ✓ VERIFIED  
-- **VTY Access Class**: MGMT-ACCESS (in) ✓ VERIFIED  
-- **Console Authentication**: CONSOLE ✓ VERIFIED  
-- **Console Logging Synchronous**: Enabled ✓ VERIFIED  
 
 ---
 
 ## AAA Configuration
-- **AAA Enabled**: ✓ VERIFIED  
-- **Authentication Methods**:
-  - `aaa authentication login default local` ✓ VERIFIED  
-  - `aaa authentication login CONSOLE local` ✓ VERIFIED  
-- **Authorization Method**:
-  - `aaa authorization exec default local` ✓ VERIFIED  
-- **Local Users**:
-  - `netadmin` (privilege 15) ✓ VERIFIED  
+- **AAA**: ✓ Enabled ✓ VERIFIED  
+  - **Authentication Lists**:
+    - `aaa authentication login default local` ✓ VERIFIED  
+    - `aaa authentication login CONSOLE local` ✓ VERIFIED  
+  - **Authorization Lists**:
+    - `aaa authorization exec default local` ✓ VERIFIED  
+  - **Local Users**:
+    - `netadmin` (privilege 15) ✓ VERIFIED  
 
 ---
 
@@ -38,7 +35,7 @@
 - **VLAN IDs**: 10, 20, 30, 50, 99, 666 ✓ VERIFIED  
 - **VLAN Interfaces (SVIs)**: 6 configured ✓ VERIFIED  
 
-### VLAN Details
+### VLAN Details:
 - **VLAN 1**:
   - Status: Shutdown ✓ VERIFIED  
 - **VLAN 10**:
@@ -65,7 +62,7 @@
   - Description: Management ✓ VERIFIED  
   - IP: 10.99.1.2 255.255.255.0 ✓ VERIFIED  
   - Status: Active ✓ VERIFIED  
-  - ACL In: MGMT-ACCESS ✓ VERIFIED  
+  - ACL In: `MGMT-ACCESS` ✓ VERIFIED  
 
 - **VTP Configuration**: Not explicitly configured ✓ VERIFIED  
 
@@ -75,11 +72,8 @@
 - **Total Interfaces**: 6 ✓ VERIFIED  
 - **Active (no shutdown)**: 4 ✓ VERIFIED  
 - **Shutdown**: 2 ✓ VERIFIED  
-- **Access Ports**: 0 ✓ VERIFIED  
-- **Trunk Ports**: 4 ✓ VERIFIED  
-- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  
 
-### Key Interface Configurations
+### Key Interface Configurations:
 - **GigabitEthernet0/1**:
   - Description: Uplink til core-sw01 gig0/1 ✓ VERIFIED  
   - Mode: trunk ✓ VERIFIED  
@@ -121,40 +115,39 @@
 ---
 
 ## Security Features
-- **DHCP Snooping**: Enabled ✓ VERIFIED  
-  - VLANs: Not specified ✓ VERIFIED  
+- **DHCP Snooping**: ✓ Enabled on VLANs Not specified ✓ VERIFIED  
   - Information Option: Enabled ✓ VERIFIED  
 - **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  
-- **Port Security**: Not enabled ✓ VERIFIED  
-- **IP Source Guard**: Not configured ✓ VERIFIED  
-- **802.1X**: Not configured ✓ VERIFIED  
+- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  
+- **Access Control Lists (ACLs)**:
+  - Standard ACL `MGMT-ACCESS`: 3 entries ✓ VERIFIED  
+  - Extended ACL `BLOCK-GUEST-INTERNAL`: 5 entries ✓ VERIFIED  
 - **CDP**: Disabled ✓ VERIFIED  
 - **LLDP**: Not enabled ✓ VERIFIED  
-
-### Access Control Lists
-- **Standard ACL 'MGMT-ACCESS'**: 3 entries ✓ VERIFIED  
-- **Extended ACL 'BLOCK-GUEST-INTERNAL'**: 5 entries ✓ VERIFIED  
+- **802.1X**: Not configured ✓ VERIFIED  
+- **IP Source Guard**: Not configured ✓ VERIFIED  
 
 ---
 
 ## Network Services
 
 ### Logging
-- **Syslog Enabled**: ✓ VERIFIED  
 - **Logging Server**: 10.99.0.50 ✓ VERIFIED  
 - **Logging Level**: informational ✓ VERIFIED  
 
 ### NTP
-- **NTP Enabled**: ✓ VERIFIED  
 - **NTP Server**: 10.99.0.1 ✓ VERIFIED  
 - **NTP Authentication**: Disabled ✓ VERIFIED  
+
+### Syslog
+- **Syslog Enabled**: ✓ Enabled ✓ VERIFIED  
+
+### SNMP
+- **SNMP**: Not configured ✓ VERIFIED  
 
 ### DNS
 - **DNS Domain Name**: core.bedrift.no ✓ VERIFIED  
 - **DNS Lookup**: Disabled ✓ VERIFIED  
-
-### SNMP
-- **SNMP**: Not configured ✓ VERIFIED  
 
 ---
 
@@ -162,7 +155,7 @@
 - **IP Routing**: Enabled ✓ VERIFIED  
 - **Default Gateway**: 10.99.1.1 ✓ VERIFIED  
 - **Static Routes**:
-  - `ip route 0.0.0.0 0.0.0.0 10.99.1.1` ✓ VERIFIED  
+  - `0.0.0.0 0.0.0.0 via 10.99.1.1` ✓ VERIFIED  
 
 ---
 
@@ -171,39 +164,37 @@
 ### Security Posture
 
 #### ✓ Strengths
-- SSH-only VTY access with version 2 and 60-second timeout ✓ VERIFIED  
-- Console access with local authentication and synchronous logging ✓ VERIFIED  
-- DHCP snooping enabled globally ✓ VERIFIED  
-- CDP is disabled, reducing potential attack surface ✓ VERIFIED  
-- VLAN interfaces (SVIs) have HSRP configured for redundancy ✓ VERIFIED  
-- Access control lists (ACLs) are configured for management and guest traffic filtering ✓ VERIFIED  
-- Syslog is enabled with remote logging to 10.99.0.50 ✓ VERIFIED  
+- SSH is enabled with version 2 and a 60-second timeout, ensuring secure remote access.  
+- AAA is enabled with local authentication for console and VTY access.  
+- DHCP snooping is enabled globally, helping prevent rogue DHCP servers.  
+- CDP is disabled, reducing potential attack vectors.  
+- Access control lists (`MGMT-ACCESS`, `BLOCK-GUEST-INTERNAL`) are configured to restrict traffic.  
+- A banner is configured to warn unauthorized users.  
 
 #### ⚠ Areas for Improvement
-- DHCP snooping is enabled but no specific VLANs are configured for snooping – this could leave some VLANs vulnerable to rogue DHCP servers ? UNCERTAIN  
-- Dynamic ARP Inspection (DAI) is not enabled – could allow ARP spoofing attacks ? UNCERTAIN  
-- IP Source Guard is not enabled – could allow spoofed IP traffic ? UNCERTAIN  
-- Port security is not enabled – could allow unauthorized device access ? UNCERTAIN  
-- No SNMP configuration – limits monitoring and management capabilities ? UNCERTAIN  
-- No 802.1X configuration – could allow unauthorized devices to connect to the network ? UNCERTAIN  
+- Dynamic ARP Inspection (DAI) is not enabled, which could leave the network vulnerable to ARP spoofing.  
+- Port security is not enabled on any interfaces, which could allow unauthorized devices to connect.  
+- IP Source Guard is not enabled, which could allow spoofed IP addresses to bypass ACLs.  
+- 802.1X is not configured, which could leave wired access vulnerable to unauthorized devices.  
+- VLAN 666 is used as the native VLAN on trunk ports, which is a security risk if not properly secured.  
+- DHCP snooping is enabled but not scoped to specific VLANs, which could reduce its effectiveness.  
 
 #### Recommendations
-- Enable DHCP snooping on specific VLANs (e.g., VLAN 10, 20, 30, 50) to protect against rogue DHCP servers  
-- Enable Dynamic ARP Inspection (DAI) on VLANs with user access to prevent ARP spoofing  
-- Enable IP Source Guard on VLANs with user access to prevent IP spoofing  
-- Consider enabling port security on access ports to prevent unauthorized device access  
-- Implement SNMP for monitoring and management  
-- Consider implementing 802.1X for secure user authentication  
-- Review and tighten ACLs to ensure they are as restrictive as possible  
-- Ensure all unused ports are shut down and not left in default configurations  
+- Enable Dynamic ARP Inspection (DAI) on VLANs where it is needed.  
+- Enable port security on access ports to prevent unauthorized device access.  
+- Enable IP Source Guard to prevent IP spoofing.  
+- Consider implementing 802.1X for wired access control.  
+- Change the native VLAN on trunk ports to a non-routed VLAN (e.g., VLAN 999) to reduce security risks.  
+- Scope DHCP snooping to specific VLANs to improve its effectiveness.  
+- Consider enabling SNMP for monitoring and management.  
 
 ---
 
 ## Summary
 
-The device `dis-sw01` is a **Distribution Layer switch** based on its configuration, which includes VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. It is running Cisco IOS version 15.2(2)E9 and is part of the `core.bedrift.no` domain. The configuration is well-structured and includes several security best practices such as SSH-only access, DHCP snooping, and access control lists. However, there are opportunities to enhance security by enabling additional features like DAI, IP Source Guard, and port security. The device is well-suited for its role in the network, but further hardening is recommended to ensure robust security and compliance.
+dis-sw01 is a **Distribution Layer** switch, as evidenced by the presence of multiple VLAN interfaces (SVIs), inter-VLAN routing, and trunking to both core and access switches. The device is configured with a strong foundation for security, including SSH, AAA, and access control lists. However, there are several areas for improvement, particularly in the areas of ARP spoofing protection, port security, and native VLAN configuration. The configuration is well-structured and appears to be in good operational condition.  
 
 ---
 
 **Data Source**: Structured configuration analysis  
-**Generated**: 2026-02-11T02:25:09.421510
+**Generated**: 2026-02-11T07:20:02.058224
