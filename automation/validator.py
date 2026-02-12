@@ -95,6 +95,55 @@ class DocumentationValidator:
         self.markdown = markdown_content
         self.report = ValidationReport()
 
+    # Values that are too short/generic to validate via presence check
+    SKIP_VALUES = {
+        "True", "False", "true", "false", "None", "none", "enabled", "disabled",
+        "yes", "no", "up", "down", "active", "inactive", "default"
+    }
+
+    # Structured data keys to skip during generic validation (internal/meta fields)
+    SKIP_KEYS = {
+        "enabled", "shutdown", "count", "total", "raw_config"
+    }
+
+    # Phrases in LLM output that indicate "not configured" claims
+    NEGATIVE_PHRASES = [
+        r"[Nn]ot\s+configured",
+        r"[Nn]ot\s+enabled",
+        r"[Nn]o\s+\w+\s+configured",
+        r"[Nn]one\s+configured",
+        r"[Nn]ot\s+present",
+        r"[Nn]ot\s+set",
+        r"[Nn]o\s+\w+\s+servers?"
+    ]
+
+    # Map from negative-claim context keywords to structured data paths
+    NEGATIVE_CLAIM_MAP = {
+        "ntp": ["services.ntp.servers"],
+        "snmp": ["services.snmp.enabled"],
+        "syslog": ["services.syslog.servers"],
+        "logging": ["services.syslog.servers"],
+        "dns": ["services.dns.name_servers"],
+        "routing": ["routing.protocols"],
+        "ospf": ["routing.protocols"],
+        "eigrp": ["routing.protocols"],
+        "bgp": ["routing.protocols"],
+        "dhcp snooping": ["security.dhcp_snooping.enabled"],
+        "arp inspection": ["security.arp_inspection.enabled"],
+        "dai": ["security.arp_inspection.enabled"],
+        "port security": ["security.port_security"],
+        "dot1x": ["security.dot1x_enabled"],
+        "802.1x": ["security.dot1x_enabled"],
+        "cdp": ["security.cdp_enabled"],
+        "lldp": ["security.lldp_enabled"],
+        "spanning tree": ["spanning_tree.mode"],
+        "stp": ["spanning_tree.mode"],
+        "hsrp": ["vlans.hsrp_groups"],
+        "vrrp": ["vlans.vrrp_groups"],
+        "qos": ["qos.enabled"],
+        "acl": ["security.acls"],
+    }
+
     def validate_all(self) -> ValidationReport:
         """
         Run all validation checks.
@@ -104,12 +153,17 @@ class DocumentationValidator:
         """
         print("  Running validation checks...")
 
+        # Specific field validators
         self._validate_device_info()
         self._validate_management()
         self._validate_vlans()
         self._validate_interfaces()
         self._validate_security()
         self._validate_services()
+
+        # Generic validators (catch-all)
+        self._validate_parsed_values_present()
+        self._validate_negative_claims()
 
         print(f"    Completed {self.report.total_checks} checks")
         print(f"    Passed: {self.report.passed_checks}")
@@ -421,6 +475,120 @@ class DocumentationValidator:
                         ]
                     )
                     self.report.add_result(result)
+
+    # ── Generic validators ───────────────────────────────────────────
+
+    def _validate_parsed_values_present(self):
+        """Generic validation: walk all parsed structured data and verify
+        that every meaningful leaf value appears somewhere in the documentation."""
+        values = self._extract_leaf_values(self.data, prefix="")
+
+        for path, value in values:
+            str_val = str(value)
+
+            # Skip values that are too short/generic to validate
+            if len(str_val) < 3 or str_val in self.SKIP_VALUES:
+                continue
+            # Skip booleans — they are covered by specific validators
+            if isinstance(value, bool):
+                continue
+            # Skip small integers (likely counts, not meaningful identifiers)
+            if isinstance(value, int) and value < 10:
+                continue
+
+            found = str_val in self.markdown
+
+            result = ValidationResult(
+                field_name=f"Parsed value: {path}",
+                expected_value=str_val,
+                passed=found,
+                found_value=str_val if found else None,
+                error_message=(
+                    f"Parsed value '{str_val}' from {path} not found in documentation"
+                    if not found else None
+                )
+            )
+            self.report.add_result(result)
+
+    def _extract_leaf_values(self, data, prefix: str) -> List[Tuple[str, Any]]:
+        """Recursively extract leaf values from structured data.
+
+        Returns a list of (dotted_path, value) tuples.
+        """
+        results = []
+
+        if isinstance(data, dict):
+            for key, val in data.items():
+                if key in self.SKIP_KEYS:
+                    continue
+                new_prefix = f"{prefix}.{key}" if prefix else key
+                results.extend(self._extract_leaf_values(val, new_prefix))
+        elif isinstance(data, list):
+            for i, item in enumerate(data):
+                new_prefix = f"{prefix}[{i}]"
+                results.extend(self._extract_leaf_values(item, new_prefix))
+        else:
+            # Leaf value
+            if data is not None and str(data).strip():
+                results.append((prefix, data))
+
+        return results
+
+    def _validate_negative_claims(self):
+        """Detect 'Not configured' / 'Not enabled' claims in documentation
+        and cross-reference against parser data to catch false negatives."""
+        for phrase_pattern in self.NEGATIVE_PHRASES:
+            for match in re.finditer(phrase_pattern, self.markdown):
+                # Get surrounding context (the line containing the match)
+                start = self.markdown.rfind("\n", 0, match.start()) + 1
+                end = self.markdown.find("\n", match.end())
+                if end == -1:
+                    end = len(self.markdown)
+                line = self.markdown[start:end].strip()
+
+                # Check each keyword → data-path mapping
+                for keyword, data_paths in self.NEGATIVE_CLAIM_MAP.items():
+                    if keyword.lower() in line.lower():
+                        for data_path in data_paths:
+                            value = self._resolve_data_path(data_path)
+                            if self._is_meaningful_value(value):
+                                result = ValidationResult(
+                                    field_name=f"Negative claim: {keyword}",
+                                    expected_value=f"Data exists at {data_path}",
+                                    passed=False,
+                                    found_value=line[:80],
+                                    error_message=(
+                                        f"Documentation says '{match.group()}' for {keyword}, "
+                                        f"but parser found data at {data_path}: {str(value)[:60]}"
+                                    )
+                                )
+                                self.report.add_result(result)
+
+    def _resolve_data_path(self, path: str) -> Any:
+        """Resolve a dotted path like 'services.ntp.servers' against self.data."""
+        current = self.data
+        for part in path.split("."):
+            if isinstance(current, dict):
+                current = current.get(part)
+            else:
+                return None
+            if current is None:
+                return None
+        return current
+
+    @staticmethod
+    def _is_meaningful_value(value) -> bool:
+        """Check if a value indicates something is actually configured
+        (non-empty, non-False, non-None)."""
+        if value is None:
+            return False
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, (list, dict)):
+            return len(value) > 0
+        if isinstance(value, str):
+            return len(value.strip()) > 0
+        return True
 
     def _check_field_in_markdown(
         self,

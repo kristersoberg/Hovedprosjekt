@@ -82,9 +82,10 @@ Systemet består av fire hovedkomponenter som samarbeider i en pipeline-arkitekt
 ┌─────────────────────────────────────────────────────────────────┐
 │  KOMPONENT 4: VALIDATOR (validator.py)                          │
 │  - Sammenligner generert dokumentasjon med strukturert data     │
-│  - Validerer nøyaktighet på kritiske felt                       │
+│  - Validerer nøyaktighet på kritiske felt (spesifikke sjekker)  │
+│  - Generisk catch-all: verifiserer alle parsede verdier         │
+│  - Negative claim detection: fanger "Not configured"-feil       │
 │  - Genererer valideringsrapport med accuracy-score              │
-│  - 29 automatiske tester sikrer kvalitet                        │
 └────────────────────────────┬────────────────────────────────────┘
                              │
                              ▼
@@ -428,12 +429,20 @@ class DocumentationValidator:
         )
 ```
 
-**Valideringskategorier**:
+**Spesifikke valideringskategorier**:
 - Device information (hostname, IOS version)
 - VLAN configuration (VLAN IDs, management VLAN)
 - Interface count
 - Security features (DHCP snooping, DAI)
-- Routing protocols
+- Network services (NTP, syslog, DNS)
+
+**Generiske validatorer (catch-all)**:
+
+I tillegg til de spesifikke valideringskategoriene bruker systemet to generiske validatorer som fanger hallusinasjoner uavhengig av konfigurasjonstype:
+
+- **Parsed Value Presence Check**: Traverserer all strukturert data fra parseren rekursivt og verifiserer at hver meningsfull verdi (IP-adresser, servernavner, VLAN-IDs, etc.) finnes et sted i den genererte dokumentasjonen. Filtrerer bort korte/generiske verdier og boolske flagg som allerede dekkes av spesifikke validatorer.
+
+- **Negative Claim Detection**: Skanner dokumentasjonen etter påstander som "Not configured" eller "Not enabled", og kryssrefererer mot parser-dataene. Dersom parseren har funnet data for den aktuelle tjenesten (f.eks. NTP-servere), men dokumentasjonen påstår at tjenesten ikke er konfigurert, flagges dette som en hallusinasjon.
 
 **Output**: Valideringsrapport med accuracy percentage og detaljerte feilmeldinger.
 

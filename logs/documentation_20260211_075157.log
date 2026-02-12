@@ -1,0 +1,62 @@
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator | 
+============================================================
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |  Processing: switch-01-10.txt
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator | ============================================================
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   Started at: 07:51:57
+2026-02-11 07:51:57 | WARNING  | cisco_doc_generator | ▶ Validating input file
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   Config validation passed (4/4 markers found)
+2026-02-11 07:51:57 | WARNING  | cisco_doc_generator | ▶ Parsing configuration into structured data
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   Secrets sanitization is enabled
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   Parsing completed in 0.04 seconds
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   Detected device: switch-01
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   IOS version: 15.0(2)SE4
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   VLANs found: 2
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   Interfaces found: 26
+2026-02-11 07:51:57 | DEBUG    | cisco_doc_generator | Device info: {
+  "hostname": "switch-01",
+  "ios_version": "15.0(2)SE4",
+  "domain_name": null,
+  "config_register": null
+}
+2026-02-11 07:51:57 | WARNING  | cisco_doc_generator | ▶ Building structured prompt
+2026-02-11 07:51:57 | INFO     | cisco_doc_generator |   Prompt size: 9777 characters
+2026-02-11 07:51:57 | DEBUG    | cisco_doc_generator | First 500 chars of prompt: You are an expert Cisco network engineer creating professional documentation.
+
+You are provided with STRUCTURED, PRE-PARSED configuration data. This data has been extracted deterministically from a Cisco IOS configuration file, so all values are FACTUALLY CORRECT.
+
+## CRITICAL RULES:
+
+1. **USE THE PROVIDED DATA EXACTLY** - The structured data below contains factual information extracted from the configuration. Do NOT change these values.
+2. **Example**: If structured_data shows `"hostname": "aks
+2026-02-11 07:51:57 | WARNING  | cisco_doc_generator | ▶ Sending to LLM for analysis
+2026-02-11 07:53:40 | DEBUG    | cisco_doc_generator | Token usage information not available in LLM response
+2026-02-11 07:53:40 | INFO     | cisco_doc_generator |   LLM analysis completed in 102.64 seconds
+2026-02-11 07:53:40 | INFO     | cisco_doc_generator |   LLM response length: 5528 characters
+2026-02-11 07:53:40 | DEBUG    | cisco_doc_generator | First 500 chars of response: # Network Device Documentation: switch-01
+
+## Device Information
+- **Hostname**: switch-01 ✓ VERIFIED
+- **IOS Version**: 15.0(2)SE4 ✓ VERIFIED
+- **Domain Name**: Not configured ✓ VERIFIED
+- **Config Register**: Not shown ✓ VERIFIED
+
+## Management & Access
+- **Management VLAN**: 10 ✓ VERIFIED
+- **IP Address**: 10.10.0.2 ✓ VERIFIED
+- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED
+- **Default Gateway**: 10.10.0.1 ✓ VERIFIED
+- **SSH Version**: Not configured ✓ VERIFIED
+- **SSH Timeout**: Not configured ✓
+2026-02-11 07:53:40 | WARNING  | cisco_doc_generator | ▶ Saving documentation
+2026-02-11 07:53:40 | INFO     | cisco_doc_generator |   Saved to: G:\git\Hovedprosjekt\output\switch-01-10.md
+2026-02-11 07:53:40 | WARNING  | cisco_doc_generator | ▶ Validating documentation
+2026-02-11 07:53:40 | INFO     | cisco_doc_generator |   Accuracy: 100.0%
+2026-02-11 07:53:40 | INFO     | cisco_doc_generator |   Passed: 16/16 checks
+2026-02-11 07:53:40 | WARNING  | cisco_doc_generator | ▶ Committing to Git
+2026-02-11 07:53:41 | DEBUG    | cisco_doc_generator | Metrics recorded successfully
+2026-02-11 07:53:41 | WARNING  | cisco_doc_generator | ✓ Documentation generated: G:\git\Hovedprosjekt\output\switch-01-10.md
+2026-02-11 07:53:41 | INFO     | cisco_doc_generator |   Total processing time: 104.17 seconds
+2026-02-11 07:53:41 | INFO     | cisco_doc_generator |     - Parsing: 0.04s
+2026-02-11 07:53:41 | INFO     | cisco_doc_generator |     - LLM analysis: 102.64s
+2026-02-11 07:53:41 | INFO     | cisco_doc_generator | 
+Log file saved to: G:\git\Hovedprosjekt\logs\documentation_20260211_075157.log

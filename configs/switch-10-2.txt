@@ -1,0 +1,330 @@
+Building configuration...
+
+Current configuration : 5876 bytes
+!
+version 15.2(2)E9
+service timestamps log datetime msec
+service timestamps debug datetime msec
+service password-encryption
+!
+hostname aksess-sw10
+!
+enable secret 5 $1$MnOp$QrStUvWxYzAbCdEfGhIj0/
+!
+username emergency-admin privilege 15 secret 5 $1$WxYz$AbCdEfGhIjKlMnOpQrSt0/
+!
+aaa new-model
+!
+aaa authentication login default group tacacs+ local
+aaa authentication login CONSOLE local
+aaa authentication enable default group tacacs+ enable
+aaa authorization exec default group tacacs+ local
+aaa authorization commands 15 default group tacacs+ local
+aaa accounting exec default start-stop group tacacs+
+aaa accounting commands 15 default start-stop group tacacs+
+!
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+no ip domain-lookup
+ip domain-name prod.bedrift.no
+!
+ip arp inspection vlan 10,20,30,40,50
+ip arp inspection validate src-mac dst-mac ip
+!
+ip dhcp snooping vlan 10,20,30,40,50
+no ip dhcp snooping information option
+ip dhcp snooping
+!
+errdisable recovery cause bpduguard
+errdisable recovery cause storm-control
+errdisable recovery cause psecure-violation
+errdisable recovery interval 300
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10,20,30,40,50,99 priority 32768
+spanning-tree loopguard default
+!
+vlan 10
+ name Kontor-1etg
+!
+vlan 20
+ name Kontor-2etg
+!
+vlan 30
+ name Kontor-3etg
+!
+vlan 40
+ name Fellesareal
+!
+vlan 50
+ name VoIP
+!
+vlan 99
+ name Management
+!
+interface FastEthernet0/1
+ description Kontor 101 - 1. etasje
+ switchport access vlan 10
+ switchport voice vlan 50
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ switchport port-security aging time 5
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ description Kontor 102 - 1. etasje
+ switchport access vlan 10
+ switchport voice vlan 50
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ switchport port-security aging time 5
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ description Kontor 103 - 1. etasje
+ switchport access vlan 10
+ switchport voice vlan 50
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ switchport port-security aging time 5
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ description Kontor 201 - 2. etasje
+ switchport access vlan 20
+ switchport voice vlan 50
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ switchport port-security aging time 5
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/5
+ description Kontor 202 - 2. etasje
+ switchport access vlan 20
+ switchport voice vlan 50
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ switchport port-security aging time 5
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/6
+ description Kontor 301 - 3. etasje
+ switchport access vlan 30
+ switchport voice vlan 50
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security mac-address sticky
+ switchport port-security violation restrict
+ switchport port-security aging time 5
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/7
+ description Fellesareal kantine
+ switchport access vlan 40
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security violation protect
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 10
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/8
+ description Fellesareal resepsjon
+ switchport access vlan 40
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 10
+ switchport port-security violation protect
+ ip dhcp snooping limit rate 15
+ storm-control broadcast level 10
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/9
+ shutdown
+!
+interface FastEthernet0/10
+ shutdown
+!
+interface FastEthernet0/11
+ shutdown
+!
+interface FastEthernet0/12
+ shutdown
+!
+interface FastEthernet0/13
+ shutdown
+!
+interface FastEthernet0/14
+ shutdown
+!
+interface FastEthernet0/15
+ shutdown
+!
+interface FastEthernet0/16
+ shutdown
+!
+interface FastEthernet0/17
+ shutdown
+!
+interface FastEthernet0/18
+ shutdown
+!
+interface FastEthernet0/19
+ shutdown
+!
+interface FastEthernet0/20
+ shutdown
+!
+interface FastEthernet0/21
+ shutdown
+!
+interface FastEthernet0/22
+ shutdown
+!
+interface FastEthernet0/23
+ description Uplink-1 dis-sw01 - Po3 member
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 3 mode active
+!
+interface FastEthernet0/24
+ description Uplink-2 dis-sw01 - Po3 member
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+ channel-group 3 mode active
+!
+interface Port-channel3
+ description EtherChannel til dis-sw01
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,30,40,50,99
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet0/1
+ shutdown
+!
+interface GigabitEthernet0/2
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan99
+ description Management SVI
+ ip address 10.99.1.10 255.255.255.0
+ ip access-group MGMT-ACCESS in
+!
+ip default-gateway 10.99.1.1
+ip classless
+!
+ip flow-export destination 10.99.0.50 9996
+ip flow-export version 9
+ip flow-export source Vlan99
+!
+ip access-list standard MGMT-ACCESS
+ permit 10.99.0.0 0.0.0.255
+ permit 10.99.1.0 0.0.0.255
+ deny any log
+!
+no cdp run
+!
+snmp-server community bedriftRO RO MGMT-ACCESS
+snmp-server location Hovedkontor 1. etasje telerom A
+snmp-server contact noc@bedrift.no
+snmp-server enable traps snmp linkdown linkup coldstart
+snmp-server enable traps port-security
+snmp-server host 10.99.0.50 version 2c bedriftRO
+!
+tacacs-server host 10.99.0.40 key 7 04570A0C17435C5F5C
+tacacs-server host 10.99.0.41 key 7 04570A0C17435C5F5C
+tacacs-server timeout 3
+!
+banner login ^CADVARSEL: Kun autorisert tilgang. All aktivitet overvakes og logges. Uautorisert bruk vil bli straffeforfulgt.^C
+!
+logging 10.99.0.50
+logging 10.99.0.51
+logging trap informational
+logging source-interface Vlan99
+!
+ntp authentication-key 15 md5 070C285F4D061A0A4644 7
+ntp authenticate
+ntp trusted-key 15
+ntp server 10.99.0.1 key 15
+!
+line con 0
+ exec-timeout 5 0
+ logging synchronous
+ login authentication CONSOLE
+!
+line aux 0
+ no exec
+!
+line vty 0 4
+ exec-timeout 10 0
+ access-class MGMT-ACCESS in
+ login authentication default
+ transport input ssh
+!
+line vty 5 15
+ exec-timeout 10 0
+ access-class MGMT-ACCESS in
+ login authentication default
+ transport input ssh
+!
+end

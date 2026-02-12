@@ -1,0 +1,249 @@
+Building configuration...
+
+Current configuration : 4187 bytes
+!
+version 15.2(2)E9
+service timestamps log datetime msec
+service timestamps debug datetime msec
+service password-encryption
+!
+hostname switch-06
+!
+enable secret 5 $1$RsT5$UvWxYzAbCdEf1234GhIj0/
+!
+username emergency-admin privilege 15 secret 5 $1$KlMn$OpQrStUvWxYz5678AbCd0/
+!
+aaa new-model
+!
+aaa authentication login default group radius local
+aaa authentication login CONSOLE local
+aaa authentication dot1x default group radius
+aaa authorization network default group radius
+aaa accounting dot1x default start-stop group radius
+!
+dot1x system-auth-control
+!
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 2
+no ip domain-lookup
+ip domain-name secure.bedrift.no
+!
+ip arp inspection vlan 10,20
+!
+ip dhcp snooping vlan 10,20
+no ip dhcp snooping information option
+ip dhcp snooping
+!
+spanning-tree mode rapid-pvst
+spanning-tree vlan 10,20,99 priority 32768
+!
+vlan 10
+ name Ansatte-Autentisert
+!
+vlan 20
+ name Gjest-Begrenset
+!
+vlan 99
+ name Management
+!
+vlan 999
+ name Karantene
+!
+interface FastEthernet0/1
+ description 802.1X-port kontor C301
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security violation restrict
+ authentication host-mode multi-auth
+ authentication port-control auto
+ dot1x pae authenticator
+ dot1x timeout tx-period 10
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/2
+ description 802.1X-port kontor C302
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security violation restrict
+ authentication host-mode multi-auth
+ authentication port-control auto
+ dot1x pae authenticator
+ dot1x timeout tx-period 10
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/3
+ description 802.1X-port kontor C303
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security violation restrict
+ authentication host-mode multi-auth
+ authentication port-control auto
+ dot1x pae authenticator
+ dot1x timeout tx-period 10
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/4
+ description 802.1X-port kontor C304
+ switchport access vlan 10
+ switchport mode access
+ switchport port-security
+ switchport port-security maximum 3
+ switchport port-security violation restrict
+ authentication host-mode multi-auth
+ authentication port-control auto
+ dot1x pae authenticator
+ dot1x timeout tx-period 10
+ ip dhcp snooping limit rate 10
+ storm-control broadcast level 5
+ storm-control multicast level 5
+ spanning-tree portfast
+ spanning-tree bpduguard enable
+!
+interface FastEthernet0/5
+ shutdown
+!
+interface FastEthernet0/6
+ shutdown
+!
+interface FastEthernet0/7
+ shutdown
+!
+interface FastEthernet0/8
+ shutdown
+!
+interface FastEthernet0/9
+ shutdown
+!
+interface FastEthernet0/10
+ shutdown
+!
+interface FastEthernet0/11
+ shutdown
+!
+interface FastEthernet0/12
+ shutdown
+!
+interface FastEthernet0/13
+ shutdown
+!
+interface FastEthernet0/14
+ shutdown
+!
+interface FastEthernet0/15
+ shutdown
+!
+interface FastEthernet0/16
+ shutdown
+!
+interface FastEthernet0/17
+ shutdown
+!
+interface FastEthernet0/18
+ shutdown
+!
+interface FastEthernet0/19
+ shutdown
+!
+interface FastEthernet0/20
+ shutdown
+!
+interface FastEthernet0/21
+ shutdown
+!
+interface FastEthernet0/22
+ shutdown
+!
+interface FastEthernet0/23
+ description Uplink-1 dis-sw01 gig0/5
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,99,999
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface FastEthernet0/24
+ description Uplink-2 dis-sw02 gig0/5
+ ip arp inspection trust
+ ip dhcp snooping trust
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 666
+ switchport trunk allowed vlan 10,20,99,999
+ switchport mode trunk
+ switchport nonegotiate
+!
+interface GigabitEthernet0/1
+ shutdown
+!
+interface GigabitEthernet0/2
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan99
+ description Management SVI
+ ip address 10.99.1.6 255.255.255.0
+ ip access-group MGMT-ACCESS in
+!
+ip default-gateway 10.99.1.1
+ip classless
+!
+ip access-list standard MGMT-ACCESS
+ permit 10.99.0.0 0.0.0.255
+ permit 10.99.1.0 0.0.0.255
+ deny any
+!
+no cdp run
+!
+radius-server host 10.99.0.30 key 7 05080F1C2243
+radius-server host 10.99.0.31 key 7 05080F1C2243
+radius-server timeout 3
+radius-server retransmit 2
+!
+banner login ^CADVARSEL: Kun autorisert tilgang. All aktivitet overvakes og logges.^C
+!
+logging 10.99.0.50
+logging trap informational
+!
+ntp authentication-key 1 md5 070C285F4D061A0A4644 7
+ntp authenticate
+ntp trusted-key 1
+ntp server 10.99.0.1 key 1
+!
+line con 0
+ logging synchronous
+ login authentication CONSOLE
+!
+line aux 0
+!
+line vty 0 4
+ access-class MGMT-ACCESS in
+ transport input ssh
+!
+line vty 5 15
+ access-class MGMT-ACCESS in
+ transport input ssh
+!
+end

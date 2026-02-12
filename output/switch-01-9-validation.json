@@ -1,0 +1,138 @@
+{
+  "total_checks": 16,
+  "passed_checks": 15,
+  "failed_checks": 1,
+  "accuracy_percentage": 93.75,
+  "hallucination_count": 1,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "switch-01",
+      "found": "# Network Device Documentation: switch-01\n\n## Device Information\n- **Hostname**: switch-01 ✓ VERIFIED\n- **IOS Version**: 15.0(2)SE4 ✓ VERIFIED\n- **Domain Name**: Not configured ✓ VERIFIED\n- **Config Register**: Not shown ✓ VERIFIED\n\n## Management & Access\n- **Management VLAN**: 10 ✓ VERIFIED\n- **IP Address**: 10.10.0.2 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: telnet ✓ VERIFIED\n- **VTY Authentication**: line password ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with password and login enabled, logging synchronous disabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 2 ✓ VERIFIED\n- **VLAN IDs**: 10, 20 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**: Status: Shutdown ✓ VERIFIED\n  - **VLAN 10**: IP: 10.10.0.2 255.255.255.0, Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 10 ✓ VERIFIED\n- **Shutdown**: 16 ✓ VERIFIED\n- **Access Ports**: 8 ✓ VERIFIED\n- **Trunk Ports**: 2 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Interface Configurations\n- **FastEthernet0/1** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/2** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/3** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/4** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/5** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/6** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/7** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/8** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/24** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/1** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/2** | Status: shutdown ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Syslog Server**: Not configured ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: None ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - This device is likely an **Access Layer Switch** due to the presence of many access ports (8), no routing enabled, and VLAN interfaces (SVIs) for management and inter-VLAN communication.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Banner MOTD**: A message of the day banner is configured (`banner motd ^CAuthorized access only.^C`) ✓ VERIFIED\n- **Password Protection**: Console and VTY lines have password protection ✓ VERIFIED\n\n#### ⚠ Areas for Improvement\n- **SSH Not Configured**: Telnet is used for VTY access, which is insecure. SSH should be configured and telnet disabled. ? UNCERTAIN (raw config does not show SSH configuration)\n- **No AAA Authentication**: AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities. ✓ VERIFIED\n- **No ACLs on VTY Lines**: No access control is applied to remote access. ✓ VERIFIED\n- **No Port Security**: No port security is enabled, which could help prevent unauthorized device access. ✓ VERIFIED\n- **No DHCP Snooping or DAI**: These features are not enabled, leaving the network vulnerable to rogue DHCP servers and ARP spoofing. ✓ VERIFIED\n- **No NTP or Syslog Configuration**: Time synchronization and logging are not configured, which can hinder troubleshooting and security auditing. ✓ VERIFIED\n\n#### Recommendations\n- **Enable SSH and Disable Telnet**: Configure SSH for secure remote access and disable telnet (e.g., `transport input ssh` on `line vty 0 4`). ~ INFERRED\n- **Implement AAA**: Enable AAA for centralized authentication and authorization. ~ INFERRED\n- **Apply ACLs to VTY Lines**: Use access control lists to restrict remote access to trusted IP addresses. ~ INFERRED\n- **Enable Port Security**: Configure port security on access ports to prevent unauthorized device connections. ~ INFERRED\n- **Enable DHCP Snooping and DAI**: Protect the network from rogue DHCP servers and ARP spoofing. ~ INFERRED\n- **Configure NTP and Syslog**: Ensure accurate time synchronization and remote logging for auditing and troubleshooting. ~ INFERRED\n\n## Summary\n\nThis device, **switch-01",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: switch-01\n\n## Devi...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.0(2)SE4",
+      "found": "IOS Version**: 15.0(2)SE4 ✓ VERIFIED\n- **Domain Name**: Not configured ✓ VERIFIED\n- **Config Register**: Not shown ✓ VERIFIED\n\n## Management & Access\n- **Management VLAN**: 10 ✓ VERIFIED\n- **IP Address**: 10.10.0.2 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: telnet ✓ VERIFIED\n- **VTY Authentication**: line password ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with password and login enabled, logging synchronous disabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 2 ✓ VERIFIED\n- **VLAN IDs**: 10, 20 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**: Status: Shutdown ✓ VERIFIED\n  - **VLAN 10**: IP: 10.10.0.2 255.255.255.0, Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 10 ✓ VERIFIED\n- **Shutdown**: 16 ✓ VERIFIED\n- **Access Ports**: 8 ✓ VERIFIED\n- **Trunk Ports**: 2 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Interface Configurations\n- **FastEthernet0/1** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/2** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/3** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/4** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/5** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/6** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/7** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/8** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/24** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/1** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/2** | Status: shutdown ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Syslog Server**: Not configured ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: None ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - This device is likely an **Access Layer Switch** due to the presence of many access ports (8), no routing enabled, and VLAN interfaces (SVIs) for management and inter-VLAN communication.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Banner MOTD**: A message of the day banner is configured (`banner motd ^CAuthorized access only.^C`) ✓ VERIFIED\n- **Password Protection**: Console and VTY lines have password protection ✓ VERIFIED\n\n#### ⚠ Areas for Improvement\n- **SSH Not Configured**: Telnet is used for VTY access, which is insecure. SSH should be configured and telnet disabled. ? UNCERTAIN (raw config does not show SSH configuration)\n- **No AAA Authentication**: AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities. ✓ VERIFIED\n- **No ACLs on VTY Lines**: No access control is applied to remote access. ✓ VERIFIED\n- **No Port Security**: No port security is enabled, which could help prevent unauthorized device access. ✓ VERIFIED\n- **No DHCP Snooping or DAI**: These features are not enabled, leaving the network vulnerable to rogue DHCP servers and ARP spoofing. ✓ VERIFIED\n- **No NTP or Syslog Configuration**: Time synchronization and logging are not configured, which can hinder troubleshooting and security auditing. ✓ VERIFIED\n\n#### Recommendations\n- **Enable SSH and Disable Telnet**: Configure SSH for secure remote access and disable telnet (e.g., `transport input ssh` on `line vty 0 4`). ~ INFERRED\n- **Implement AAA**: Enable AAA for centralized authentication and authorization. ~ INFERRED\n- **Apply ACLs to VTY Lines**: Use access control lists to restrict remote access to trusted IP addresses. ~ INFERRED\n- **Enable Port Security**: Configure port security on access ports to prevent unauthorized device connections. ~ INFERRED\n- **Enable DHCP Snooping and DAI**: Protect the network from rogue DHCP servers and ARP spoofing. ~ INFERRED\n- **Configure NTP and Syslog**: Ensure accurate time synchronization and remote logging for auditing and troubleshooting. ~ INFERRED\n\n## Summary\n\nThis device, **switch-01**, is an **Access Layer Switch** with 8 active access ports and 2 trunk ports. It is running Cisco IOS version 15.0(2)SE4",
+      "passed": true,
+      "location": "Line with: IOS Version**: 15.0(2)SE4 ✓ VERIFIED\n- **Domain Na...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.10.0.2",
+      "found": "IP Address**: 10.10.0.2 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: telnet ✓ VERIFIED\n- **VTY Authentication**: line password ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with password and login enabled, logging synchronous disabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 2 ✓ VERIFIED\n- **VLAN IDs**: 10, 20 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**: Status: Shutdown ✓ VERIFIED\n  - **VLAN 10**: IP: 10.10.0.2",
+      "passed": true,
+      "location": "Line with: IP Address**: 10.10.0.2 ✓ VERIFIED\n- **Subnet Mask...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.10.0.1",
+      "found": "Gateway**: 10.10.0.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: telnet ✓ VERIFIED\n- **VTY Authentication**: line password ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with password and login enabled, logging synchronous disabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 2 ✓ VERIFIED\n- **VLAN IDs**: 10, 20 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**: Status: Shutdown ✓ VERIFIED\n  - **VLAN 10**: IP: 10.10.0.2 255.255.255.0, Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 10 ✓ VERIFIED\n- **Shutdown**: 16 ✓ VERIFIED\n- **Access Ports**: 8 ✓ VERIFIED\n- **Trunk Ports**: 2 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Interface Configurations\n- **FastEthernet0/1** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/2** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/3** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/4** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/5** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/6** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/7** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/8** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/24** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/1** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/2** | Status: shutdown ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Syslog Server**: Not configured ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: None ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 10.10.0.1 ✓ VERIFIED\n- **SSH Version**:...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "telnet",
+      "found": "Transport Input**: telnet ✓ VERIFIED\n- **VTY Authentication**: line password ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with password and login enabled, logging synchronous disabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 2 ✓ VERIFIED\n- **VLAN IDs**: 10, 20 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**: Status: Shutdown ✓ VERIFIED\n  - **VLAN 10**: IP: 10.10.0.2 255.255.255.0, Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 10 ✓ VERIFIED\n- **Shutdown**: 16 ✓ VERIFIED\n- **Access Ports**: 8 ✓ VERIFIED\n- **Trunk Ports**: 2 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Interface Configurations\n- **FastEthernet0/1** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/2** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/3** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/4** | Mode: access | VLAN: 10 ✓ VERIFIED\n- **FastEthernet0/5** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/6** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/7** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/8** | Mode: access | VLAN: 20 ✓ VERIFIED\n- **FastEthernet0/24** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/1** | Mode: trunk ✓ VERIFIED\n- **GigabitEthernet0/2** | Status: shutdown ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Syslog Server**: Not configured ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: None ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - This device is likely an **Access Layer Switch** due to the presence of many access ports (8), no routing enabled, and VLAN interfaces (SVIs) for management and inter-VLAN communication.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Banner MOTD**: A message of the day banner is configured (`banner motd ^CAuthorized access only.^C`) ✓ VERIFIED\n- **Password Protection**: Console and VTY lines have password protection ✓ VERIFIED\n\n#### ⚠ Areas for Improvement\n- **SSH Not Configured**: Telnet is used for VTY access, which is insecure. SSH should be configured and telnet disabled. ? UNCERTAIN (raw config does not show SSH configuration)\n- **No AAA Authentication**: AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities. ✓ VERIFIED\n- **No ACLs on VTY Lines**: No access control is applied to remote access. ✓ VERIFIED\n- **No Port Security**: No port security is enabled, which could help prevent unauthorized device access. ✓ VERIFIED\n- **No DHCP Snooping or DAI**: These features are not enabled, leaving the network vulnerable to rogue DHCP servers and ARP spoofing. ✓ VERIFIED\n- **No NTP or Syslog Configuration**: Time synchronization and logging are not configured, which can hinder troubleshooting and security auditing. ✓ VERIFIED\n\n#### Recommendations\n- **Enable SSH and Disable Telnet**: Configure SSH for secure remote access and disable telnet (e.g., `transport input ssh` on `line vty 0 4`). ~ INFERRED\n- **Implement AAA**: Enable AAA for centralized authentication and authorization. ~ INFERRED\n- **Apply ACLs to VTY Lines**: Use access control lists to restrict remote access to trusted IP addresses. ~ INFERRED\n- **Enable Port Security**: Configure port security on access ports to prevent unauthorized device connections. ~ INFERRED\n- **Enable DHCP Snooping and DAI**: Protect the network from rogue DHCP servers and ARP spoofing. ~ INFERRED\n- **Configure NTP and Syslog**: Ensure accurate time synchronization and remote logging for auditing and troubleshooting. ~ INFERRED\n\n## Summary\n\nThis device, **switch-01**, is an **Access Layer Switch** with 8 active access ports and 2 trunk ports. It is running Cisco IOS version 15.0(2)SE4 and has basic management capabilities via VLAN 10. The configuration lacks several security best practices, including SSH, AAA, port security, and network services like NTP and syslog. The device is currently using telnet",
+      "passed": true,
+      "location": "Line with: Transport Input**: telnet ✓ VERIFIED\n- **VTY Authe...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "2",
+      "found": "2",
+      "passed": true,
+      "location": "Line with: **Total VLANs Referenced**: 2...",
+      "error": null
+    },
+    {
+      "field": "VLAN 10",
+      "expected": "10",
+      "found": "VLAN 10",
+      "passed": true,
+      "location": "Line with: VLAN 10...",
+      "error": null
+    },
+    {
+      "field": "VLAN 20",
+      "expected": "20",
+      "found": "VLAN: 20",
+      "passed": true,
+      "location": "Line with: VLAN: 20...",
+      "error": null
+    },
+    {
+      "field": "VLAN 10 IP",
+      "expected": "10.10.0.2",
+      "found": "10.10.0.2",
+      "passed": true,
+      "location": "Line with: 10.10.0.2...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "10",
+      "found": "8",
+      "passed": false,
+      "location": "Line with: 8 active...",
+      "error": "Expected 10, found 8"
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "16",
+      "found": "16",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 16...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": "Line with: FastEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": "Line with: FastEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "enabled",
+      "found": "**CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n### Logging\n- **Syslog Server**: Not configured ✓ VERIFIED\n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED\n- **NTP Authentication**: Not configured ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: None ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.10.0.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - This device is likely an **Access Layer Switch** due to the presence of many access ports (8), no routing enabled, and VLAN interfaces (SVIs) for management and inter-VLAN communication.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Banner MOTD**: A message of the day banner is configured (`banner motd ^CAuthorized access only.^C`) ✓ VERIFIED\n- **Password Protection**: Console and VTY lines have password protection ✓ VERIFIED\n\n#### ⚠ Areas for Improvement\n- **SSH Not Configured**: Telnet is used for VTY access, which is insecure. SSH should be configured and telnet disabled. ? UNCERTAIN (raw config does not show SSH configuration)\n- **No AAA Authentication**: AAA is not enabled, which limits centralized authentication, authorization, and accounting capabilities. ✓ VERIFIED\n- **No ACLs on VTY Lines**: No access control is applied to remote access. ✓ VERIFIED\n- **No Port Security**: No port security is enabled, which could help prevent unauthorized device access. ✓ VERIFIED\n- **No DHCP Snooping or DAI**: These features are not enabled",
+      "passed": true,
+      "location": "Line with: **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enable...",
+      "error": null
+    }
+  ]
+}

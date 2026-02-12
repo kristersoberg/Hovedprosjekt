@@ -1,0 +1,178 @@
+{
+  "total_checks": 21,
+  "passed_checks": 21,
+  "failed_checks": 0,
+  "accuracy_percentage": 100.0,
+  "hallucination_count": 0,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "lab-sw01",
+      "found": "# Network Device Documentation: lab-sw01\n\n## Device Information\n- **Hostname**: lab-sw01 ✓ VERIFIED\n- **IOS Version**: 15.0(2)SE4 ✓ VERIFIED\n- **Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **Config Register**: Not configured ✓ VERIFIED\n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED\n- **IP Address**: 10.99.1.8 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED\n- **VTY Authentication**: None ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED\n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.1.8 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 11 ✓ VERIFIED\n- **Shutdown**: 15 ✓ VERIFIED\n- **Access Ports**: 10 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99, 110, 120 ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n\n### Logging\n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED\n- **Syslog Configuration Line**: `logging 10.99.0.50` ✓ VERIFIED\n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED\n- **NTP Authentication**: Disabled ✓ VERIFIED\n- **NTP Configuration Line**: `ntp server 10.99.0.1` ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - **Access Layer Switch**\n  - Justification: The device has many access ports (10), no routing enabled, and is connected to end-user devices (PCs and servers). It also has a trunk port to a distribution switch (`FastEthernet0/24`), which is typical for an access layer switch.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Syslog logging is enabled** with a remote server at 10.99.0.50 ✓ VERIFIED\n- **NTP is configured** with a remote server at 10.99.0.1 ✓ VERIFIED\n- **PortFast is enabled** on all access ports to prevent STP loops ✓ VERIFIED\n- **No password encryption** is disabled (`no service password-encryption`), which is a known vulnerability but not uncommon in lab environments ✓ VERIFIED\n- **Banner is configured** to warn users about unauthorized access (`banner motd ^CLab-miljoe. Ingen produksjonsdata tillatt.^C`) ✓ VERIFIED\n\n#### ⚠ Areas for Improvement\n- **SSH is not configured**, leaving the device vulnerable to Telnet traffic (plaintext credentials) ✓ VERIFIED\n- **VTY lines allow both SSH and Telnet**, which is insecure. Telnet should be disabled. ✓ VERIFIED\n- **No authentication is configured** for console or VTY access, allowing unrestricted access. ✓ VERIFIED\n- **No ACLs are applied** to VTY lines, leaving them open to remote access. ✓ VERIFIED\n- **DHCP Snooping is not enabled**, which could allow rogue DHCP servers to disrupt the network. ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI) is not enabled**, which could allow ARP spoofing attacks. ✓ VERIFIED\n- **Port Security is not enabled**, which could allow unauthorized devices to connect to the network. ✓ VERIFIED\n- **802.1X is not configured**, which could allow unauthorized devices to access the network. ✓ VERIFIED\n- **LLDP is not enabled**, which could limit network visibility and troubleshooting. ✓ VERIFIED\n\n#### Recommendations\n- **Enable SSH** and disable Telnet on VTY lines to secure remote access.\n- **Configure AAA authentication** for console and VTY access to enforce user authentication.\n- **Apply an ACL to VTY lines** to restrict access to trusted IP addresses.\n- **Enable DHCP Snooping** on VLANs 110 and 120 to prevent rogue DHCP servers.\n- **Enable Dynamic ARP Inspection (DAI)** on VLANs 110 and 120 to prevent ARP spoofing.\n- **Enable Port Security** on access ports to prevent unauthorized device access.\n- **Enable 802.1X authentication** to enforce user-based access control.\n- **Enable LLDP** to improve network visibility and troubleshooting.\n- **Enable password encryption** using `service password-encryption` to protect stored credentials.\n\n## Summary\n\nlab-sw01",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: lab-sw01\n\n## Devic...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.0(2)SE4",
+      "found": "IOS Version**: 15.0(2)SE4",
+      "passed": true,
+      "location": "Line with: IOS Version**: 15.0(2)SE4...",
+      "error": null
+    },
+    {
+      "field": "Domain Name",
+      "expected": "lab.bedrift.no",
+      "found": "Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **Config Register**: Not configured ✓ VERIFIED\n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED\n- **IP Address**: 10.99.1.8 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED\n- **VTY Authentication**: None ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED\n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.1.8 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 11 ✓ VERIFIED\n- **Shutdown**: 15 ✓ VERIFIED\n- **Access Ports**: 10 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99, 110, 120 ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n\n### Logging\n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED\n- **Syslog Configuration Line**: `logging 10.99.0.50` ✓ VERIFIED\n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED\n- **NTP Authentication**: Disabled ✓ VERIFIED\n- **NTP Configuration Line**: `ntp server 10.99.0.1` ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no",
+      "passed": true,
+      "location": "Line with: Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **Confi...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.99.1.8",
+      "found": "IP Address**: 10.99.1.8 ✓ VERIFIED\n- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED\n- **VTY Authentication**: None ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED\n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.1.8",
+      "passed": true,
+      "location": "Line with: IP Address**: 10.99.1.8 ✓ VERIFIED\n- **Subnet Mask...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.99.1.1",
+      "found": "Gateway**: 10.99.1.1 ✓ VERIFIED\n- **SSH Version**: Not configured ✓ VERIFIED\n- **SSH Timeout**: Not configured ✓ VERIFIED\n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED\n- **VTY Authentication**: None ✓ VERIFIED\n- **VTY Access Class**: None (⚠ No ACL protection) ✓ VERIFIED\n- **Console Access**: Line `line con 0` with logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED\n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.1.8 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 11 ✓ VERIFIED\n- **Shutdown**: 15 ✓ VERIFIED\n- **Access Ports**: 10 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99, 110, 120 ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n\n### Logging\n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED\n- **Syslog Configuration Line**: `logging 10.99.0.50` ✓ VERIFIED\n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED\n- **NTP Authentication**: Disabled ✓ VERIFIED\n- **NTP Configuration Line**: `ntp server 10.99.0.1` ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 10.99.1.1 ✓ VERIFIED\n- **SSH Version**:...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh, telnet",
+      "found": "Transport Input**: ssh, telnet",
+      "passed": true,
+      "location": "Line with: Transport Input**: ssh, telnet...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "4",
+      "found": "4",
+      "passed": true,
+      "location": "Line with: **Total VLANs Referenced**: 4...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99",
+      "expected": "99",
+      "found": "VLAN 99",
+      "passed": true,
+      "location": "Line with: VLAN 99...",
+      "error": null
+    },
+    {
+      "field": "VLAN 110",
+      "expected": "110",
+      "found": "VLAN: 110",
+      "passed": true,
+      "location": "Line with: VLAN: 110...",
+      "error": null
+    },
+    {
+      "field": "VLAN 120",
+      "expected": "120",
+      "found": "VLAN: 120",
+      "passed": true,
+      "location": "Line with: VLAN: 120...",
+      "error": null
+    },
+    {
+      "field": "VLAN 666",
+      "expected": "666",
+      "found": "VLAN: 666",
+      "passed": true,
+      "location": "Line with: VLAN: 666...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99 IP",
+      "expected": "10.99.1.8",
+      "found": "10.99.1.8",
+      "passed": true,
+      "location": "Line with: 10.99.1.8...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "11",
+      "found": "11",
+      "passed": true,
+      "location": "Line with: **Active (no shutdown)**: 11...",
+      "error": null
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "15",
+      "found": "15",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 15...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": "Line with: FastEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": "Line with: FastEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "enabled",
+      "found": "**CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n\n### Logging\n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED\n- **Syslog Configuration Line**: `logging 10.99.0.50` ✓ VERIFIED\n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED\n- **NTP Authentication**: Disabled ✓ VERIFIED\n- **NTP Configuration Line**: `ntp server 10.99.0.1` ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - **Access Layer Switch**\n  - Justification: The device has many access ports (10), no routing enabled, and is connected to end-user devices (PCs and servers). It also has a trunk port to a distribution switch (`FastEthernet0/24`), which is typical for an access layer switch.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Syslog logging is enabled** with a remote server at 10.99.0.50 ✓ VERIFIED\n- **NTP is configured** with a remote server at 10.99.0.1 ✓ VERIFIED\n- **PortFast is enabled** on all access ports to prevent STP loops ✓ VERIFIED\n- **No password encryption** is disabled (`no service password-encryption`), which is a known vulnerability but not uncommon in lab environments ✓ VERIFIED\n- **Banner is configured** to warn users about unauthorized access (`banner motd ^CLab-miljoe. Ingen produksjonsdata tillatt.^C`) ✓ VERIFIED\n\n#### ⚠ Areas for Improvement\n- **SSH is not configured**, leaving the device vulnerable to Telnet traffic (plaintext credentials) ✓ VERIFIED\n- **VTY lines allow both SSH and Telnet**, which is insecure. Telnet should be disabled. ✓ VERIFIED\n- **No authentication is configured** for console or VTY access, allowing unrestricted access. ✓ VERIFIED\n- **No ACLs are applied** to VTY lines, leaving them open to remote access. ✓ VERIFIED\n- **DHCP Snooping is not enabled**, which could allow rogue DHCP servers to disrupt the network. ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI) is not enabled**, which could allow ARP spoofing attacks. ✓ VERIFIED\n- **Port Security is not enabled**, which could allow unauthorized devices to connect to the network. ✓ VERIFIED\n- **802.1X is not configured**, which could allow unauthorized devices to access the network. ✓ VERIFIED\n- **LLDP is not enabled**, which could limit network visibility and troubleshooting. ✓ VERIFIED\n\n#### Recommendations\n- **Enable SSH** and disable Telnet on VTY lines to secure remote access.\n- **Configure AAA authentication** for console and VTY access to enforce user authentication.\n- **Apply an ACL to VTY lines** to restrict access to trusted IP addresses.\n- **Enable DHCP Snooping** on VLANs 110 and 120 to prevent rogue DHCP servers.\n- **Enable Dynamic ARP Inspection (DAI)** on VLANs 110 and 120 to prevent ARP spoofing.\n- **Enable Port Security** on access ports to prevent unauthorized device access.\n- **Enable 802.1X authentication** to enforce user-based access control.\n- **Enable LLDP** to improve network visibility and troubleshooting.\n- **Enable password encryption** using `service password-encryption` to protect stored credentials.\n\n## Summary\n\nlab-sw01 is an **Access Layer Switch** configured to provide network connectivity to lab PCs and servers. It is connected to a distribution switch via a trunk port and has basic network services like NTP and syslog enabled",
+      "passed": true,
+      "location": "Line with: **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enable...",
+      "error": null
+    },
+    {
+      "field": "NTP Server 10.99.0.1",
+      "expected": "10.99.0.1",
+      "found": "NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED\n- **NTP Authentication**: Disabled ✓ VERIFIED\n- **NTP Configuration Line**: `ntp server 10.99.0.1` ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - **Access Layer Switch**\n  - Justification: The device has many access ports (10), no routing enabled, and is connected to end-user devices (PCs and servers). It also has a trunk port to a distribution switch (`FastEthernet0/24`), which is typical for an access layer switch.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Syslog logging is enabled** with a remote server at 10.99.0.50 ✓ VERIFIED\n- **NTP is configured** with a remote server at 10.99.0.1",
+      "passed": true,
+      "location": "Line with: NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED\n- **NTP...",
+      "error": null
+    },
+    {
+      "field": "Syslog Server 10.99.0.50",
+      "expected": "10.99.0.50",
+      "found": "logging synchronous enabled ✓ VERIFIED\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED\n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED\n- **VLAN Interfaces (SVIs)**:\n  - **VLAN 1**:\n    - Status: Shutdown ✓ VERIFIED\n  - **VLAN 99**:\n    - Description: Management ✓ VERIFIED\n    - IP: 10.99.1.8 255.255.255.0 ✓ VERIFIED\n    - Status: Active ✓ VERIFIED\n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED\n- **Active (no shutdown)**: 11 ✓ VERIFIED\n- **Shutdown**: 15 ✓ VERIFIED\n- **Access Ports**: 10 ✓ VERIFIED\n- **Trunk Ports**: 1 ✓ VERIFIED\n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED\n\n### Key Active Interfaces\n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED\n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED\n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99, 110, 120 ✓ VERIFIED\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED\n- **Dynamic ARP Inspection (DAI)**: Not enabled✓ VERIFIED\n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED\n- **IP Source Guard**: Not configured ✓ VERIFIED\n- **802.1X**: Not configured ✓ VERIFIED\n- **CDP**: Enabled ✓ VERIFIED\n- **LLDP**: Not enabled ✓ VERIFIED\n\n## Network Services\n\n### Logging\n- **Syslog Server**: 10.99.0.50 ✓ VERIFIED\n- **Syslog Configuration Line**: `logging 10.99.0.50` ✓ VERIFIED\n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED\n- **NTP Authentication**: Disabled ✓ VERIFIED\n- **NTP Configuration Line**: `ntp server 10.99.0.1` ✓ VERIFIED\n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED\n- **DNS Lookup**: Disabled ✓ VERIFIED\n\n### SNMP\n- **SNMP**: Not configured ✓ VERIFIED\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED\n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED\n\n## Configuration Quality Assessment\n\n### Device Role\n- **Device Role**: ~ INFERRED - **Access Layer Switch**\n  - Justification: The device has many access ports (10), no routing enabled, and is connected to end-user devices (PCs and servers). It also has a trunk port to a distribution switch (`FastEthernet0/24`), which is typical for an access layer switch.\n\n### Security Posture\n\n#### ✓ Strengths\n- **Syslog logging is enabled** with a remote server at 10.99.0.50",
+      "passed": true,
+      "location": "Line with: logging synchronous enabled ✓ VERIFIED\n\n## AAA Con...",
+      "error": null
+    }
+  ]
+}
