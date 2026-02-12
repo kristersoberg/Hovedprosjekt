@@ -1,0 +1,2 @@
+Halusinert, NTP i sw6-1 og sw6-2.
+fikset med oppdatrert validering
