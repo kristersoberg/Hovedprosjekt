@@ -479,15 +479,16 @@ Evaluate against Cisco best practices and provide recommendations.
                     system_prompt = ("You are an expert Cisco network engineer. Analyze the configuration "
                                    "and create comprehensive documentation in Markdown format.")
 
-                    full_prompt = f"{system_prompt}\n\n{prompt}"
+                    full_prompt = f"/no_think\n{system_prompt}\n\n{prompt}"
 
                     request_data = {
                         "model": llm_config["model"],
                         "prompt": full_prompt,
                         "stream": False,
-                        "think": False,
                         "options": {
-                            "temperature": llm_config.get("temperature", 0.7),
+                            "temperature": llm_config.get("temperature", 0.1),
+                            "top_p": llm_config.get("top_p", 0.9),
+                            "num_ctx": llm_config.get("num_ctx", 32768),
                             "num_predict": llm_config.get("max_tokens", 8000)
                         }
                     }
@@ -498,6 +499,7 @@ Evaluate against Cisco best practices and provide recommendations.
                     print(f"   - Model: {llm_config['model']}")
                     print(f"   - Prompt size: {len(full_prompt)} characters")
                     print(f"   - Max tokens to generate: {llm_config.get('max_tokens', 8000)}")
+                    print(f"   - Options: {request_data['options']}")
 
                 else:
                     # OpenAI-compatible API format
@@ -515,11 +517,10 @@ Evaluate against Cisco best practices and provide recommendations.
                                 "content": prompt
                             }
                         ],
-                        "temperature": llm_config.get("temperature", 0.7),
+                        "temperature": llm_config.get("temperature", 0.1),
                         "max_tokens": llm_config.get("max_tokens", 8000),
                         "options": {
-                            "num_ctx": llm_config.get("num_ctx", 4096),
-                            "think": False
+                            "num_ctx": llm_config.get("num_ctx", 32768)
                         }
                     }
 

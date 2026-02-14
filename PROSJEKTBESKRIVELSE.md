@@ -397,7 +397,17 @@ def _call_llm(self, prompt: str, max_retries: int = 3) -> str:
 
 **Håndtering av Qwen3 Thinking Mode**:
 
-Qwen3-modeller har en innebygd "thinking mode" som wrapper intern resonnering i `<think>...</think>`-tags. For dokumentasjonsgenerering er dette unødvendig og kan forurense output. Systemet deaktiverer dette eksplisitt via `"think": False` i API-forespørselen, slik at kun den endelige dokumentasjonen returneres.
+Qwen3-modeller har en innebygd "thinking mode" som wrapper intern resonnering i `<think>...</think>`-tags. For dokumentasjonsgenerering er dette unødvendig og kan forurense output. Systemet deaktiverer dette ved å prepende `/no_think` til prompten som sendes til Ollama, slik at kun den endelige dokumentasjonen returneres.
+
+**LLM-parametre for deterministisk output**:
+
+For å minimere hallusinasjoner og sikre konsistent, faktabasert output sendes alle relevante parametre fra `config.json` eksplisitt i `options`-blokken til Ollama API-kallet:
+- `temperature: 0.1` — svært deterministisk output
+- `top_p: 0.9` — begrenser token-utvalget
+- `num_ctx: 32768` — sikrer at hele prompten prosesseres uten stille trunkering
+- `num_predict` — maks antall tokens i output
+
+Disse verdiene overstyrer modellens Modelfile-defaults og sikrer at config.json er autoritativ kilde for LLM-oppførsel.
 
 **File Watcher Deduplication**:
 
