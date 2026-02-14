@@ -28,7 +28,6 @@ no ip domain-lookup
 ip domain-name backbone.bedrift.no
 !
 spanning-tree mode rapid-pvst
-spanning-tree vlan 1-4094 priority 0
 !
 vlan 10
  name Ansatte
