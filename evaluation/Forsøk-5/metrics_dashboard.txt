@@ -1,0 +1,69 @@
+PS C:\Git-lokalt\Hovedprosjekt\automation> python .\metrics_dashboard.py
+
+======================================================================
+   METRICS DASHBOARD - SUMMARY STATISTICS
+======================================================================
+
+ Overall Statistics:
+   Total Configurations Processed: 8
+   Successful: 7
+   Failed: 1
+   Success Rate: 87.5%
+
+  Performance Metrics:
+   Average Total Time: 182.77s
+   Average Parse Time: 0.06s
+   Average LLM Time: 181.05s
+
+ Validation Metrics:
+   Average Accuracy: 70.4%
+
+======================================================================
+   DETAILED STATISTICS
+======================================================================
+
+⏱  Processing Time Range:
+   Fastest: 138.63s
+   Slowest: 233.31s
+
+ Accuracy Range:
+   Lowest: 60.3%
+   Highest: 81.3%
+
+======================================================================
+   RECENT PROCESSING RUNS (Last 5)
+======================================================================
+
+1. switch-08.txt
+   Status:  Success
+   Time: 2026-02-14 18:29:19.039032
+   Processing Time: 233.31s
+   Accuracy: 81.3%
+
+2. switch-07.txt
+   Status:  FAILED
+   Time: 2026-02-14 18:25:24.392388
+
+3. switch-06.txt
+   Status:  Success
+   Time: 2026-02-14 18:10:19.935984
+   Processing Time: 184.39s
+   Accuracy: 63.5%
+
+4. switch-05.txt
+   Status:  Success
+   Time: 2026-02-14 18:07:14.222919
+   Processing Time: 193.84s
+   Accuracy: 76.9%
+
+5. switch-04.txt
+   Status:  Success
+   Time: 2026-02-14 18:03:59.120500
+   Processing Time: 195.21s
+   Accuracy: 73.0%
+
+======================================================================
+
+ Tips:
+   • Export to CSV: python metrics_dashboard.py --export metrics.csv
+   • View more recent runs: python metrics_dashboard.py --recent 20
