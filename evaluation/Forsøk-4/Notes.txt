@@ -1,0 +1,3 @@
+Avbrutt etter 53 forsøk pga 5 feil.
+Sannsynligvis pga nettverksfeil.
+- Tydelig endring i accuracy, 76% på 53 filer.
