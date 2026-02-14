@@ -1,0 +1,83 @@
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator | 
+============================================================
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |  Processing: switch-05-4.txt
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator | ============================================================
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   Started at: 10:55:20
+2026-02-14 10:55:20 | WARNING  | cisco_doc_generator | ▶ Validating input file
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   Config validation passed (4/4 markers found)
+2026-02-14 10:55:20 | WARNING  | cisco_doc_generator | ▶ Parsing configuration into structured data
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   Secrets sanitization is enabled
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   Parsing completed in 0.05 seconds
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   Detected device: dis-sw02
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   IOS version: 15.2(2)E9
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   VLANs found: 6
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   Interfaces found: 6
+2026-02-14 10:55:20 | DEBUG    | cisco_doc_generator | Device info: {
+  "hostname": "dis-sw02",
+  "ios_version": "15.2(2)E9",
+  "domain_name": "core.bedrift.no",
+  "config_register": null
+}
+2026-02-14 10:55:20 | WARNING  | cisco_doc_generator | ▶ Building structured prompt
+2026-02-14 10:55:20 | INFO     | cisco_doc_generator |   Prompt size: 12543 characters
+2026-02-14 10:55:20 | DEBUG    | cisco_doc_generator | First 500 chars of prompt: You are an expert Cisco network engineer creating professional documentation.
+
+You are provided with STRUCTURED, PRE-PARSED configuration data. This data has been extracted deterministically from a Cisco IOS configuration file, so all values are FACTUALLY CORRECT.
+
+## CRITICAL RULES:
+
+1. **USE THE PROVIDED DATA EXACTLY** - The structured data below contains factual information extracted from the configuration. Do NOT change these values.
+2. **Example**: If structured_data shows `"hostname": "aks
+2026-02-14 10:55:20 | WARNING  | cisco_doc_generator | ▶ Sending to LLM for analysis
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator | Token usage information not available in LLM response
+2026-02-14 10:58:01 | INFO     | cisco_doc_generator |   LLM analysis completed in 160.77 seconds
+2026-02-14 10:58:01 | INFO     | cisco_doc_generator |   LLM response length: 7288 characters
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator | First 500 chars of response: # Network Device Documentation: dis-sw02
+
+## Device Information
+- **Hostname**: dis-sw02 ✓ VERIFIED
+- **IOS Version**: 15.2(2)E9 ✓ VERIFIED
+- **Domain Name**: core.bedrift.no ✓ VERIFIED
+- **Config Register**: Not configured ✓ VERIFIED
+
+## Management & Access
+- **Management VLAN**: 10 ✓ VERIFIED
+- **IP Address**: 10.10.0.3 ✓ VERIFIED
+- **Default Gateway**: 10.99.1.1 ✓ VERIFIED
+- **SSH Version**: 2 ✓ VERIFIED
+- **SSH Timeout**: 60 seconds ✓ VERIFIED
+- **VTY Transport Input**: ssh ✓ VERIFIED
+- **VT
+2026-02-14 10:58:01 | WARNING  | cisco_doc_generator | ▶ Saving documentation
+2026-02-14 10:58:01 | INFO     | cisco_doc_generator |   Saved to: G:\git\Hovedprosjekt\output\switch-05-4.md
+2026-02-14 10:58:01 | WARNING  | cisco_doc_generator | ▶ Validating documentation
+2026-02-14 10:58:01 | INFO     | cisco_doc_generator |   Accuracy: 84.6%
+2026-02-14 10:58:01 | INFO     | cisco_doc_generator |   Passed: 99/117 checks
+2026-02-14 10:58:01 | WARNING  | cisco_doc_generator | WARNING: 18 checks failed
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator | Validation report: G:\git\Hovedprosjekt\output\switch-05-4-validation.json
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: management.console.range - Parsed value 'line con 0' from management.console.range not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: management.vty.range - Parsed value 'line vty 0 4' from management.vty.range not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: vlans.svi_interfaces[1].hsrp[0].virtual_ip - Parsed value '10.10.0.1' from vlans.svi_interfaces[1].hsrp[0].virtual_ip not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: vlans.svi_interfaces[2].hsrp[0].virtual_ip - Parsed value '10.20.0.1' from vlans.svi_interfaces[2].hsrp[0].virtual_ip not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: vlans.svi_interfaces[3].hsrp[0].virtual_ip - Parsed value '10.30.0.1' from vlans.svi_interfaces[3].hsrp[0].virtual_ip not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: vlans.svi_interfaces[4].hsrp[0].virtual_ip - Parsed value '10.50.0.1' from vlans.svi_interfaces[4].hsrp[0].virtual_ip not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: interfaces[0].trunk_encapsulation - Parsed value 'dot1q' from interfaces[0].trunk_encapsulation not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: interfaces[1].trunk_encapsulation - Parsed value 'dot1q' from interfaces[1].trunk_encapsulation not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: interfaces[2].trunk_encapsulation - Parsed value 'dot1q' from interfaces[2].trunk_encapsulation not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: interfaces[3].trunk_encapsulation - Parsed value 'dot1q' from interfaces[3].trunk_encapsulation not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[0].entries[0] - Parsed value 'permit 10.99.0.0 0.0.0.255' from security.acls[0].entries[0] not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[0].entries[1] - Parsed value 'permit 10.99.1.0 0.0.0.255' from security.acls[0].entries[1] not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[0].entries[2] - Parsed value 'deny any' from security.acls[0].entries[2] not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[1].entries[0] - Parsed value 'deny ip 10.20.0.0 0.0.0.255 10.10.0.0 0.0.0.255' from security.acls[1].entries[0] not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[1].entries[1] - Parsed value 'deny ip 10.20.0.0 0.0.0.255 10.30.0.0 0.0.0.255' from security.acls[1].entries[1] not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[1].entries[2] - Parsed value 'deny ip 10.20.0.0 0.0.0.255 10.50.0.0 0.0.0.255' from security.acls[1].entries[2] not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[1].entries[3] - Parsed value 'deny ip 10.20.0.0 0.0.0.255 10.99.0.0 0.0.1.255' from security.acls[1].entries[3] not found in documentation
+2026-02-14 10:58:01 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: security.acls[1].entries[4] - Parsed value 'permit ip 10.20.0.0 0.0.0.255 any' from security.acls[1].entries[4] not found in documentation
+2026-02-14 10:58:01 | WARNING  | cisco_doc_generator | ▶ Committing to Git
+2026-02-14 10:58:02 | DEBUG    | cisco_doc_generator | Metrics recorded successfully
+2026-02-14 10:58:02 | WARNING  | cisco_doc_generator | ✓ Documentation generated: G:\git\Hovedprosjekt\output\switch-05-4.md
+2026-02-14 10:58:02 | INFO     | cisco_doc_generator |   Total processing time: 162.27 seconds
+2026-02-14 10:58:02 | INFO     | cisco_doc_generator |     - Parsing: 0.05s
+2026-02-14 10:58:02 | INFO     | cisco_doc_generator |     - LLM analysis: 160.77s
+2026-02-14 10:58:02 | INFO     | cisco_doc_generator | 
+Log file saved to: G:\git\Hovedprosjekt\logs\documentation_20260214_105520.log

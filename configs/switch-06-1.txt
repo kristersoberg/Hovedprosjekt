@@ -58,7 +58,7 @@ interface FastEthernet0/1
  switchport port-security maximum 3
  switchport port-security violation restrict
  authentication host-mode multi-auth
- authentication port-control autof
+ authentication port-control auto
  dot1x pae authenticator
  dot1x timeout tx-period 10
  ip dhcp snooping limit rate 10
