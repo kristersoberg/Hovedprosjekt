@@ -548,6 +548,16 @@ class DocumentationValidator:
             if isinstance(value, int) and value < 10:
                 continue
 
+            # Skip interface names for shutdown interfaces — the shutdown
+            # count is already validated separately by _validate_interfaces,
+            # so requiring individual shutdown port names is redundant.
+            intf_name_match = re.match(r'^interfaces\[(\d+)\]\.name$', path)
+            if intf_name_match:
+                idx = int(intf_name_match.group(1))
+                interfaces = self.data.get("interfaces", [])
+                if idx < len(interfaces) and interfaces[idx].get("shutdown"):
+                    continue
+
             found = str_val.lower() in self.markdown.lower()
 
             # Fallback: check if this is an interface name covered by a range
@@ -602,9 +612,15 @@ class DocumentationValidator:
                     end = len(self.markdown)
                 line = self.markdown[start:end].strip()
 
-                # Check each keyword → data-path mapping
+                # Check each keyword → data-path mapping.
+                # The keyword must appear BEFORE the negative phrase in the
+                # line to be the subject of the negation.  E.g. in
+                # "IP Source Guard not enabled despite DHCP snooping",
+                # "not enabled" negates Source Guard, not DHCP snooping.
+                neg_pos = match.start() - start  # position within the line
                 for keyword, data_paths in self.NEGATIVE_CLAIM_MAP.items():
-                    if keyword.lower() in line.lower():
+                    kw_pos = line.lower().find(keyword.lower())
+                    if kw_pos != -1 and kw_pos < neg_pos:
                         for data_path in data_paths:
                             value = self._resolve_data_path(data_path)
                             if self._is_meaningful_value(value):
@@ -671,7 +687,7 @@ class DocumentationValidator:
         # Try each pattern
         for pattern in patterns:
             try:
-                match = re.search(pattern, self.markdown, re.IGNORECASE | re.MULTILINE | re.DOTALL)
+                match = re.search(pattern, self.markdown, re.IGNORECASE | re.MULTILINE)
                 if match:
                     result.passed = True
                     result.found_value = match.group(0)
@@ -713,7 +729,7 @@ class DocumentationValidator:
         # Try each pattern
         for pattern in patterns:
             try:
-                match = re.search(pattern, self.markdown, re.IGNORECASE | re.MULTILINE | re.DOTALL)
+                match = re.search(pattern, self.markdown, re.IGNORECASE | re.MULTILINE)
                 if match:
                     # Extract the number from capture group
                     found_number = int(match.group(1))
