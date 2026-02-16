@@ -1,0 +1,770 @@
+{
+  "total_checks": 95,
+  "passed_checks": 95,
+  "failed_checks": 0,
+  "accuracy_percentage": 100.0,
+  "hallucination_count": 0,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "switch-06",
+      "found": "# Network Device Documentation: switch-06",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: switch-06...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.2(2)E9",
+      "found": "IOS Version**: 15.2(2)E9",
+      "passed": true,
+      "location": "Line with: IOS Version**: 15.2(2)E9...",
+      "error": null
+    },
+    {
+      "field": "Domain Name",
+      "expected": "secure.bedrift.no",
+      "found": "Domain Name**: secure.bedrift.no",
+      "passed": true,
+      "location": "Line with: Domain Name**: secure.bedrift.no...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.99.1.6",
+      "found": "IP Address**: 10.99.1.6",
+      "passed": true,
+      "location": "Line with: IP Address**: 10.99.1.6...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.99.1.1",
+      "found": "Gateway**: 10.99.1.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 10.99.1.1...",
+      "error": null
+    },
+    {
+      "field": "SSH Version",
+      "expected": "2",
+      "found": "ssh version 2",
+      "passed": true,
+      "location": "Line with: ssh version 2...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh",
+      "found": "Transport Input**: ssh",
+      "passed": true,
+      "location": "Line with: Transport Input**: ssh...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "5",
+      "found": "5",
+      "passed": true,
+      "location": "Line with: **Total VLANs Referenced**: 5...",
+      "error": null
+    },
+    {
+      "field": "VLAN 10",
+      "expected": "10",
+      "found": "VLAN 10",
+      "passed": true,
+      "location": "Line with: VLAN 10...",
+      "error": null
+    },
+    {
+      "field": "VLAN 20",
+      "expected": "20",
+      "found": "VLAN 20",
+      "passed": true,
+      "location": "Line with: VLAN 20...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99",
+      "expected": "99",
+      "found": "VLAN 99",
+      "passed": true,
+      "location": "Line with: VLAN 99...",
+      "error": null
+    },
+    {
+      "field": "VLAN 666",
+      "expected": "666",
+      "found": "VLAN 666",
+      "passed": true,
+      "location": "Line with: VLAN 666...",
+      "error": null
+    },
+    {
+      "field": "VLAN 999",
+      "expected": "999",
+      "found": "VLAN 999",
+      "passed": true,
+      "location": "Line with: VLAN 999...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99 IP",
+      "expected": "10.99.1.6",
+      "found": "10.99.1.6",
+      "passed": true,
+      "location": "Line with: 10.99.1.6...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "6",
+      "found": "6",
+      "passed": true,
+      "location": "Line with: **Active (no shutdown)**: 6...",
+      "error": null
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "20",
+      "found": "20",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 20...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": "Line with: FastEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": "Line with: FastEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "DHCP Snooping Status",
+      "expected": "enabled",
+      "found": "DHCP snooping and DAI enabled on VLANs 10, 20 (config lines: `ip dhcp snooping vlan 10,20`, `ip arp inspection vlan 10,20`) ✓",
+      "passed": true,
+      "location": "Line with: DHCP snooping and DAI enabled on VLANs 10, 20 (con...",
+      "error": null
+    },
+    {
+      "field": "DHCP Snooping VLANs",
+      "expected": "10,20",
+      "found": "snooping and DAI enabled on VLANs 10, 20 (config lines: `ip dhcp snooping vlan 10,20`, `ip arp inspection vlan 10,20",
+      "passed": true,
+      "location": "Line with: snooping and DAI enabled on VLANs 10, 20 (config l...",
+      "error": null
+    },
+    {
+      "field": "Dynamic ARP Inspection",
+      "expected": "enabled",
+      "found": "ARP Inspection (DAI)**: Enabled on VLANs 10, 20 ✓",
+      "passed": true,
+      "location": "Line with: ARP Inspection (DAI)**: Enabled on VLANs 10, 20 ✓...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "disabled",
+      "found": "CDP disabled",
+      "passed": true,
+      "location": "Line with: CDP disabled...",
+      "error": null
+    },
+    {
+      "field": "Syslog Server 10.99.0.50",
+      "expected": "10.99.0.50",
+      "found": "Logging Server**: 10.99.0.50",
+      "passed": true,
+      "location": "Line with: Logging Server**: 10.99.0.50...",
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.hostname",
+      "expected": "switch-06",
+      "found": "switch-06",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.ios_version",
+      "expected": "15.2(2)E9",
+      "found": "15.2(2)E9",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.domain_name",
+      "expected": "secure.bedrift.no",
+      "found": "secure.bedrift.no",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.ip_address",
+      "expected": "10.99.1.6",
+      "found": "10.99.1.6",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.subnet_mask",
+      "expected": "255.255.255.0",
+      "found": "255.255.255.0",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.default_gateway",
+      "expected": "10.99.1.1",
+      "found": "10.99.1.1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.console.range",
+      "expected": "line con 0",
+      "found": "line con 0",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.console.authentication",
+      "expected": "CONSOLE",
+      "found": "CONSOLE",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.vty.range",
+      "expected": "line vty 0 4",
+      "found": "line vty 0 4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.vty.transport_input[0]",
+      "expected": "ssh",
+      "found": "ssh",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.vty.access_class.acl",
+      "expected": "MGMT-ACCESS",
+      "found": "MGMT-ACCESS",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.banner",
+      "expected": "Configured",
+      "found": "Configured",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.authentication[0]",
+      "expected": "aaa authentication login default group radius local",
+      "found": "aaa authentication login default group radius local",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.authentication[1]",
+      "expected": "aaa authentication login CONSOLE local",
+      "found": "aaa authentication login CONSOLE local",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.authentication[2]",
+      "expected": "aaa authentication dot1x default group radius",
+      "found": "aaa authentication dot1x default group radius",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.authorization[0]",
+      "expected": "aaa authorization network default group radius",
+      "found": "aaa authorization network default group radius",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.accounting[0]",
+      "expected": "aaa accounting dot1x default start-stop group radius",
+      "found": "aaa accounting dot1x default start-stop group radius",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.radius_servers[0]",
+      "expected": "10.99.0.30",
+      "found": "10.99.0.30",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.radius_servers[1]",
+      "expected": "10.99.0.31",
+      "found": "10.99.0.31",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: aaa.local_users[0].username",
+      "expected": "emergency-admin",
+      "found": "emergency-admin",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_ids[3]",
+      "expected": "666",
+      "found": "666",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_ids[4]",
+      "expected": "999",
+      "found": "999",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_names.10",
+      "expected": "Ansatte-Autentisert",
+      "found": "Ansatte-Autentisert",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_names.20",
+      "expected": "Gjest-Begrenset",
+      "found": "Gjest-Begrenset",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_names.99",
+      "expected": "Management",
+      "found": "Management",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_names.999",
+      "expected": "Karantene",
+      "found": "Karantene",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[1].description",
+      "expected": "Management SVI",
+      "found": "Management SVI",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[1].ip_address",
+      "expected": "10.99.1.6",
+      "found": "10.99.1.6",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[1].subnet_mask",
+      "expected": "255.255.255.0",
+      "found": "255.255.255.0",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[1].acl_in",
+      "expected": "MGMT-ACCESS",
+      "found": "MGMT-ACCESS",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].name",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].description",
+      "expected": "802.1X-port kontor C301",
+      "found": "802.1X-port kontor C301",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].port_security.violation",
+      "expected": "restrict",
+      "found": "restrict",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].name",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].description",
+      "expected": "802.1X-port kontor C302",
+      "found": "802.1X-port kontor C302",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].port_security.violation",
+      "expected": "restrict",
+      "found": "restrict",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].name",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].description",
+      "expected": "802.1X-port kontor C303",
+      "found": "802.1X-port kontor C303",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].port_security.violation",
+      "expected": "restrict",
+      "found": "restrict",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].name",
+      "expected": "FastEthernet0/4",
+      "found": "FastEthernet0/4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].description",
+      "expected": "802.1X-port kontor C304",
+      "found": "802.1X-port kontor C304",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].port_security.violation",
+      "expected": "restrict",
+      "found": "restrict",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[22].name",
+      "expected": "FastEthernet0/23",
+      "found": "FastEthernet0/23",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[22].description",
+      "expected": "Uplink-1 dis-sw01 gig0/5",
+      "found": "Uplink-1 dis-sw01 gig0/5",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[22].mode",
+      "expected": "trunk",
+      "found": "trunk",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[22].trunk_encapsulation",
+      "expected": "dot1q",
+      "found": "dot1q",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[22].trunk_native_vlan",
+      "expected": "666",
+      "found": "666",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[22].trunk_allowed_vlans[3]",
+      "expected": "999",
+      "found": "999",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].name",
+      "expected": "FastEthernet0/24",
+      "found": "FastEthernet0/24",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].description",
+      "expected": "Uplink-2 dis-sw02 gig0/5",
+      "found": "Uplink-2 dis-sw02 gig0/5",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].mode",
+      "expected": "trunk",
+      "found": "trunk",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].trunk_encapsulation",
+      "expected": "dot1q",
+      "found": "dot1q",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].trunk_native_vlan",
+      "expected": "666",
+      "found": "666",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].trunk_allowed_vlans[3]",
+      "expected": "999",
+      "found": "999",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: routing.default_gateway",
+      "expected": "10.99.1.1",
+      "found": "10.99.1.1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: spanning_tree.mode",
+      "expected": "rapid-pvst",
+      "found": "rapid-pvst",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: spanning_tree.vlan_priorities.10",
+      "expected": "32768",
+      "found": "32768",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: spanning_tree.vlan_priorities.99",
+      "expected": "32768",
+      "found": "32768",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: spanning_tree.vlan_priorities.20",
+      "expected": "32768",
+      "found": "32768",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: security.acls[0].type",
+      "expected": "standard",
+      "found": "standard",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: security.acls[0].name",
+      "expected": "MGMT-ACCESS",
+      "found": "MGMT-ACCESS",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: security.acls[0].entries[0]",
+      "expected": "permit 10.99.0.0 0.0.0.255",
+      "found": "permit 10.99.0.0 0.0.0.255",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: security.acls[0].entries[1]",
+      "expected": "permit 10.99.1.0 0.0.0.255",
+      "found": "permit 10.99.1.0 0.0.0.255",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: security.acls[0].entries[2]",
+      "expected": "deny any",
+      "found": "deny any",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: services.syslog.servers[0]",
+      "expected": "10.99.0.50",
+      "found": "10.99.0.50",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: services.dns.domain_name",
+      "expected": "secure.bedrift.no",
+      "found": "secure.bedrift.no",
+      "passed": true,
+      "location": null,
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+Fikset valideringen. Gjennomsnittlig 99.5%
+Re-validated med Claude = 98.3%
+- ref eval kapitlet i ONenote
