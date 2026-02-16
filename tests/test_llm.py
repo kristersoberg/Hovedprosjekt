@@ -2,54 +2,85 @@
 """
 Test script for Ollama LLM connection.
 Tests both native Ollama API and OpenAI-compatible API.
+Reads configuration from config.json.
 """
 
 import requests
 import json
 import sys
+from pathlib import Path
 
-OLLAMA_BASE_URL = "http://192.168.1.174:11434"
-MODEL_NAME = "qwen3:32b"
-#MODEL_NAME = "qwen2.5:32b-instruct-q5_K_M"
 
-def test_ollama_connection():
+def load_config():
+    """Load LLM configuration from config.json."""
+    config_path = Path(__file__).parent.parent / "config.json"
+    if not config_path.exists():
+        print(f"✗ ERROR: config.json not found at {config_path}")
+        sys.exit(1)
+
+    with open(config_path, 'r', encoding='utf-8') as f:
+        config = json.load(f)
+
+    llm = config.get("llm", {})
+    endpoint = llm.get("endpoint", "")
+
+    # Extract base URL from endpoint (strip /api/generate or /v1/... suffix)
+    base_url = endpoint
+    for suffix in ["/api/generate", "/api/chat", "/v1/chat/completions"]:
+        if base_url.endswith(suffix):
+            base_url = base_url[:-len(suffix)]
+            break
+
+    return {
+        "base_url": base_url.rstrip("/"),
+        "endpoint": endpoint,
+        "model": llm.get("model", ""),
+        "temperature": llm.get("temperature", 0.1),
+        "top_p": llm.get("top_p", 0.9),
+        "max_tokens": llm.get("max_tokens", 16000),
+        "num_ctx": llm.get("num_ctx", 32768),
+    }
+
+
+def test_ollama_connection(config):
     """Test basic connection to Ollama server."""
     print("=" * 60)
     print("TEST 1: Checking Ollama Server Connection")
     print("=" * 60)
 
     try:
-        response = requests.get(f"{OLLAMA_BASE_URL}/api/tags", timeout=5)
+        response = requests.get(f"{config['base_url']}/api/tags", timeout=5)
         response.raise_for_status()
 
         data = response.json()
         models = data.get("models", [])
 
-        print(f"✓ Connected to Ollama server")
+        print(f"✓ Connected to Ollama server at {config['base_url']}")
         print(f"✓ Found {len(models)} model(s):")
         for model in models:
             print(f"  - {model.get('name')}")
 
         # Check if our target model is available
         model_names = [m.get('name') for m in models]
-        if MODEL_NAME in model_names:
-            print(f"\n✓ Target model '{MODEL_NAME}' is available")
+        if config['model'] in model_names:
+            print(f"\n✓ Target model '{config['model']}' is available")
             return True
         else:
-            print(f"\n✗ WARNING: Target model '{MODEL_NAME}' not found!")
-            print(f"  Run: ollama pull {MODEL_NAME}")
+            print(f"\n✗ WARNING: Target model '{config['model']}' not found!")
+            print(f"  Run: ollama pull {config['model']}")
             return False
 
     except requests.exceptions.ConnectionError:
-        print(f"✗ ERROR: Cannot connect to Ollama at {OLLAMA_BASE_URL}")
-        print("  Make sure Ollama is running on your Mac")
+        print(f"✗ ERROR: Cannot connect to Ollama at {config['base_url']}")
+        print("  Make sure Ollama is running and accessible")
         print("  Check that OLLAMA_HOST=0.0.0.0:11434 is set")
         return False
     except Exception as e:
         print(f"✗ ERROR: {str(e)}")
         return False
 
-def test_ollama_native_api():
+
+def test_ollama_native_api(config):
     """Test Ollama's native /api/generate endpoint."""
     print("\n" + "=" * 60)
     print("TEST 2: Ollama Native API (/api/generate)")
@@ -57,20 +88,22 @@ def test_ollama_native_api():
 
     try:
         request_data = {
-            "model": MODEL_NAME,
+            "model": config['model'],
             "prompt": "Say hello in exactly one sentence.",
             "stream": False,
             "options": {
-                "temperature": 0.1,
-                "num_predict": 100
+                "temperature": config['temperature'],
+                "num_predict": 100,
+                "num_ctx": config['num_ctx'],
             }
         }
 
-        print(f"Sending request to: {OLLAMA_BASE_URL}/api/generate")
-        print(f"Model: {MODEL_NAME}")
+        endpoint = f"{config['base_url']}/api/generate"
+        print(f"Sending request to: {endpoint}")
+        print(f"Model: {config['model']}")
 
         response = requests.post(
-            f"{OLLAMA_BASE_URL}/api/generate",
+            endpoint,
             json=request_data,
             timeout=60
         )
@@ -96,16 +129,16 @@ def test_ollama_native_api():
         print(f"✗ ERROR: {str(e)}")
         return False
 
-def test_openai_compatible_api():
-    """Test OpenAI-compatible API (used by your config.json)."""
+
+def test_openai_compatible_api(config):
+    """Test OpenAI-compatible API."""
     print("\n" + "=" * 60)
     print("TEST 3: OpenAI-Compatible API (/v1/chat/completions)")
     print("=" * 60)
-    print("This is the API your config.json uses")
 
     try:
         request_data = {
-            "model": MODEL_NAME,
+            "model": config['model'],
             "messages": [
                 {
                     "role": "system",
@@ -116,15 +149,17 @@ def test_openai_compatible_api():
                     "content": "Say hello in exactly one sentence."
                 }
             ],
-            "temperature": 0.1,
+            "temperature": config['temperature'],
+            "top_p": config['top_p'],
             "max_tokens": 100
         }
 
-        print(f"Sending request to: {OLLAMA_BASE_URL}/v1/chat/completions")
-        print(f"Model: {MODEL_NAME}")
+        endpoint = f"{config['base_url']}/v1/chat/completions"
+        print(f"Sending request to: {endpoint}")
+        print(f"Model: {config['model']}")
 
         response = requests.post(
-            f"{OLLAMA_BASE_URL}/v1/chat/completions",
+            endpoint,
             json=request_data,
             headers={"Content-Type": "application/json"},
             timeout=60
@@ -167,22 +202,26 @@ def test_openai_compatible_api():
         print(f"✗ ERROR: {str(e)}")
         return False
 
+
 def main():
     """Run all tests."""
-    print("\n🔍 Testing Ollama LLM Configuration")
-    print(f"Server: {OLLAMA_BASE_URL}")
-    print(f"Model: {MODEL_NAME}\n")
+    config = load_config()
+
+    print("\nTesting Ollama LLM Configuration")
+    print(f"Server: {config['base_url']}")
+    print(f"Model: {config['model']}")
+    print(f"Config endpoint: {config['endpoint']}\n")
 
     results = []
 
     # Test 1: Connection
-    results.append(("Connection", test_ollama_connection()))
+    results.append(("Connection", test_ollama_connection(config)))
 
     # Test 2: Native API
-    results.append(("Native API", test_ollama_native_api()))
+    results.append(("Native API", test_ollama_native_api(config)))
 
-    # Test 3: OpenAI-compatible API (used by config.json)
-    results.append(("OpenAI API", test_openai_compatible_api()))
+    # Test 3: OpenAI-compatible API
+    results.append(("OpenAI API", test_openai_compatible_api(config)))
 
     # Summary
     print("\n" + "=" * 60)
@@ -197,11 +236,13 @@ def main():
 
     if all_passed:
         print("\n✓ All tests passed! Your Ollama setup is working correctly.")
-        print(f"\nYour processor.py should work with the current config.json")
+        print(f"  Endpoint: {config['endpoint']}")
+        print(f"  Model: {config['model']}")
         return 0
     else:
         print("\n✗ Some tests failed. Check the errors above.")
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())
