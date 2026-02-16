@@ -1,0 +1,410 @@
+{
+  "total_checks": 50,
+  "passed_checks": 23,
+  "failed_checks": 27,
+  "accuracy_percentage": 46.0,
+  "hallucination_count": 27,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "Switch",
+      "found": "# Network Device Documentation: Switch\n\n## Device Information\n- **Hostname**: Switch ✓ VERIFIED  \n- **IOS Version**: 12.2(37)SE1 ✓ VERIFIED  \n- **Domain Name**: Not configured ✓ VERIFIED  \n- **Config Register**: Not configured ✓ VERIFIED  \n\n---\n\n## Management & Access\n- **Management VLAN**: 1 ✓ VERIFIED  \n- **IP Address**: 192.168.1.2/24 ✓ VERIFIED  \n- **Default Gateway**: 192.168.1.1 ✓ VERIFIED  \n- **SSH Version**: Not configured ✓ VERIFIED  \n- **SSH Timeout**: Not configured ✓ VERIFIED  \n- **VTY Transport Input**: Not specified ✓ VERIFIED  \n- **VTY Authentication**: Line authentication (no ACL protection) ✓ VERIFIED  \n- **Console Access**: No authentication, logging synchronous disabled ✓ VERIFIED  \n\n**Config Line References**:  \n- `interface Vlan1` with `ip address 192.168.1.2 255.255.255.0`  \n- `ip default-gateway 192.168.1.1`  \n- `line vty 0 4` with `login`  \n\n---\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 0 ✓ VERIFIED  \n- **VLAN IDs**: None ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**:  \n    - IP: 192.168.1.2/24 ✓ VERIFIED  \n    - Status: Active ✓ VERIFIED  \n\n**VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 26 ✓ VERIFIED  \n- **Shutdown**: 0 ✓ VERIFIED  \n- **Access Ports**: 0 ✓ VERIFIED  \n- **Trunk Ports**: 0 ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n\n**Key Active Interfaces**:  \n- **FastEthernet0/1–24**: Mode: None (default) ✓ VERIFIED  \n- **GigabitEthernet0/1–2**: Mode: None (default) ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: PVST (Per-VLAN Spanning Tree) ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n\n---\n\n## Network Services\n### Logging\n- **Syslog Server**: Not configured ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED  \n- **NTP Authentication**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: None ✓ VERIFIED  \n- **DNS Lookup**: Enabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 192.168.1.1 ✓ VERIFIED  \n\n---\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- VLAN 1 is configured as the management interface with an IP address.  \n- Default gateway is set for management access.  \n\n#### ⚠ Areas for Improvement\n- **SSH Missing**: SSH is not configured; VTY lines use insecure line authentication.  \n- **No AAA**: AAA is not enabled, leaving authentication/authorization/auditing unconfigured.  \n- **Weak Console Access**: No authentication for console access.  \n- **No Port Security**: No port security on any interfaces.  \n- **Missing Network Services**: NTP, syslog, and SNMP are not configured.  \n- **CDP Enabled**: CDP is enabled, which could expose device information to attackers.  \n\n#### Recommendations\n1. **Enable SSH**: Configure SSH for secure remote access (e.g., `transport input ssh` on VTY lines).  \n2. **Implement AAA**: Enable AAA for authentication and authorization (e.g., `aaa new-model`).  \n3. **Secure Console Access**: Add password authentication for console access (e.g., `login local` on `line con 0`).  \n4. **Enable Port Security**: Configure port security on access ports to prevent MAC flooding.  \n5. **Configure NTP/Syslog**: Set up NTP for time synchronization and syslog for centralized logging.  \n6. **Disable CDP**: Disable CDP on untrusted interfaces (e.g., `no cdp enable`).  \n\n---\n\n## Summary\n\nThis device is an **Access Layer Switch** (~ INFERRED) based on its 26 active physical interfaces and lack of routing configuration. It serves as a Layer 2 switch",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: Switch\n\n## Device ...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "12.2(37)SE1",
+      "found": "IOS Version**: 12.2(37)SE1",
+      "passed": true,
+      "location": "Line with: IOS Version**: 12.2(37)SE1...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "192.168.1.2",
+      "found": "IP Address**: 192.168.1.2/24 ✓ VERIFIED  \n- **Default Gateway**: 192.168.1.1 ✓ VERIFIED  \n- **SSH Version**: Not configured ✓ VERIFIED  \n- **SSH Timeout**: Not configured ✓ VERIFIED  \n- **VTY Transport Input**: Not specified ✓ VERIFIED  \n- **VTY Authentication**: Line authentication (no ACL protection) ✓ VERIFIED  \n- **Console Access**: No authentication, logging synchronous disabled ✓ VERIFIED  \n\n**Config Line References**:  \n- `interface Vlan1` with `ip address 192.168.1.2 255.255.255.0`  \n- `ip default-gateway 192.168.1.1`  \n- `line vty 0 4` with `login`  \n\n---\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 0 ✓ VERIFIED  \n- **VLAN IDs**: None ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**:  \n    - IP: 192.168.1.2",
+      "passed": true,
+      "location": "Line with: IP Address**: 192.168.1.2/24 ✓ VERIFIED  \n- **Defa...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "192.168.1.1",
+      "found": "Gateway**: 192.168.1.1 ✓ VERIFIED  \n- **SSH Version**: Not configured ✓ VERIFIED  \n- **SSH Timeout**: Not configured ✓ VERIFIED  \n- **VTY Transport Input**: Not specified ✓ VERIFIED  \n- **VTY Authentication**: Line authentication (no ACL protection) ✓ VERIFIED  \n- **Console Access**: No authentication, logging synchronous disabled ✓ VERIFIED  \n\n**Config Line References**:  \n- `interface Vlan1` with `ip address 192.168.1.2 255.255.255.0`  \n- `ip default-gateway 192.168.1.1`  \n- `line vty 0 4` with `login`  \n\n---\n\n## AAA Configuration\n- **AAA**: Not enabled ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 0 ✓ VERIFIED  \n- **VLAN IDs**: None ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**:  \n    - IP: 192.168.1.2/24 ✓ VERIFIED  \n    - Status: Active ✓ VERIFIED  \n\n**VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 26 ✓ VERIFIED  \n- **Shutdown**: 0 ✓ VERIFIED  \n- **Access Ports**: 0 ✓ VERIFIED  \n- **Trunk Ports**: 0 ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n\n**Key Active Interfaces**:  \n- **FastEthernet0/1–24**: Mode: None (default) ✓ VERIFIED  \n- **GigabitEthernet0/1–2**: Mode: None (default) ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: PVST (Per-VLAN Spanning Tree) ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n- **CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n\n---\n\n## Network Services\n### Logging\n- **Syslog Server**: Not configured ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: Not configured ✓ VERIFIED  \n- **NTP Authentication**: Not configured ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: None ✓ VERIFIED  \n- **DNS Lookup**: Enabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 192.168.1.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 192.168.1.1 ✓ VERIFIED  \n- **SSH Versio...",
+      "error": null
+    },
+    {
+      "field": "VLAN 1 IP",
+      "expected": "192.168.1.2",
+      "found": "192.168.1.2",
+      "passed": true,
+      "location": "Line with: 192.168.1.2...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: 26 active...",
+      "error": null
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "0",
+      "found": "Not found",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 0...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'FastEthernet0/2' not found in documentation"
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Value 'FastEthernet0/3' not found in documentation"
+    },
+    {
+      "field": "CDP Status",
+      "expected": "enabled",
+      "found": "CDP Enabled**: CDP is enabled",
+      "passed": true,
+      "location": "Line with: CDP Enabled**: CDP is enabled...",
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.hostname",
+      "expected": "Switch",
+      "found": "Switch",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.ios_version",
+      "expected": "12.2(37)SE1",
+      "found": "12.2(37)SE1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.ip_address",
+      "expected": "192.168.1.2",
+      "found": "192.168.1.2",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.subnet_mask",
+      "expected": "255.255.255.0",
+      "found": "255.255.255.0",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.default_gateway",
+      "expected": "192.168.1.1",
+      "found": "192.168.1.1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.console.range",
+      "expected": "line con 0",
+      "found": "line con 0",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.vty.range",
+      "expected": "line vty 0 4",
+      "found": "line vty 0 4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.vty.authentication",
+      "expected": "line",
+      "found": "line",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[0].ip_address",
+      "expected": "192.168.1.2",
+      "found": "192.168.1.2",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[0].subnet_mask",
+      "expected": "255.255.255.0",
+      "found": "255.255.255.0",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].name",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].name",
+      "expected": "FastEthernet0/2",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/2' from interfaces[1].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[2].name",
+      "expected": "FastEthernet0/3",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/3' from interfaces[2].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[3].name",
+      "expected": "FastEthernet0/4",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/4' from interfaces[3].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[4].name",
+      "expected": "FastEthernet0/5",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/5' from interfaces[4].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[5].name",
+      "expected": "FastEthernet0/6",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/6' from interfaces[5].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[6].name",
+      "expected": "FastEthernet0/7",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/7' from interfaces[6].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[7].name",
+      "expected": "FastEthernet0/8",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/8' from interfaces[7].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[8].name",
+      "expected": "FastEthernet0/9",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/9' from interfaces[8].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[9].name",
+      "expected": "FastEthernet0/10",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/10' from interfaces[9].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[10].name",
+      "expected": "FastEthernet0/11",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/11' from interfaces[10].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[11].name",
+      "expected": "FastEthernet0/12",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/12' from interfaces[11].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[12].name",
+      "expected": "FastEthernet0/13",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/13' from interfaces[12].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[13].name",
+      "expected": "FastEthernet0/14",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/14' from interfaces[13].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[14].name",
+      "expected": "FastEthernet0/15",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/15' from interfaces[14].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[15].name",
+      "expected": "FastEthernet0/16",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/16' from interfaces[15].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[16].name",
+      "expected": "FastEthernet0/17",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/17' from interfaces[16].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[17].name",
+      "expected": "FastEthernet0/18",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/18' from interfaces[17].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[18].name",
+      "expected": "FastEthernet0/19",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/19' from interfaces[18].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[19].name",
+      "expected": "FastEthernet0/20",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/20' from interfaces[19].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[20].name",
+      "expected": "FastEthernet0/21",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/21' from interfaces[20].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[21].name",
+      "expected": "FastEthernet0/22",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/22' from interfaces[21].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[22].name",
+      "expected": "FastEthernet0/23",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/23' from interfaces[22].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[23].name",
+      "expected": "FastEthernet0/24",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/24' from interfaces[23].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[24].name",
+      "expected": "GigabitEthernet0/1",
+      "found": "GigabitEthernet0/1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[25].name",
+      "expected": "GigabitEthernet0/2",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'GigabitEthernet0/2' from interfaces[25].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: routing.default_gateway",
+      "expected": "192.168.1.1",
+      "found": "192.168.1.1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: spanning_tree.mode",
+      "expected": "pvst",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'pvst' from spanning_tree.mode not found in documentation"
+    }
+  ]
+}

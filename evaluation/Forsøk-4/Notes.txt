@@ -1,3 +1,7 @@
-Avbrutt etter 53 forsøk pga 5 feil.
+Avbrutt etter 60 forsøk pga 4 feil.
 Sannsynligvis pga nettverksfeil.
-- Tydelig endring i accuracy, 76% på 53 filer.
+ - Stabil ping mot LLM host hele veien uten pakketap
+ - Samme LAN med Ethernet
+Neste steg:
+- Justere temperatur på modellen og bare behandle 10 unike filer.
+

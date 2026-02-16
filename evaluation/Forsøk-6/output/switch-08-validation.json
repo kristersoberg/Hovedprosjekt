@@ -1,0 +1,866 @@
+{
+  "total_checks": 107,
+  "passed_checks": 86,
+  "failed_checks": 21,
+  "accuracy_percentage": 80.37,
+  "hallucination_count": 21,
+  "warnings": [],
+  "results": [
+    {
+      "field": "Hostname",
+      "expected": "lab-sw01",
+      "found": "# Network Device Documentation: lab-sw01\n\n## Device Information\n- **Hostname**: lab-sw01 ✓ VERIFIED  \n- **IOS Version**: 15.0(2)SE4 ✓ VERIFIED  \n- **Domain Name**: lab.bedrift.no ✓ VERIFIED  \n- **Config Register**: Not configured ✓ VERIFIED  \n\n---\n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED  \n- **IP Address**: 10.99.1.8/24 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: Not configured ✓ VERIFIED  \n- **SSH Timeout**: Not configured ✓ VERIFIED  \n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED  \n- **VTY Authentication**: None ✓ VERIFIED  \n- **VTY ACL Protection**: None (⚠ No ACL protection) ✓ VERIFIED  \n- **Console Authentication**: None ✓ VERIFIED  \n- **Console Logging Synchronous**: Enabled ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA Enabled**: No ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED  \n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**: Shutdown ✓ VERIFIED  \n  - **VLAN 99**:  \n    - Description: Management ✓ VERIFIED  \n    - IP: 10.99.1.8/24 ✓ VERIFIED  \n    - Status: Active ✓ VERIFIED  \n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 11 ✓ VERIFIED  \n- **Shutdown**: 15 ✓ VERIFIED  \n- **Access Ports**: 10 ✓ VERIFIED  \n- **Trunk Ports**: 1 ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n\n**Key Active Interfaces**:  \n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99,110,120 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED  \n- **CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n\n---\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- **NTP and Syslog Enabled**: NTP synchronization and centralized logging are configured for operational visibility.  \n- **Spanning Tree (PVST)**: Prevents Layer 2 loops in the network.  \n- **DHCP Pools Configured**: VLAN-specific DHCP pools (LAB-VLAN110, LAB-VLAN120) provide structured IP assignment.  \n\n#### ⚠ Areas for Improvement\n- **Missing SSH Configuration**: Telnet is allowed on VTY lines (line vty 0 4), exposing credentials in plaintext.  \n- **No AAA Authentication**: Console and VTY access lack authentication (no `login` or `login local`).  \n- **No Port Security**: Access ports are vulnerable to MAC flooding and unauthorized device connections.  \n- **Missing DHCP Snooping and DAI**: Vulnerable to rogue DHCP servers and ARP spoofing.  \n- **Unprotected VTY Lines**: No ACLs restrict remote access (e.g., `access-class` on VTY lines).  \n\n#### Recommendations\n1. **Enable SSH and Disable Telnet**:  \n   - Configure `transport input ssh` on VTY lines.  \n   - Remove `transport input telnet` (currently in `line vty 0 4`).  \n2. **Implement AAA Authentication**:  \n   - Enable `aaa new-model` and configure local or RADIUS/TACACS+ authentication.  \n3. **Enable Port Security**:  \n   - Apply `switchport port-security` on access ports (e.g., `FastEthernet0/1-10`).  \n4. **Enable DHCP Snooping and DAI**:  \n   - Configure `ip dhcp snooping` and `ip arp inspection` for VLANs 110 and 120.  \n5. **Secure VTY Lines**:  \n   - Apply an ACL to restrict access (e.g., `access-class 100 in` on `line vty 0 4`).  \n\n---\n\n## Summary\n\nlab-sw01",
+      "passed": true,
+      "location": "Line with: # Network Device Documentation: lab-sw01\n\n## Devic...",
+      "error": null
+    },
+    {
+      "field": "IOS Version",
+      "expected": "15.0(2)SE4",
+      "found": "IOS Version**: 15.0(2)SE4",
+      "passed": true,
+      "location": "Line with: IOS Version**: 15.0(2)SE4...",
+      "error": null
+    },
+    {
+      "field": "Domain Name",
+      "expected": "lab.bedrift.no",
+      "found": "Domain Name**: lab.bedrift.no ✓ VERIFIED  \n- **Config Register**: Not configured ✓ VERIFIED  \n\n---\n\n## Management & Access\n- **Management VLAN**: 99 ✓ VERIFIED  \n- **IP Address**: 10.99.1.8/24 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: Not configured ✓ VERIFIED  \n- **SSH Timeout**: Not configured ✓ VERIFIED  \n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED  \n- **VTY Authentication**: None ✓ VERIFIED  \n- **VTY ACL Protection**: None (⚠ No ACL protection) ✓ VERIFIED  \n- **Console Authentication**: None ✓ VERIFIED  \n- **Console Logging Synchronous**: Enabled ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA Enabled**: No ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED  \n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**: Shutdown ✓ VERIFIED  \n  - **VLAN 99**:  \n    - Description: Management ✓ VERIFIED  \n    - IP: 10.99.1.8/24 ✓ VERIFIED  \n    - Status: Active ✓ VERIFIED  \n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 11 ✓ VERIFIED  \n- **Shutdown**: 15 ✓ VERIFIED  \n- **Access Ports**: 10 ✓ VERIFIED  \n- **Trunk Ports**: 1 ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n\n**Key Active Interfaces**:  \n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99,110,120 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED  \n- **CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no",
+      "passed": true,
+      "location": "Line with: Domain Name**: lab.bedrift.no ✓ VERIFIED  \n- **Con...",
+      "error": null
+    },
+    {
+      "field": "Management IP Address",
+      "expected": "10.99.1.8",
+      "found": "IP Address**: 10.99.1.8/24 ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: Not configured ✓ VERIFIED  \n- **SSH Timeout**: Not configured ✓ VERIFIED  \n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED  \n- **VTY Authentication**: None ✓ VERIFIED  \n- **VTY ACL Protection**: None (⚠ No ACL protection) ✓ VERIFIED  \n- **Console Authentication**: None ✓ VERIFIED  \n- **Console Logging Synchronous**: Enabled ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA Enabled**: No ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED  \n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**: Shutdown ✓ VERIFIED  \n  - **VLAN 99**:  \n    - Description: Management ✓ VERIFIED  \n    - IP: 10.99.1.8",
+      "passed": true,
+      "location": "Line with: IP Address**: 10.99.1.8/24 ✓ VERIFIED  \n- **Defaul...",
+      "error": null
+    },
+    {
+      "field": "Default Gateway",
+      "expected": "10.99.1.1",
+      "found": "Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version**: Not configured ✓ VERIFIED  \n- **SSH Timeout**: Not configured ✓ VERIFIED  \n- **VTY Transport Input**: ssh, telnet ✓ VERIFIED  \n- **VTY Authentication**: None ✓ VERIFIED  \n- **VTY ACL Protection**: None (⚠ No ACL protection) ✓ VERIFIED  \n- **Console Authentication**: None ✓ VERIFIED  \n- **Console Logging Synchronous**: Enabled ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA Enabled**: No ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED  \n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**: Shutdown ✓ VERIFIED  \n  - **VLAN 99**:  \n    - Description: Management ✓ VERIFIED  \n    - IP: 10.99.1.8/24 ✓ VERIFIED  \n    - Status: Active ✓ VERIFIED  \n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 11 ✓ VERIFIED  \n- **Shutdown**: 15 ✓ VERIFIED  \n- **Access Ports**: 10 ✓ VERIFIED  \n- **Trunk Ports**: 1 ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n\n**Key Active Interfaces**:  \n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99,110,120 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED  \n- **CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1",
+      "passed": true,
+      "location": "Line with: Gateway**: 10.99.1.1 ✓ VERIFIED  \n- **SSH Version*...",
+      "error": null
+    },
+    {
+      "field": "VTY Transport Input",
+      "expected": "ssh, telnet",
+      "found": "Transport Input**: ssh, telnet",
+      "passed": true,
+      "location": "Line with: Transport Input**: ssh, telnet...",
+      "error": null
+    },
+    {
+      "field": "VLAN Count",
+      "expected": "4",
+      "found": "4",
+      "passed": true,
+      "location": "Line with: **Total VLANs Referenced**: 4...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99",
+      "expected": "99",
+      "found": "VLAN 99",
+      "passed": true,
+      "location": "Line with: VLAN 99...",
+      "error": null
+    },
+    {
+      "field": "VLAN 110",
+      "expected": "110",
+      "found": "VLAN: 110",
+      "passed": true,
+      "location": "Line with: VLAN: 110...",
+      "error": null
+    },
+    {
+      "field": "VLAN 120",
+      "expected": "120",
+      "found": "VLAN: 120",
+      "passed": true,
+      "location": "Line with: VLAN: 120...",
+      "error": null
+    },
+    {
+      "field": "VLAN 666",
+      "expected": "666",
+      "found": "VLAN: 666",
+      "passed": true,
+      "location": "Line with: VLAN: 666...",
+      "error": null
+    },
+    {
+      "field": "VLAN 99 IP",
+      "expected": "10.99.1.8",
+      "found": "10.99.1.8",
+      "passed": true,
+      "location": "Line with: 10.99.1.8...",
+      "error": null
+    },
+    {
+      "field": "Total Interfaces",
+      "expected": "26",
+      "found": "26",
+      "passed": true,
+      "location": "Line with: **Total Interfaces**: 26...",
+      "error": null
+    },
+    {
+      "field": "Active Interfaces",
+      "expected": "11",
+      "found": "11",
+      "passed": true,
+      "location": "Line with: **Active (no shutdown)**: 11...",
+      "error": null
+    },
+    {
+      "field": "Shutdown Interfaces",
+      "expected": "15",
+      "found": "15",
+      "passed": true,
+      "location": "Line with: **Shutdown**: 15...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/1",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": "Line with: FastEthernet0/1...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/2",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": "Line with: FastEthernet0/2...",
+      "error": null
+    },
+    {
+      "field": "Interface FastEthernet0/3",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": "Line with: FastEthernet0/3...",
+      "error": null
+    },
+    {
+      "field": "CDP Status",
+      "expected": "enabled",
+      "found": "**CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50 ✓ VERIFIED  \n\n### NTP\n- **NTP Server**: 10.99.0.1 ✓ VERIFIED  \n- **NTP Authentication**: Disabled ✓ VERIFIED  \n\n### DNS\n- **DNS Domain Name**: lab.bedrift.no ✓ VERIFIED  \n- **DNS Lookup**: Disabled ✓ VERIFIED  \n\n---\n\n## Routing Configuration\n- **IP Routing**: Disabled ✓ VERIFIED  \n- **Default Gateway**: 10.99.1.1 ✓ VERIFIED  \n\n---\n\n## Configuration Quality Assessment\n\n### Security Posture\n\n#### ✓ Strengths\n- **NTP and Syslog Enabled",
+      "passed": true,
+      "location": "Line with: **CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enab...",
+      "error": null
+    },
+    {
+      "field": "NTP Server 10.99.0.1",
+      "expected": "10.99.0.1",
+      "found": "NTP\n- **NTP Server**: 10.99.0.1",
+      "passed": true,
+      "location": "Line with: NTP\n- **NTP Server**: 10.99.0.1...",
+      "error": null
+    },
+    {
+      "field": "Syslog Server 10.99.0.50",
+      "expected": "10.99.0.50",
+      "found": "Logging Synchronous**: Enabled ✓ VERIFIED  \n\n---\n\n## AAA Configuration\n- **AAA Enabled**: No ✓ VERIFIED  \n\n---\n\n## VLANs\n- **Total VLANs Referenced**: 4 ✓ VERIFIED  \n- **VLAN IDs**: 99, 110, 120, 666 ✓ VERIFIED  \n- **VLAN Interfaces (SVIs)**:  \n  - **VLAN 1**: Shutdown ✓ VERIFIED  \n  - **VLAN 99**:  \n    - Description: Management ✓ VERIFIED  \n    - IP: 10.99.1.8/24 ✓ VERIFIED  \n    - Status: Active ✓ VERIFIED  \n- **VTP Configuration**: Not explicitly configured ✓ VERIFIED  \n\n---\n\n## Physical Interfaces\n- **Total Interfaces**: 26 ✓ VERIFIED  \n- **Active (no shutdown)**: 11 ✓ VERIFIED  \n- **Shutdown**: 15 ✓ VERIFIED  \n- **Access Ports**: 10 ✓ VERIFIED  \n- **Trunk Ports**: 1 ✓ VERIFIED  \n- **Port Security Enabled**: 0 interfaces ✓ VERIFIED  \n\n**Key Active Interfaces**:  \n- **FastEthernet0/1** - Lab-PC 1 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/2** - Lab-PC 2 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/3** - Lab-PC 3 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/4** - Lab-PC 4 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/5** - Lab-PC 5 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/6** - Lab-PC 6 | Mode: access | VLAN: 110 ✓ VERIFIED  \n- **FastEthernet0/7** - Lab-Server 1 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/8** - Lab-Server 2 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/9** - Lab-Server 3 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/10** - Lab-Server 4 | Mode: access | VLAN: 120 ✓ VERIFIED  \n- **FastEthernet0/24** - Uplink til dis-sw01 gig0/6 | Mode: trunk | Native VLAN: 666 | Allowed VLANs: 99,110,120 ✓ VERIFIED  \n\n---\n\n## Spanning Tree Protocol\n- **STP Mode**: pvst ✓ VERIFIED  \n\n---\n\n## Security Features\n- **DHCP Snooping**: Not enabled ✓ VERIFIED  \n- **Dynamic ARP Inspection (DAI)**: Not enabled ✓ VERIFIED  \n- **Port Security**: Not enabled on any interfaces ✓ VERIFIED  \n- **CDP**: Enabled ✓ VERIFIED  \n- **LLDP**: Not enabled ✓ VERIFIED  \n- **802.1X**: Not configured ✓ VERIFIED  \n- **IP Source Guard**: Not configured ✓ VERIFIED  \n\n---\n\n## Network Services\n### Logging\n- **Logging Server**: 10.99.0.50",
+      "passed": true,
+      "location": "Line with: Logging Synchronous**: Enabled ✓ VERIFIED  \n\n---\n\n...",
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.hostname",
+      "expected": "lab-sw01",
+      "found": "lab-sw01",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.ios_version",
+      "expected": "15.0(2)SE4",
+      "found": "15.0(2)SE4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: device_info.domain_name",
+      "expected": "lab.bedrift.no",
+      "found": "lab.bedrift.no",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.ip_address",
+      "expected": "10.99.1.8",
+      "found": "10.99.1.8",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.subnet_mask",
+      "expected": "255.255.255.0",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value '255.255.255.0' from management.subnet_mask not found in documentation"
+    },
+    {
+      "field": "Parsed value: management.default_gateway",
+      "expected": "10.99.1.1",
+      "found": "10.99.1.1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.console.range",
+      "expected": "line con 0",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'line con 0' from management.console.range not found in documentation"
+    },
+    {
+      "field": "Parsed value: management.vty.range",
+      "expected": "line vty 0 4",
+      "found": "line vty 0 4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.vty.transport_input[0]",
+      "expected": "ssh",
+      "found": "ssh",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: management.vty.transport_input[1]",
+      "expected": "telnet",
+      "found": "telnet",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_ids[1]",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_ids[2]",
+      "expected": "120",
+      "found": "120",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_ids[3]",
+      "expected": "666",
+      "found": "666",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.vlan_names.110",
+      "expected": "Lab-Klienter",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'Lab-Klienter' from vlans.vlan_names.110 not found in documentation"
+    },
+    {
+      "field": "Parsed value: vlans.vlan_names.120",
+      "expected": "Lab-Servere",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'Lab-Servere' from vlans.vlan_names.120 not found in documentation"
+    },
+    {
+      "field": "Parsed value: vlans.vlan_names.99",
+      "expected": "Management",
+      "found": "Management",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[1].description",
+      "expected": "Management",
+      "found": "Management",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[1].ip_address",
+      "expected": "10.99.1.8",
+      "found": "10.99.1.8",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: vlans.svi_interfaces[1].subnet_mask",
+      "expected": "255.255.255.0",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value '255.255.255.0' from vlans.svi_interfaces[1].subnet_mask not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[0].name",
+      "expected": "FastEthernet0/1",
+      "found": "FastEthernet0/1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].description",
+      "expected": "Lab-PC 1",
+      "found": "Lab-PC 1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[0].access_vlan",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].name",
+      "expected": "FastEthernet0/2",
+      "found": "FastEthernet0/2",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].description",
+      "expected": "Lab-PC 2",
+      "found": "Lab-PC 2",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[1].access_vlan",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].name",
+      "expected": "FastEthernet0/3",
+      "found": "FastEthernet0/3",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].description",
+      "expected": "Lab-PC 3",
+      "found": "Lab-PC 3",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[2].access_vlan",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].name",
+      "expected": "FastEthernet0/4",
+      "found": "FastEthernet0/4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].description",
+      "expected": "Lab-PC 4",
+      "found": "Lab-PC 4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[3].access_vlan",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[4].name",
+      "expected": "FastEthernet0/5",
+      "found": "FastEthernet0/5",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[4].description",
+      "expected": "Lab-PC 5",
+      "found": "Lab-PC 5",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[4].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[4].access_vlan",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[5].name",
+      "expected": "FastEthernet0/6",
+      "found": "FastEthernet0/6",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[5].description",
+      "expected": "Lab-PC 6",
+      "found": "Lab-PC 6",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[5].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[5].access_vlan",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[6].name",
+      "expected": "FastEthernet0/7",
+      "found": "FastEthernet0/7",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[6].description",
+      "expected": "Lab-Server 1",
+      "found": "Lab-Server 1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[6].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[6].access_vlan",
+      "expected": "120",
+      "found": "120",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[7].name",
+      "expected": "FastEthernet0/8",
+      "found": "FastEthernet0/8",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[7].description",
+      "expected": "Lab-Server 2",
+      "found": "Lab-Server 2",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[7].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[7].access_vlan",
+      "expected": "120",
+      "found": "120",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[8].name",
+      "expected": "FastEthernet0/9",
+      "found": "FastEthernet0/9",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[8].description",
+      "expected": "Lab-Server 3",
+      "found": "Lab-Server 3",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[8].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[8].access_vlan",
+      "expected": "120",
+      "found": "120",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[9].name",
+      "expected": "FastEthernet0/10",
+      "found": "FastEthernet0/10",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[9].description",
+      "expected": "Lab-Server 4",
+      "found": "Lab-Server 4",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[9].mode",
+      "expected": "access",
+      "found": "access",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[9].access_vlan",
+      "expected": "120",
+      "found": "120",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[10].name",
+      "expected": "FastEthernet0/11",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/11' from interfaces[10].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[11].name",
+      "expected": "FastEthernet0/12",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/12' from interfaces[11].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[12].name",
+      "expected": "FastEthernet0/13",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/13' from interfaces[12].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[13].name",
+      "expected": "FastEthernet0/14",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/14' from interfaces[13].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[14].name",
+      "expected": "FastEthernet0/15",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/15' from interfaces[14].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[15].name",
+      "expected": "FastEthernet0/16",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/16' from interfaces[15].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[16].name",
+      "expected": "FastEthernet0/17",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/17' from interfaces[16].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[17].name",
+      "expected": "FastEthernet0/18",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/18' from interfaces[17].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[18].name",
+      "expected": "FastEthernet0/19",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/19' from interfaces[18].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[19].name",
+      "expected": "FastEthernet0/20",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/20' from interfaces[19].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[20].name",
+      "expected": "FastEthernet0/21",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/21' from interfaces[20].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[21].name",
+      "expected": "FastEthernet0/22",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/22' from interfaces[21].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[22].name",
+      "expected": "FastEthernet0/23",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'FastEthernet0/23' from interfaces[22].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[23].name",
+      "expected": "FastEthernet0/24",
+      "found": "FastEthernet0/24",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].description",
+      "expected": "Uplink til dis-sw01 gig0/6",
+      "found": "Uplink til dis-sw01 gig0/6",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].mode",
+      "expected": "trunk",
+      "found": "trunk",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].trunk_encapsulation",
+      "expected": "dot1q",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'dot1q' from interfaces[23].trunk_encapsulation not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[23].trunk_native_vlan",
+      "expected": "666",
+      "found": "666",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].trunk_allowed_vlans[1]",
+      "expected": "110",
+      "found": "110",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[23].trunk_allowed_vlans[2]",
+      "expected": "120",
+      "found": "120",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: interfaces[24].name",
+      "expected": "GigabitEthernet0/1",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'GigabitEthernet0/1' from interfaces[24].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: interfaces[25].name",
+      "expected": "GigabitEthernet0/2",
+      "found": "Not found",
+      "passed": false,
+      "location": null,
+      "error": "Parsed value 'GigabitEthernet0/2' from interfaces[25].name not found in documentation"
+    },
+    {
+      "field": "Parsed value: routing.default_gateway",
+      "expected": "10.99.1.1",
+      "found": "10.99.1.1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: spanning_tree.mode",
+      "expected": "pvst",
+      "found": "pvst",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: services.ntp.servers[0]",
+      "expected": "10.99.0.1",
+      "found": "10.99.0.1",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: services.syslog.servers[0]",
+      "expected": "10.99.0.50",
+      "found": "10.99.0.50",
+      "passed": true,
+      "location": null,
+      "error": null
+    },
+    {
+      "field": "Parsed value: services.dns.domain_name",
+      "expected": "lab.bedrift.no",
+      "found": "lab.bedrift.no",
+      "passed": true,
+      "location": null,
+      "error": null
+    }
+  ]
+}
