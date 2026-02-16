@@ -58,8 +58,8 @@ Systemet består av fire hovedkomponenter som samarbeider i en pipeline-arkitekt
 ┌─────────────────────────────────────────────────────────────────┐
 │  KOMPONENT 2: PROMPT BUILDER (structured_prompt_builder.py)    │
 │  - Bygger strukturert prompt fra JSON-data                      │
-│  - Organiserer data i logiske seksjoner                         │
-│  - Injiserer kontekst og instruksjoner                          │
+│  - Presenterer ALLE interfaces, VLAN-navn, ACL-entries          │
+│  - Eksplisitte instruksjoner for fullstendighet                 │
 └────────────────────────────┬────────────────────────────────────┘
                              │
                              ▼
@@ -84,6 +84,7 @@ Systemet består av fire hovedkomponenter som samarbeider i en pipeline-arkitekt
 │  - Sammenligner generert dokumentasjon med strukturert data     │
 │  - Validerer nøyaktighet på kritiske felt (spesifikke sjekker)  │
 │  - Generisk catch-all: verifiserer alle parsede verdier         │
+│  - Case-insensitive matching og interface range-deteksjon       │
 │  - Negative claim detection: fanger "Not configured"-feil       │
 │  - Genererer valideringsrapport med accuracy-score              │
 └────────────────────────────┬────────────────────────────────────┘
@@ -277,7 +278,7 @@ Systemet konfigureres via en sentral JSON-fil:
 ```json
 {
   "llm": {
-    "endpoint": "http://192.168.1.174:11434/api/generate",
+    "endpoint": "http://192.168.1.82:11434/api/generate",
     "model": "qwen3:32b",
     "max_tokens": 16000,
     "temperature": 0.1,
@@ -417,40 +418,21 @@ Når en fil kopieres inn i `configs/`-mappen, genererer operativsystemet typisk 
 
 Validatoren sikrer kvalitet på generert dokumentasjon:
 
-**Validering av kritiske felt**:
-```python
-class DocumentationValidator:
-    """Validate LLM-generated documentation against structured data."""
-
-    def validate_hostname(self) -> ValidationResult:
-        """Validate that hostname is correct in documentation."""
-        expected = self.structured_data['device_info']['hostname']
-        if not expected:
-            return ValidationResult(passed=True, field_name="hostname")
-
-        # Search for hostname in documentation
-        found = expected in self.documentation
-
-        return ValidationResult(
-            passed=found,
-            field_name="hostname",
-            expected_value=expected,
-            error_message=f"Hostname '{expected}' not found" if not found else None
-        )
-```
-
 **Spesifikke valideringskategorier**:
-- Device information (hostname, IOS version)
-- VLAN configuration (VLAN IDs, management VLAN)
-- Interface count
-- Security features (DHCP snooping, DAI)
-- Network services (NTP, syslog, DNS)
+- Device information (hostname, IOS version, domain name)
+- Management configuration (IP, gateway, SSH, VTY transport)
+- VLAN configuration (VLAN IDs, management VLAN, SVI IPs)
+- Interface counts (total, active, shutdown) og interface-navn
+- Security features (DHCP snooping med VLANs, DAI, CDP status)
+- Network services (NTP servere, syslog servere, DNS)
 
 **Generiske validatorer (catch-all)**:
 
 I tillegg til de spesifikke valideringskategoriene bruker systemet to generiske validatorer som fanger hallusinasjoner uavhengig av konfigurasjonstype:
 
-- **Parsed Value Presence Check**: Traverserer all strukturert data fra parseren rekursivt og verifiserer at hver meningsfull verdi (IP-adresser, servernavner, VLAN-IDs, etc.) finnes et sted i den genererte dokumentasjonen. Filtrerer bort korte/generiske verdier og boolske flagg som allerede dekkes av spesifikke validatorer.
+- **Parsed Value Presence Check**: Traverserer all strukturert data fra parseren rekursivt og verifiserer at hver meningsfull verdi (IP-adresser, servernavn, VLAN-IDs, etc.) finnes et sted i den genererte dokumentasjonen. Søket er **case-insensitive** for å unngå falske negativer fra formatforskjeller (f.eks. "pvst" vs "PVST"). Filtrerer bort korte/generiske verdier og boolske flagg som allerede dekkes av spesifikke validatorer.
+
+- **Interface Range Detection**: Når et interface-navn (f.eks. `FastEthernet0/3`) ikke finnes eksakt i dokumentasjonen, sjekker validatoren om interfacet er dekket av en range-notasjon (f.eks. `FastEthernet0/1–4`). Dette er nødvendig fordi LLM-en ofte grupperer interfaces med lik konfigurasjon i ranges, som er god dokumentasjonspraksis.
 
 - **Negative Claim Detection**: Skanner dokumentasjonen etter påstander som "Not configured" eller "Not enabled", og kryssrefererer mot parser-dataene. Dersom parseren har funnet data for den aktuelle tjenesten (f.eks. NTP-servere), men dokumentasjonen påstår at tjenesten ikke er konfigurert, flagges dette som en hallusinasjon.
 
@@ -740,25 +722,29 @@ python automation/metrics_dashboard.py
 - 0 feil ved siste kjøring
 - Coverage av alle kritiske komponenter
 
-**Validering**:
+**Validering** (målt over 10 switch-konfigurasjoner, Forsøk-6):
+- Gjennomsnittlig accuracy: 75.9% (med case-insensitive matching og range-deteksjon)
+- Accuracy range: 62.9% – 100.0%
+- Beste: switch-09 (100.0%), Dårligste: switch-10 (62.9%)
 - Automatisk cross-referencing av LLM-output mot strukturert data
-- Accuracy tracking per prosessering
-- Detaljerte valideringsrapporter
+- Detaljerte valideringsrapporter per konfigurasjon
 
-**Ytelse** (typiske verdier på test-configs):
-- Parse time: 0.5-2 sekunder
-- LLM processing: 10-30 sekunder (avhengig av modell og hardware)
-- Total processing: 15-35 sekunder per konfigurasjon
+**Ytelse** (målt med Qwen3:32B via Ollama over LAN):
+- Parse time: 0.05-0.10 sekunder
+- LLM processing: 132-224 sekunder (gjennomsnitt 180s)
+- Total processing: 132-224 sekunder per konfigurasjon
 
 ### Kvalitative Resultater
 
-**1. Hybrid Approach Fungerer**
+**1. Hybrid Approach Fungerer — Men Med Begrensninger**
 
 Kombinasjonen av deterministisk parsing og AI-generering gir:
-- **Nøyaktighet**: Kritiske fakta (IP, VLAN, etc.) er 100% korrekte
+- **Redusert hallusinasjon**: Parsede verdier (IP-adresser, hostnavn, VLAN-IDer) er korrekte når LLM-en bruker dem
 - **Lesbarhet**: AI genererer naturlig, forståelig tekst
 - **Kontekst**: AI gir forklaringer og sammenhenger som ren parsing ikke kan
 - **Best practices**: AI identifiserer sikkerhetsproblemer og anbefalinger
+
+**Viktig funn**: Hybrid-tilnærmingen eliminerer **fabrikasjon** (LLM-en finner ikke opp feil verdier), men forhindrer ikke **utelatelse** (LLM-en kan ignorere korrekte data den mottar). For eksempel ble NTP-konfigurasjon korrekt parset og inkludert i prompten, men LLM-en rapporterte likevel "Not configured" i enkelte kjøringer. Dette representerer to distinkte feilkategorier som krever ulike løsningsstrategier.
 
 **2. Lokalt = Praktisk**
 
@@ -779,8 +765,11 @@ File watcher og Git-integrasjon gir:
 
 Automatisk validering fanger:
 - LLM hallusinasjoner (fabricated facts)
+- LLM utelatelser (omitted data)
+- Negative claim-feil ("Not configured" når data faktisk eksisterer)
 - Parsing errors
-- Incomplete documentation
+
+**Validerings-evolusjon**: Innledende valideringsresultater var kunstig lave (67.9% gjennomsnitt) på grunn av måleproblemer i validatoren selv — case-sensitiv matching og manglende forståelse for interface range-notasjon. Etter korrigering av validatoren steg gjennomsnittlig accuracy til 75.9% uten endringer i LLM-output, noe som illustrerer viktigheten av nøyaktig validering i evalueringsmetodikken.
 
 ### Begrensninger
 
@@ -793,10 +782,12 @@ Automatisk validering fanger:
 - System prosesserer én fil om gangen
 - Ingen comparative analysis på tvers av flere enheter
 
-**3. LLM-avhengighet**
+**3. LLM-avhengighet og Non-Determinisme**
 - Kvalitet på dokumentasjon avhenger av LLM-modell
 - Større modeller gir bedre resultater, men er tregere
 - Krever lokal hardware med tilstrekkelig ytelse
+- LLM-output er **non-deterministisk** — samme prompt kan gi ulik output mellom kjøringer (f.eks. NTP korrekt dokumentert i én kjøring, utelatt i neste)
+- LLM kan **utelate** korrekte data fra prompten, selv med eksplisitte instruksjoner om å inkludere alt
 
 **4. Cisco-spesifikt**
 - System er designet for Cisco IOS
@@ -806,10 +797,11 @@ Automatisk validering fanger:
 
 Dette prosjektet demonstrerer:
 
-**1. Hybrid AI-approach er Effektivt**
+**1. Hybrid AI-approach er Effektivt — Med Nyanserte Funn**
 - Kombinasjon av deterministisk + AI gir bedre resultater enn enten-eller
 - Parser sikrer nøyaktighet, AI sikrer lesbarhet
 - Validering sikrer kvalitet
+- **Ny innsikt**: Hybrid-tilnærmingen eliminerer **fabrikasjon** men ikke **utelatelse** — to distinkte feilkategorier som krever ulike strategier
 
 **2. Lokal AI er Praktisk Gjennomførbart**
 - Moderne LLMs (Qwen3, Llama, Mistral) kjører effektivt lokalt

@@ -173,14 +173,8 @@ You are provided with STRUCTURED, PRE-PARSED configuration data. This data has b
         vlans = self.data.get("vlans", {})
 
         vlan_ids = vlans.get("vlan_ids", [])
-        vlan_names = vlans.get("vlan_names", {})
         output = f"**Total VLANs Referenced:** {len(vlan_ids)}\n"
         output += f"**VLAN IDs:** {', '.join(map(str, vlan_ids)) if vlan_ids else 'None'}\n"
-
-        if vlan_names:
-            output += "\n**VLAN Names:**\n"
-            for vid, name in sorted(vlan_names.items(), key=lambda x: int(x[0]) if str(x[0]).isdigit() else 0):
-                output += f"  - VLAN {vid}: {name}\n"
 
         svi_list = vlans.get("svi_interfaces", [])
         if svi_list:
@@ -230,35 +224,27 @@ You are provided with STRUCTURED, PRE-PARSED configuration data. This data has b
 - Trunk Ports: {trunk_ports}
 - Port Security Enabled: {port_sec_count} interfaces
 
-**Active Interfaces (DOCUMENT ALL OF THESE):**
+**Detailed Interface List:**
 
 """
-        active_intfs = [i for i in interfaces if not i.get("shutdown")]
+        # List first 5 active interfaces as examples
+        active_intfs = [i for i in interfaces if not i.get("shutdown")][:5]
         for intf in active_intfs:
             output += f"- **{intf['name']}**"
             if intf.get('description'):
-                output += f" — Description: \"{intf['description']}\""
+                output += f" - {intf['description']}"
             output += f" | Mode: {intf.get('mode', 'not set')}"
             if intf.get('access_vlan'):
                 output += f" | VLAN: {intf['access_vlan']}"
-            if intf.get('trunk_encapsulation'):
-                output += f" | Encapsulation: {intf['trunk_encapsulation']}"
-            if intf.get('trunk_native_vlan'):
-                output += f" | Native VLAN: {intf['trunk_native_vlan']}"
             if intf.get('trunk_allowed_vlans'):
                 vlans = intf['trunk_allowed_vlans']
-                output += f" | Allowed VLANs: {vlans if isinstance(vlans, str) else ', '.join(map(str, vlans))}"
+                output += f" | Allowed VLANs: {vlans if isinstance(vlans, str) else ', '.join(map(str, vlans[:5]))}"
             if intf.get('port_security', {}).get('enabled'):
-                ps = intf['port_security']
-                output += f" | Port-Sec: ✓ (violation: {ps.get('violation', 'shutdown')})"
-            if intf.get('subnet_mask'):
-                output += f" | Subnet: {intf['subnet_mask']}"
+                output += " | Port-Sec: ✓"
             output += "\n"
 
-        shutdown_intfs = [i for i in interfaces if i.get("shutdown")]
-        if shutdown_intfs:
-            names = [i['name'] for i in shutdown_intfs]
-            output += f"\n**Shutdown Interfaces:** {', '.join(names)}\n"
+        if len(interfaces) > 5:
+            output += f"\n... and {len(interfaces) - 5} more interfaces (see raw config for details)\n"
 
         return output
 
@@ -327,10 +313,7 @@ You are provided with STRUCTURED, PRE-PARSED configuration data. This data has b
             output += f"\n**Access Control Lists:** {len(acls)} configured\n"
             for acl in acls:
                 acl_id = acl.get('name') or acl.get('number')
-                entries = acl.get('entries', [])
-                output += f"  - {acl['type'].capitalize()} ACL '{acl_id}': {len(entries)} entries\n"
-                for entry in entries:
-                    output += f"    - {entry}\n"
+                output += f"  - {acl['type'].capitalize()} ACL '{acl_id}': {len(acl.get('entries', []))} entries\n"
 
         # Other features
         output += f"\n- **CDP:** {'Disabled ✓' if not security.get('cdp_enabled', True) else 'Enabled'}\n"
@@ -397,17 +380,14 @@ Generate comprehensive Markdown documentation for this network device. Use the S
 
 2. **Hostname is: {hostname}** - Use this exact hostname throughout the document. Do NOT change it.
 
-3. **INCLUDE EVERY DATA POINT** - This is CRITICAL for documentation completeness. You MUST include:
-   - ALL **VLAN IDs AND their names** (e.g., "VLAN 10: Ansatte-Autentisert")
-   - ALL **interface descriptions** exactly as shown (e.g., "802.1X-port kontor C301")
-   - ALL **ACL entries** (every permit/deny line)
-   - **Trunk encapsulation type** for trunk ports (e.g., "dot1q")
-   - **Subnet masks in dotted decimal** format (e.g., "255.255.255.0"), NOT CIDR notation
-   - **Console/VTY line ranges** exactly as shown (e.g., "line con 0", "line vty 0 4")
-   - **NTP servers and authentication** exactly as shown in the structured data
-   - **Port security violation mode** for each interface (e.g., "restrict", "protect", "shutdown")
-   - DHCP snooping VLANs, CDP status, and all security feature states
-   - DO NOT skip, summarize, or omit ANY configuration item present in the structured data
+3. **MENTION ALL DATA POINTS** - This is CRITICAL for documentation completeness:
+   - If a domain name is present in device_info, you MUST mention it
+   - If VLANs are listed, you MUST mention ALL VLAN IDs (not just some of them)
+   - If interface counts are provided (total, active, shutdown), you MUST include these statistics
+   - If security features list specific VLANs (e.g., DHCP snooping VLANs), you MUST mention which VLANs
+   - If CDP status is shown as disabled, you MUST explicitly state "CDP is disabled"
+   - DO NOT skip any configuration items present in the structured data
+   - DO NOT assume the reader knows implicit details - state everything explicitly
 
 4. **Mark confidence levels**:
    - ✓ VERIFIED - for any data from the structured data above
@@ -440,59 +420,47 @@ Generate comprehensive Markdown documentation for this network device. Use the S
 NOTE: ALWAYS include these exact fields. Use the exact hostname from structured_data.
 
 ## Management & Access
-- **Management VLAN**: [svi number] ✓ VERIFIED
-- **IP Address**: [ip_address] ✓ VERIFIED
-- **Subnet Mask**: [subnet_mask in dotted decimal, e.g. 255.255.255.0] ✓ VERIFIED
-- **Default Gateway**: [default_gateway] ✓ VERIFIED
-- **SSH Version**: [ssh.version] ✓ VERIFIED
-- **SSH Timeout**: [ssh.timeout] seconds ✓ VERIFIED
-- **Console**: [console.range exactly as shown, e.g. "line con 0"] ✓ VERIFIED
-- **VTY Lines**: [vty.range exactly as shown, e.g. "line vty 0 4"] ✓ VERIFIED
-- **VTY Transport Input**: [vty.transport_input] ✓ VERIFIED
-- **Banner**: [Configured/Not configured] ✓ VERIFIED
+- **Management VLAN**: [svi number if present] ✓ VERIFIED
+- **IP Address**: [ip_address if present] ✓ VERIFIED
+- **Default Gateway**: [default_gateway if present] ✓ VERIFIED
+- **SSH Version**: [ssh.version from data] ✓ VERIFIED
+- **SSH Timeout**: [ssh.timeout from data] seconds ✓ VERIFIED
+- **VTY Transport Input**: [vty.transport_input from data] ✓ VERIFIED
 
 ## AAA Configuration
-[Use aaa from structured data - include ALL authentication/authorization/accounting lists and local usernames]
+[Use aaa from structured data]
 
 ## VLANs
-- List ALL VLAN IDs with their NAMES (e.g., "VLAN 10: Ansatte-Autentisert")
-- Include total count and SVI details
+[Use vlans from structured data]
+- MUST list ALL VLAN IDs explicitly (e.g., "VLANs configured: 11, 12, 90, 666")
+- Include total count
 
 ## Physical Interfaces
-- **Total Interfaces**: [count] ✓ VERIFIED
-- **Active (no shutdown)**: [count] ✓ VERIFIED
-- **Shutdown**: [count] ✓ VERIFIED
+- **Total Interfaces**: [count of interfaces array] ✓ VERIFIED
+- **Active (no shutdown)**: [count where shutdown=false] ✓ VERIFIED
+- **Shutdown**: [count where shutdown=true] ✓ VERIFIED
 
-List EVERY active interface individually with:
-- Its **description** (exactly as shown in structured data)
-- Its mode (access/trunk)
-- For trunk ports: **encapsulation type** (e.g., "dot1q"), native VLAN, allowed VLANs
-- Port security violation mode if applicable (restrict/protect/shutdown)
+Then list key active interfaces with their configurations.
 
 ## Spanning Tree Protocol
-- **STP Mode**: [mode exactly as shown, e.g. "rapid-pvst"] ✓ VERIFIED
-[Include per-VLAN priorities]
+[Use spanning_tree from structured data]
 
 ## Security Features
 [Use security from structured data]
-- MUST specify which VLANs have DHCP snooping enabled (e.g., "VLANs 10, 20")
+- MUST specify which VLANs have DHCP snooping enabled (e.g., "VLANs 11, 12")
 - MUST explicitly state CDP status (enabled/disabled)
-- MUST list ALL ACL entries (every permit/deny line)
-- Include DAI, port security, 802.1X, IP source guard status
+- Include DAI, port security, IP source guard status
 
 ## Network Services
 ### Logging
 - **Logging Server**: [syslog.servers from data] ✓ VERIFIED
 
 ### NTP
-- **NTP Server**: [ntp.servers from data — MUST include if present] ✓ VERIFIED
+- **NTP Server**: [ntp.servers from data] ✓ VERIFIED
 - **NTP Authentication**: [ntp.authentication status] ✓ VERIFIED
 
-### DNS
-- **Domain Name**: [dns.domain_name] ✓ VERIFIED
-
 ## Routing Configuration
-[Use routing from structured data - include subnet masks in dotted decimal format]
+[Use routing from structured data]
 
 ## Configuration Quality Assessment
 
