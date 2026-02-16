@@ -377,6 +377,11 @@ class DocumentationValidator:
                     intf_name,
                     [rf"{re.escape(intf_name)}"]
                 )
+                # Fallback: accept if the interface is covered by a range
+                if not result.passed and self._is_interface_in_range(intf_name):
+                    result.passed = True
+                    result.found_value = f"{intf_name} (within documented range)"
+                    result.error_message = None
                 self.report.add_result(result)
 
     def _validate_security(self):
@@ -478,6 +483,53 @@ class DocumentationValidator:
 
     # ── Generic validators ───────────────────────────────────────────
 
+    # Regex to detect interface names like FastEthernet0/3, GigabitEthernet0/1
+    _INTF_NAME_RE = re.compile(
+        r'^(FastEthernet|GigabitEthernet|Ethernet|TenGigabitEthernet|'
+        r'FortyGigabitEthernet|HundredGigabitEthernet|Fa|Gi|Te|Fo|Hu)'
+        r'(\d+(?:/\d+)*)$',
+        re.IGNORECASE
+    )
+
+    def _is_interface_in_range(self, intf_name: str) -> bool:
+        """Check if an interface name falls within a range documented in the markdown.
+
+        For example, if the markdown contains 'FastEthernet0/1-4' or
+        'FastEthernet0/1–24', this returns True for 'FastEthernet0/3'.
+        """
+        m = self._INTF_NAME_RE.match(intf_name)
+        if not m:
+            return False
+
+        intf_type = m.group(1)
+        slot_port = m.group(2)  # e.g. "0/3"
+
+        # Split into slot prefix and final port number: "0/3" -> ("0/", 3)
+        if '/' in slot_port:
+            parts = slot_port.rsplit('/', 1)
+            slot_prefix = parts[0] + '/'
+            port_num = int(parts[1])
+        else:
+            slot_prefix = ''
+            port_num = int(slot_port)
+
+        # Build regex to find range patterns in the markdown
+        # Matches e.g. FastEthernet0/1-4, FastEthernet0/1–24 (en-dash or hyphen)
+        intf_type_escaped = re.escape(intf_type)
+        slot_escaped = re.escape(slot_prefix)
+        range_pattern = re.compile(
+            rf'{intf_type_escaped}{slot_escaped}(\d+)\s*[–\-]\s*(\d+)',
+            re.IGNORECASE
+        )
+
+        for match in range_pattern.finditer(self.markdown):
+            range_start = int(match.group(1))
+            range_end = int(match.group(2))
+            if range_start <= port_num <= range_end:
+                return True
+
+        return False
+
     def _validate_parsed_values_present(self):
         """Generic validation: walk all parsed structured data and verify
         that every meaningful leaf value appears somewhere in the documentation."""
@@ -496,7 +548,11 @@ class DocumentationValidator:
             if isinstance(value, int) and value < 10:
                 continue
 
-            found = str_val in self.markdown
+            found = str_val.lower() in self.markdown.lower()
+
+            # Fallback: check if this is an interface name covered by a range
+            if not found and self._is_interface_in_range(str_val):
+                found = True
 
             result = ValidationResult(
                 field_name=f"Parsed value: {path}",
