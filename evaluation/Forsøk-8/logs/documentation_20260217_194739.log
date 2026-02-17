@@ -1,0 +1,68 @@
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator | 
+============================================================
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |  Processing: switch-07.txt
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator | ============================================================
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   Started at: 19:47:39
+2026-02-17 19:47:39 | WARNING  | cisco_doc_generator | ▶ Validating input file
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   Config validation passed (4/4 markers found)
+2026-02-17 19:47:39 | WARNING  | cisco_doc_generator | ▶ Parsing configuration into structured data
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   Secrets sanitization is enabled
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   Parsing completed in 0.08 seconds
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   Detected device: core-sw01
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   IOS version: 15.2(4)E10
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   VLANs found: 8
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   Interfaces found: 10
+2026-02-17 19:47:39 | DEBUG    | cisco_doc_generator | Device info: {
+  "hostname": "core-sw01",
+  "ios_version": "15.2(4)E10",
+  "domain_name": "backbone.bedrift.no",
+  "config_register": null
+}
+2026-02-17 19:47:39 | WARNING  | cisco_doc_generator | ▶ Building structured prompt
+2026-02-17 19:47:39 | INFO     | cisco_doc_generator |   Prompt size: 16459 characters
+2026-02-17 19:47:39 | DEBUG    | cisco_doc_generator | First 500 chars of prompt: You are an expert Cisco network engineer creating professional documentation.
+
+You are provided with STRUCTURED, PRE-PARSED configuration data. This data has been extracted deterministically from a Cisco IOS configuration file, so all values are FACTUALLY CORRECT.
+
+## CRITICAL RULES:
+
+1. **USE THE PROVIDED DATA EXACTLY** - The structured data below contains factual information extracted from the configuration. Do NOT change these values.
+2. **Example**: If structured_data shows `"hostname": "aks
+2026-02-17 19:47:39 | WARNING  | cisco_doc_generator | ▶ Sending to LLM for analysis
+2026-02-17 19:52:39 | WARNING  | cisco_doc_generator | LLM request timed out, retrying in 1s... (attempt 1/3)
+2026-02-17 19:57:22 | DEBUG    | cisco_doc_generator | Token usage information not available in LLM response
+2026-02-17 19:57:22 | INFO     | cisco_doc_generator |   LLM analysis completed in 583.46 seconds
+2026-02-17 19:57:22 | INFO     | cisco_doc_generator |   LLM response length: 8609 characters
+2026-02-17 19:57:22 | DEBUG    | cisco_doc_generator | First 500 chars of response: # Network Device Documentation: core-sw01
+
+## Device Information
+- **Hostname**: core-sw01 ✓ VERIFIED  
+- **IOS Version**: 15.2(4)E10 ✓ VERIFIED  
+- **Domain Name**: backbone.bedrift.no ✓ VERIFIED  
+- **Config Register**: Not configured ✓ VERIFIED  
+
+---
+
+## Management & Access
+- **Management VLAN**: VLAN 10 ✓ VERIFIED  
+- **IP Address**: 10.10.0.1 ✓ VERIFIED  
+- **Subnet Mask**: 255.255.255.0 ✓ VERIFIED  
+- **Default Gateway**: None ✓ VERIFIED  
+- **SSH Version**: 2 ✓ VERIFIED  
+- **SSH Timeout
+2026-02-17 19:57:22 | WARNING  | cisco_doc_generator | ▶ Saving documentation
+2026-02-17 19:57:22 | INFO     | cisco_doc_generator |   Saved to: G:\git\Hovedprosjekt\output\switch-07.md
+2026-02-17 19:57:22 | WARNING  | cisco_doc_generator | ▶ Validating documentation
+2026-02-17 19:57:22 | INFO     | cisco_doc_generator |   Accuracy: 99.3%
+2026-02-17 19:57:22 | INFO     | cisco_doc_generator |   Passed: 139/140 checks
+2026-02-17 19:57:22 | WARNING  | cisco_doc_generator | WARNING: 1 checks failed
+2026-02-17 19:57:22 | DEBUG    | cisco_doc_generator | Validation report: G:\git\Hovedprosjekt\output\switch-07-validation.json
+2026-02-17 19:57:22 | DEBUG    | cisco_doc_generator |   Failed: Parsed value: interfaces[7].ip_address - Parsed value '10.255.0.1' from interfaces[7].ip_address not found in documentation
+2026-02-17 19:57:22 | WARNING  | cisco_doc_generator | ▶ Committing to Git
+2026-02-17 19:57:23 | DEBUG    | cisco_doc_generator | Metrics recorded successfully
+2026-02-17 19:57:23 | WARNING  | cisco_doc_generator | ✓ Documentation generated: G:\git\Hovedprosjekt\output\switch-07.md
+2026-02-17 19:57:23 | INFO     | cisco_doc_generator |   Total processing time: 584.73 seconds
+2026-02-17 19:57:23 | INFO     | cisco_doc_generator |     - Parsing: 0.08s
+2026-02-17 19:57:23 | INFO     | cisco_doc_generator |     - LLM analysis: 583.46s
+2026-02-17 19:57:23 | INFO     | cisco_doc_generator | 
+Log file saved to: G:\git\Hovedprosjekt\logs\documentation_20260217_194739.log
