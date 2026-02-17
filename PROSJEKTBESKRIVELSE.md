@@ -245,7 +245,7 @@ Prosjektet er organisert i en modulær struktur:
 Hovedprosjekt/
 ├── automation/                   # Hovedapplikasjon
 │   ├── config_parser.py          # Deterministisk parser (1,317 linjer)
-│   ├── processor.py              # LLM orchestration (725 linjer)
+│   ├── processor.py              # LLM orchestration (727 linjer)
 │   ├── structured_prompt_builder.py  # Prompt construction
 │   ├── validator.py              # Dokumentasjonsvalidering
 │   ├── watcher.py                # Filsystem monitoring
@@ -253,7 +253,7 @@ Hovedprosjekt/
 │   ├── metrics_tracker.py        # Metrics tracking (SQLite)
 │   └── metrics_dashboard.py      # Visualization dashboard
 │
-├── tests/                        # Test suite (29 tester)
+├── tests/                        # Test suite (32 tester)
 │   ├── test_config_parser.py     # Parser unit tests
 │   ├── test_validator.py         # Validator tests
 │   ├── test_integration.py       # End-to-end tests
@@ -261,7 +261,10 @@ Hovedprosjekt/
 │   └── run_tests.py              # Test runner
 │
 ├── configs/                      # Input: Cisco konfigurasjonsfiler
-├── output/                       # Output: Generert dokumentasjon
+├── output/                       # Output: Generert dokumentasjon + valideringsrapporter
+├── evaluation/                   # Evalueringsdata
+│   ├── Evaluation-configs/       # Test-konfigurasjoner (10 originale + varianter)
+│   └── Forsøk-1/ til Forsøk-7/  # Resultater fra evalueringskjøringer
 ├── metrics/                      # SQLite database med prosesseringsmetrics
 ├── logs/                         # System logs
 ├── docs/                         # Prosjektdokumentasjon
@@ -278,19 +281,18 @@ Systemet konfigureres via en sentral JSON-fil:
 ```json
 {
   "llm": {
-    "endpoint": "http://192.168.1.82:11434/api/generate",
+    "endpoint": "http://192.168.1.236:11434/api/generate",
     "model": "qwen3:32b",
     "max_tokens": 16000,
     "temperature": 0.1,
     "top_p": 0.9,
     "num_ctx": 32768
   },
-  "validation": {
+  "logging": {
     "enabled": true,
-    "save_reports": true
-  },
-  "security": {
-    "sanitize_secrets": true
+    "log_dir": "./logs",
+    "verbose": true,
+    "debug": true
   },
   "git": {
     "enabled": true,
@@ -298,9 +300,19 @@ Systemet konfigureres via en sentral JSON-fil:
     "remote": "origin",
     "branch": "master"
   },
-  "logging": {
+  "processing": {
+    "auto_start_on_file_change": true,
+    "delete_old_documentation": false
+  },
+  "validation": {
     "enabled": true,
-    "verbose": true
+    "save_reports": true
+  },
+  "security": {
+    "sanitize_secrets": true,
+    "redact_passwords": true,
+    "redact_snmp_communities": true,
+    "redact_tacacs_keys": true
   }
 }
 ```
@@ -434,7 +446,9 @@ I tillegg til de spesifikke valideringskategoriene bruker systemet to generiske 
 
 - **Interface Range Detection**: Når et interface-navn (f.eks. `FastEthernet0/3`) ikke finnes eksakt i dokumentasjonen, sjekker validatoren om interfacet er dekket av en range-notasjon (f.eks. `FastEthernet0/1–4`). Dette er nødvendig fordi LLM-en ofte grupperer interfaces med lik konfigurasjon i ranges, som er god dokumentasjonspraksis.
 
-- **Negative Claim Detection**: Skanner dokumentasjonen etter påstander som "Not configured" eller "Not enabled", og kryssrefererer mot parser-dataene. Dersom parseren har funnet data for den aktuelle tjenesten (f.eks. NTP-servere), men dokumentasjonen påstår at tjenesten ikke er konfigurert, flagges dette som en hallusinasjon.
+- **Shutdown Interface Filtering**: Interfaces som er administrativt nedstengt valideres kun via totaltelling (f.eks. "Shutdown: 16"), ikke individuelt. LLM-en oppsummerer ofte shutdown-porter som en telling fremfor å liste dem enkeltvis, noe som er god dokumentasjonspraksis.
+
+- **Negative Claim Detection**: Skanner dokumentasjonen etter påstander som "Not configured" eller "Not enabled", og kryssrefererer mot parser-dataene. Bruker proximity-sjekk: nøkkelordet (f.eks. "NTP") må stå *foran* den negative frasen i setningen for å bli ansett som subjektet for negasjonen. Dette forhindrer falske positiver som "IP Source Guard not enabled despite DHCP snooping" fra å bli feilaktig flagget som DHCP snooping-feil.
 
 **Output**: Valideringsrapport med accuracy percentage og detaljerte feilmeldinger.
 
@@ -479,7 +493,7 @@ CREATE TABLE processing_runs (
 Prosjektet har omfattende automatisk testing:
 
 **Test Coverage**:
-- **29 tester totalt**
+- **32 tester totalt**
 - **100% success rate**
 - Coverage av alle hovedkomponenter
 
@@ -718,16 +732,21 @@ python automation/metrics_dashboard.py
 - Håndterer komplekse Cisco IOS-konfigurasjoner
 
 **Test Coverage**: 100%
-- 29 automatiske tester
+- 32 automatiske tester
 - 0 feil ved siste kjøring
 - Coverage av alle kritiske komponenter
 
-**Validering** (målt over 10 switch-konfigurasjoner, Forsøk-6):
-- Gjennomsnittlig accuracy: 75.9% (med case-insensitive matching og range-deteksjon)
-- Accuracy range: 62.9% – 100.0%
-- Beste: switch-09 (100.0%), Dårligste: switch-10 (62.9%)
+**Automatisk validering** (målt over 10 switch-konfigurasjoner, Forsøk-7):
+- Gjennomsnittlig accuracy mot parsede data: 98.3%
+- Accuracy range: 95.0% – 100.0%
 - Automatisk cross-referencing av LLM-output mot strukturert data
 - Detaljerte valideringsrapporter per konfigurasjon
+
+**Manuell audit** (stikkprøvekontroll av 4 switcher mot originale konfigurasjonsfiler):
+- Validatoren måler kun mot det parseren ekstrakter — ikke fullstendig config-dekning
+- Funn: parser-feil kan kaskadere gjennom hele kjeden (f.eks. feil management-VLAN)
+- LLM-utelatelser av NTP-konfigurasjon fanges nå av negative claim-deteksjon
+- Reell dokumentasjonskomplethet estimert til 80-90% for komplekse konfigurasjoner
 
 **Ytelse** (målt med Qwen3:32B via Ollama over LAN):
 - Parse time: 0.05-0.10 sekunder
@@ -769,7 +788,7 @@ Automatisk validering fanger:
 - Negative claim-feil ("Not configured" når data faktisk eksisterer)
 - Parsing errors
 
-**Validerings-evolusjon**: Innledende valideringsresultater var kunstig lave (67.9% gjennomsnitt) på grunn av måleproblemer i validatoren selv — case-sensitiv matching og manglende forståelse for interface range-notasjon. Etter korrigering av validatoren steg gjennomsnittlig accuracy til 75.9% uten endringer i LLM-output, noe som illustrerer viktigheten av nøyaktig validering i evalueringsmetodikken.
+**Validerings-evolusjon**: Innledende valideringsresultater var kunstig lave (67.9% gjennomsnitt i Forsøk-6) på grunn av måleproblemer i validatoren selv — case-sensitiv matching og manglende forståelse for interface range-notasjon. Etter iterativ forbedring av validatoren (case-insensitive matching, interface range-deteksjon, shutdown-interface filtrering, negative claim proximity-sjekk, og re.DOTALL-fiks) steg gjennomsnittlig accuracy til 98.3%. En manuell stikkprøve mot originale konfigurasjonsfiler avdekket imidlertid at validatoren kun måler mot parsede datapunkter — den kan ikke fange feil i parseren selv, eller utelatelser av features parseren ikke ekstrakter. Dette illustrerer at automatisk validering er nødvendig men ikke tilstrekkelig som eneste kvalitetsmål.
 
 ### Begrensninger
 
@@ -792,6 +811,12 @@ Automatisk validering fanger:
 **4. Cisco-spesifikt**
 - System er designet for Cisco IOS
 - Ville kreve ny parser for andre vendors (Juniper, Arista, etc.)
+
+**5. Validator dekker kun parsede datapunkter**
+- Validatoren kan kun verifisere data som parseren ekstrakter
+- Konfigurasjonselementer som `switchport nonegotiate`, `storm-control`, `ip helper-address`, `ip dhcp snooping trust`, og per-port STP-features (portfast, bpduguard) ekstreres ikke av parseren og valideres derfor aldri
+- Parser-feil kan kaskadere uoppdaget: dersom parseren ekstrakter feil management-VLAN, vil både LLM og validator bruke feil verdi uten å flagge det
+- "VERIFIED"-taggen i LLM-output kan være misvisende: LLM-en markerer ofte IOS-standardverdier (CDP enabled, LLDP not enabled) som "VERIFIED" selv om disse er inferert fra fravær i config, ikke verifisert mot en eksplisitt konfigurasjonslinje
 
 ### Forskningsbidrag
 
@@ -858,8 +883,8 @@ Resultatet er et system som ikke bare automatiserer en tidkrevende oppgave, men 
 ---
 
 **Prosjektinformasjon**:
-- **Kodebase**: 1,317 linjer (parser) + 725 linjer (processor) + støttekode
-- **Test coverage**: 29 tester, 100% success rate
+- **Kodebase**: 1,317 linjer (parser) + 727 linjer (processor) + støttekode
+- **Test coverage**: 32 tester, 100% success rate
 - **Teknologi**: Python 3.8+, Qwen3:32B via Ollama, SQLite, Git
 - **Lisens**: Educational/Professional use
 - **Utviklingsperiode**: Design Science Research Methodology (DSRM) approach
