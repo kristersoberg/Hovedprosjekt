@@ -814,7 +814,7 @@ Automatisk validering fanger:
 
 **5. Validator dekker kun parsede datapunkter**
 - Validatoren kan kun verifisere data som parseren ekstrakter
-- Konfigurasjonselementer som `switchport nonegotiate`, `storm-control`, `ip helper-address`, `ip dhcp snooping trust`, og per-port STP-features (portfast, bpduguard) ekstreres ikke av parseren og valideres derfor aldri
+- Konfigurasjonselementer som `switchport nonegotiate`, `storm-control`, `ip helper-address`, `ip dhcp snooping trust`, og per-port STP-features (portfast, bpduguard) ekstraheres ikke av parseren og valideres derfor aldri
 - Parser-feil kan kaskadere uoppdaget: dersom parseren ekstrakter feil management-VLAN, vil både LLM og validator bruke feil verdi uten å flagge det
 - "VERIFIED"-taggen i LLM-output kan være misvisende: LLM-en markerer ofte IOS-standardverdier (CDP enabled, LLDP not enabled) som "VERIFIED" selv om disse er inferert fra fravær i config, ikke verifisert mot en eksplisitt konfigurasjonslinje
 
