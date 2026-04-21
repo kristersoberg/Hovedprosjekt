@@ -1,5 +1,0 @@
-En av hver fil, ikke 10x 10 forskjellige
-
-Avbrutt etter 8 konfig filer.
-
-Timeouten fikses med å endre stream: False til true

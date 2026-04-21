@@ -1,7 +1,0 @@
-Første forsøk feilet fordi den trigget på de samme filene to ganger.
-Det ble lagt inn 100 konfig filer, men den har prosessert 171.
-Selv om det er lagt inn en cooldown på watcher.py blir de behandlede filene lagt i kø
-
-- for forsøk 2 her jeg fjernet triggeren "on_modify" fra watchdog, så da blir bare nye filer i mappen behandlet.
-
-
