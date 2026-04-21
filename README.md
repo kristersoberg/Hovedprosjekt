@@ -50,10 +50,10 @@ See [docs/QUICKSTART.md](docs/QUICKSTART.md) for full setup instructions includi
 
 | Document | Description |
 |---|---|
-| [docs/QUICKSTART.md](docs/QUICKSTART.md) | Installation and first run |
-| [docs/LLM-SETUP.md](docs/LLM-SETUP.md) | Ollama and LM Studio configuration |
-| [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) | Common issues and fixes |
-| [docs/PROSJEKTBESKRIVELSE.md](docs/PROSJEKTBESKRIVELSE.md) | Full architecture, design decisions, and results |
+| [docs/QUICKSTART.md](docs/Quickstart.md) | Installation and first run |
+| [docs/LLM-SETUP.md](docs/LLM-Setup.md) | Ollama and LM Studio configuration |
+| [docs/TROUBLESHOOTING.md](docs/Troubleshooting.md) | Common issues and fixes |
+| [docs/PROSJEKTBESKRIVELSE.md](docs/Project Description.md) | Full architecture, design decisions, and results |
 
 ## Running tests
 
