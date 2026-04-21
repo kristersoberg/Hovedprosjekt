@@ -14,8 +14,8 @@
     "debug": true
   },
   "git": {
-    "enabled": true,
-    "auto_push": true,
+    "enabled": false,
+    "auto_push": false,
     "remote": "origin",
     "branch": "master"
   },
