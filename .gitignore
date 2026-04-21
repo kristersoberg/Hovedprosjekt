@@ -42,6 +42,13 @@ docs_cache/*.json
 .env
 *.tmp
 
+# Runtime data
+logs/
+metrics/*.db
+
+# Trash / deleted files
+_Trash/
+
 # OS
 .DS_Store
 Thumbs.db

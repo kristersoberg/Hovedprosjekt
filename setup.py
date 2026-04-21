@@ -202,7 +202,7 @@ def print_next_steps(config):
     print()
 
     log("🧪 Test with sample configuration:", Colors.CYAN)
-    log("   A sample config is in configs/SAMPLE-SWITCH.txt", Colors.YELLOW)
+    log("   A sample config is in configs/Demo-switch.txt", Colors.YELLOW)
     log("   Start the watcher to process it automatically!", Colors.YELLOW)
     print()
 
