@@ -6,7 +6,7 @@
 
 ## Configuration Changes
 
-### Ollama Configuration (Current)
+### Ollama Configuration 
 ```json
 {
   "llm": {
@@ -17,7 +17,7 @@
 }
 ```
 
-### LM Studio Configuration (New)
+### LM Studio Configuration 
 ```json
 {
   "llm": {
@@ -36,7 +36,7 @@
 | `model` | `llama3.1:8b` | Model name from LM Studio (varies) |
 | Everything else | Same | Same |
 
-## Step-by-Step Migration
+## Step-by-Step Migration from Ollama to LM Studio
 
 ### 1. Setup LM Studio
 
@@ -59,7 +59,7 @@ Copy the **exact name** shown.
 
 ### 3. Update config.json
 
-**Option A: Replace your current config.json**
+Replace your current `config.json` with:
 
 ```json
 {
@@ -67,43 +67,38 @@ Copy the **exact name** shown.
     "endpoint": "http://localhost:1234/v1/chat/completions",
     "model": "YOUR-MODEL-NAME-FROM-LMSTUDIO",
     "api_key": "",
-    "temperature": 0.7,
-    "max_tokens": 4000,
-    "timeout": 300000
+    "temperature": 0.1,
+    "max_tokens": 16000,
+    "top_p": 0.9,
+    "num_ctx": 32768
   },
-  "mcp": {
-    "server_path": "./mcp_server/server.py",
+  "logging": {
     "enabled": true,
-    "max_prompt_size": 50000,
-    "max_commands": 2,
-    "max_features": 1
+    "log_dir": "./logs",
+    "verbose": false,
+    "debug": false
   },
   "git": {
     "enabled": true,
     "auto_push": false,
     "remote": "origin",
-    "branch": "main"
+    "branch": "master"
   },
   "processing": {
     "auto_start_on_file_change": true,
     "delete_old_documentation": false
+  },
+  "validation": {
+    "enabled": true,
+    "save_reports": true
+  },
+  "security": {
+    "sanitize_secrets": true,
+    "redact_passwords": true,
+    "redact_snmp_communities": true,
+    "redact_tacacs_keys": true
   }
 }
-```
-
-**Option B: Use the pre-made config**
-
-I created `config_lmstudio.json` for you. To use it:
-
-```powershell
-# Backup current config
-Copy-Item config.json config_ollama.json
-
-# Use LM Studio config
-Copy-Item config_lmstudio.json config.json
-
-# Edit to add your exact model name
-notepad config.json
 ```
 
 ### 4. Test the Connection
@@ -125,7 +120,6 @@ You should see:
 ## What Stays the Same?
 
 ✅ **All Python code** - No changes needed
-✅ **MCP integration** - Works identically
 ✅ **File watcher** - No changes
 ✅ **Documentation generation** - Same process
 ✅ **Git integration** - Same
@@ -152,37 +146,21 @@ LM Studio and Ollama may give different results with the same model because:
 
 ## Switching Between Ollama and LM Studio
 
-### Keep Both Configs
+The processor always reads `config.json`. A simple way to switch is to keep a backup for each setup:
 
 ```powershell
-# For Ollama
-Copy-Item config_ollama.json config.json
+# Save your current Ollama config
+Copy-Item config.json config_ollama.json
 
-# For LM Studio
+# Save your LM Studio config
+Copy-Item config.json config_lmstudio.json
+
+# Switch by copying the one you want
+Copy-Item config_ollama.json config.json
 Copy-Item config_lmstudio.json config.json
 ```
 
-### Or Use Environment-Specific Configs
-
-The processor always reads `config.json`, so you can:
-
-1. Have multiple config files:
-   - `config_ollama.json`
-   - `config_lmstudio.json`
-   - `config_openai.json` (if you want to use OpenAI API)
-
-2. Copy the one you want to `config.json` when switching
-
 ## Testing
-
-### Test MCP Integration with LM Studio
-
-```powershell
-# MCP works the same with LM Studio
-python tests/test_mcp_integration.py
-```
-
-All tests should pass identically.
 
 ### Process a Config
 
@@ -272,4 +250,4 @@ Popular models that work well:
 
 ---
 
-**That's it!** The entire MCP integration, all automation, everything works identically with LM Studio.
+**That's it!** All automation, file watching, Git integration, and validation work identically with LM Studio.

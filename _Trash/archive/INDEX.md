@@ -41,7 +41,7 @@ Start here if this is your first time:
 - **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** → Configuration table
 
 ### Setup Automation
-- **setup.js** → Automated setup script
+- **setup.py** → Automated setup script
 - **package.json** → Scripts: `npm run setup`
 
 ---

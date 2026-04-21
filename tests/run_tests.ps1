@@ -1,13 +1,13 @@
-# Quick test runner for MCP integration
+# Test runner for Cisco Documentation System
 
-Write-Host "Running MCP Integration Tests..." -ForegroundColor Cyan
+Write-Host "Running all tests..." -ForegroundColor Cyan
 Write-Host ""
 
 # Activate venv
 & .\venv\Scripts\Activate.ps1
 
 # Run tests
-& python tests\test_mcp_integration.py
+& python tests\run_tests.py
 
 if ($LASTEXITCODE -eq 0) {
     Write-Host ""

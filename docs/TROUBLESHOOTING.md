@@ -363,10 +363,10 @@ def _extract_ios_version(self, config_content: str) -> Optional[str]:
    }
    ```
 
-3. **Improve the prompt** (`automation/prompts/analysis_template.txt`):
+3. **Improve the prompt** — edit `_build_task_instructions()` in `automation/structured_prompt_builder.py`:
    - Add more specific instructions
-   - Provide examples of good documentation
-   - Break down into smaller sections
+   - Adjust the required document sections
+   - Change confidence level requirements
 
 4. **Increase context**:
    ```json
@@ -376,10 +376,6 @@ def _extract_ios_version(self, config_content: str) -> Optional[str]:
      }
    }
    ```
-
-5. **Enable MCP** (if your LLM supports it):
-   - Configure MCP in your LLM
-   - Ensure `mcp.enabled: true` in `config.json`
 
 ---
 
@@ -487,69 +483,6 @@ pip install -r requirements.txt
 
 ---
 
-## MCP Server Issues
-
-### ❌ "MCP server not responding"
-
-**Problem**: LLM cannot access Cisco documentation.
-
-**Diagnosis**:
-```bash
-# Test MCP server manually
-python mcp_server/server.py
-# Server should start without errors
-```
-
-**Solutions**:
-
-1. **Install dependencies**:
-   ```bash
-   pip install mcp
-
-   # Or all dependencies
-   pip install -r requirements.txt
-   ```
-
-2. **Check Python version**:
-   ```bash
-   python --version  # Should be 3.8+
-   ```
-
-3. **Verify MCP configuration** in your LLM's settings
-
-4. **Check if your LLM supports MCP**:
-   - Not all local LLMs support MCP
-   - Works with: Claude Desktop, some custom setups
-   - May not work with: Basic Ollama, basic LM Studio
-
-5. **System still works without MCP**:
-   - Documentation will be generated
-   - Just won't have Cisco doc lookups
-   - Consider it optional for basic usage
-
----
-
-### ❌ "Command not found in MCP cache"
-
-**Problem**: MCP server returns "not found" for commands.
-
-**Solution**:
-Add the command to `docs_cache/basic_commands.json`:
-
-```json
-{
-  "your-command": {
-    "description": "What it does",
-    "syntax": "command syntax",
-    "examples": ["example 1", "example 2"]
-  }
-}
-```
-
-Or extend the MCP server to fetch from Cisco.com (advanced).
-
----
-
 ## Performance Issues
 
 ### ❌ "Processing is very slow"
@@ -582,8 +515,8 @@ Or extend the MCP server to fetch from Cisco.com (advanced).
    - Q8_0 (slower, more accurate)
 
 5. **Simplify prompt**:
-   - Edit `automation/prompts/analysis_template.txt`
-   - Remove less important sections
+   - Edit `_build_task_instructions()` in `automation/structured_prompt_builder.py`
+   - Remove less important sections from the document structure
 
 ---
 
@@ -742,7 +675,6 @@ python automation\watcher.py
 # Make scripts executable
 chmod +x automation/watcher.py
 chmod +x automation/processor.py
-chmod +x mcp_server/server.py
 
 # Fix file permissions
 chmod -R u+rw configs/ output/
@@ -829,7 +761,6 @@ If you're still stuck:
 3. **Minimal test**: Try the simplest possible case
 4. **Isolate component**: Test each part separately:
    - LLM connection
-   - MCP server
    - Processor script
    - Watcher
 
@@ -847,16 +778,13 @@ curl http://localhost:11434/api/version  # Ollama
 # Test processor
 python automation/processor.py configs/SAMPLE-SWITCH.txt
 
-# Test MCP server
-python mcp_server/server.py
-
 # Check Git
 git status
 git log --oneline -5
 
 # List installed packages
 pip list
-pip show requests watchdog GitPython mcp
+pip show requests watchdog GitPython
 ```
 
 ### Enable Debug Logging
@@ -892,9 +820,8 @@ print(f"Debug: Config content length: {len(config_content)}")
 ## Still Having Issues?
 
 1. Try the [QUICKSTART.md](QUICKSTART.md) guide from scratch
-2. Review [ARCHITECTURE.md](ARCHITECTURE.md) to understand the system
-3. Check your `config.json` matches the format in [README.md](README.md)
-4. Test with the provided `configs/SAMPLE-SWITCH.txt` first
+2. Check your `config.json` matches the format shown in QUICKSTART.md
+3. Test with the provided `configs/SAMPLE-SWITCH.txt` first
 5. Use a virtual environment to isolate dependencies
 6. Check Python version: `python --version` (must be 3.8+)
 7. Verify all packages installed: `pip list`

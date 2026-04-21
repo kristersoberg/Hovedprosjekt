@@ -34,7 +34,6 @@ class ConfigProcessor:
         # Determine project paths
         self.project_root = self.config_file_path.parent.parent
         self.output_dir = self.project_root / "output"
-        self.prompts_dir = Path(__file__).parent / "prompts"
 
         # Load system configuration
         config_path = self.project_root / "config.json"
@@ -370,74 +369,6 @@ class ConfigProcessor:
 
         return None
 
-    def _build_prompt(self, config_content: str, ios_version: Optional[str]) -> str:
-        """Build the LLM prompt from template."""
-        template_path = self.prompts_dir / "analysis_template.txt"
-
-        try:
-            with open(template_path, 'r', encoding='utf-8') as f:
-                template = f.read()
-        except FileNotFoundError:
-            print("  Prompt template not found, using default")
-            template = self._get_default_template()
-
-        # Replace placeholders
-        prompt = template.replace('{{CONFIG_CONTENT}}', config_content)
-        prompt = prompt.replace('{{IOS_VERSION}}', ios_version or 'Unknown')
-        prompt = prompt.replace('{{FILENAME}}', self.config_filename)
-        prompt = prompt.replace('{{TIMESTAMP}}', datetime.now().isoformat())
-
-        return prompt
-
-    def _get_default_template(self) -> str:
-        """Get default prompt template."""
-        return """You are a Cisco network engineer analyzing a switch configuration file. Your task is to create comprehensive, human-readable documentation.
-
-Configuration File: {{FILENAME}}
-IOS Version: {{IOS_VERSION}}
-
-CONFIGURATION:
-```
-{{CONFIG_CONTENT}}
-```
-
-Please analyze this configuration and create detailed documentation in Markdown format following this structure:
-
-# Switch Configuration Documentation: {{FILENAME}}
-
-## Overview
-- **Hostname**: [Extract hostname]
-- **IOS Version**: {{IOS_VERSION}}
-- **Configuration Purpose**: [Brief description of switch role]
-
-## VLANs
-List all configured VLANs with their names and purposes.
-
-## Interfaces
-Document all interface configurations, including:
-- Physical interfaces
-- Port-channels
-- VLANs (SVIs)
-
-## Routing
-Document routing configuration (OSPF, EIGRP, static routes, etc.)
-
-## Spanning Tree
-Document STP configuration and settings.
-
-## Security Features
-Document security configurations (port security, ACLs, etc.)
-
-## Services
-Document configured services (DHCP, NTP, SNMP, etc.)
-
-## Best Practices Analysis
-Evaluate against Cisco best practices and provide recommendations.
-
----
-*Documentation generated automatically on {{TIMESTAMP}}*
-"""
-
     def _validate_documentation(self, structured_data: Dict[str, Any], documentation: str, output_path: Path):
         """
         Validate generated documentation against structured data.
@@ -508,9 +439,7 @@ Evaluate against Cisco best practices and provide recommendations.
                         "messages": [
                             {
                                 "role": "system",
-                                "content": "You are an expert Cisco network engineer. You have access to Cisco "
-                                         "documentation via MCP tools. Use them to verify command syntax and features "
-                                         "when analyzing configurations."
+                                "content": "You are an expert Cisco network engineer creating professional network documentation."
                             },
                             {
                                 "role": "user",

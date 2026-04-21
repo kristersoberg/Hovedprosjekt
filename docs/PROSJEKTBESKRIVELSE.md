@@ -58,7 +58,7 @@ Systemet består av fire hovedkomponenter som samarbeider i en pipeline-arkitekt
 ┌─────────────────────────────────────────────────────────────────┐
 │  KOMPONENT 2: PROMPT BUILDER (structured_prompt_builder.py)    │
 │  - Bygger strukturert prompt fra JSON-data                      │
-│  - Presenterer ALLE interfaces, VLAN-navn, ACL-entries          │
+│  - Presenterer alle interfaces, VLAN-navn, ACL-entries          │
 │  - Eksplisitte instruksjoner for fullstendighet                 │
 └────────────────────────────┬────────────────────────────────────┘
                              │
@@ -886,7 +886,7 @@ Resultatet er et system som ikke bare automatiserer en tidkrevende oppgave, men 
 - **Kodebase**: 1,317 linjer (parser) + 727 linjer (processor) + støttekode
 - **Test coverage**: 32 tester, 100% success rate
 - **Teknologi**: Python 3.8+, Qwen3:32B via Ollama, SQLite, Git
-- **Lisens**: Educational/Professional use
+- **Lisens**: MIT
 - **Utviklingsperiode**: Design Science Research Methodology (DSRM) approach
 
 **Nøkkelord**: Network Documentation, AI/LLM, Cisco IOS, Automation, Hybrid Architecture, Local Processing, Python, Design Science Research

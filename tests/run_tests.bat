@@ -1,12 +1,12 @@
 @echo off
-REM Quick test runner for MCP integration
+REM Test runner for Cisco Documentation System
 
-echo Running MCP Integration Tests...
+echo Running all tests...
 echo.
 
 call venv\Scripts\activate.bat
 
-python tests\test_mcp_integration.py
+python tests\run_tests.py
 
 if errorlevel 1 (
     echo.
