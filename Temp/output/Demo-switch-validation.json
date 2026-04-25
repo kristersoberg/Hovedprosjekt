@@ -201,9 +201,9 @@
     {
       "field": "DHCP Snooping Status",
       "expected": "enabled",
-      "found": "DHCP snooping enabled (though VLANs unspecified) ✓",
+      "found": "DHCP snooping enabled globally ✓",
       "passed": true,
-      "location": "Line with: DHCP snooping enabled (though VLANs unspecified) ✓...",
+      "location": "Line with: DHCP snooping enabled globally ✓...",
       "error": null
     },
     {
